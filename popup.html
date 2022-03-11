@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Traversy Media Quick Launcher</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="popup.js"></script>
+  </head>
+
+  <body>
+    <section class="cta-card">
+      <div class="cta-card__container">
+        <header class="cta-card__header">
+          <p class="cta-card__title">Meet - Slack</p>
+          <p class="cta-card__description">
+            Real-time Google Meet updates on Slack
+          </p>
+        </header>
+
+        <label class="cta-card__input-label">Slack API key</label>
+        <div class="cta-card__input" style="margin-bottom: 0.5rem;">
+          <input id="slack-key" type="text" placeholder="xoxp-" />
+        </div>
+        <a href="https://slack.com/oauth/v2/authorize?client_id=1006483930641.2624352134724&scope=&user_scope=users.profile:write" target="blank" style="text-decoration: none;">
+          <p style="display: inline-block;">Get Slack API key ↗</p>
+        </a>
+
+        <hr style="margin: 2rem auto;">
+
+        <label class="cta-card__input-label">Meeting status text</label>
+        <div class="cta-card__input">
+          <input id="slack-status" type="text" value="On a meet call • Reply may be delayed" />
+        </div>
+
+        <label class="cta-card__input-label">Meeting status emoji</label>
+        <div class="cta-card__input">
+          <input id="slack-emoji" type="text" value=":telephone_receiver:" />
+        </div>
+
+        <button class="save-button" id="save-button">Save</button>
+        
+
+        <!-- <div class="cta-card__input-box" id="setEmoji">
+          <label class="cta-card__input-label"
+            >Choose your emoji for Slack</label
+          >
+          <div class="cta-card__input">
+            <input
+              type="text"
+              id="emojiInput"
+              placeholder=":calendar:"
+            />
+          </div>
+          <ul id="emojiList"></ul>
+        </div> -->
+
+        <!-- <div class="cta-card__input-box" id="editEmoji">
+          <div class="cta-card__success" id="emoji"></div>
+          <button class="cta-card__button" id="editSlackEmoji">
+            <svg
+              fill="#3D476D"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="32"
+              height="32"
+            >
+              <path
+                d="M 18.414062 2 C 18.158062 2 17.902031 2.0979687 17.707031 2.2929688 L 15.707031 4.2929688 L 14.292969 5.7070312 L 3 17 L 3 21 L 7 21 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.926094 2.0979687 18.670063 2 18.414062 2 z M 18.414062 4.4140625 L 19.585938 5.5859375 L 18.292969 6.8789062 L 17.121094 5.7070312 L 18.414062 4.4140625 z M 15.707031 7.1210938 L 16.878906 8.2929688 L 6.171875 19 L 5 19 L 5 17.828125 L 15.707031 7.1210938 z"
+              />
+            </svg>
+          </button>
+        </div> -->
+
+        <!-- <div class="cta-card__input-box" id="editKey">
+          <div class="cta-card__success">Slack key set successfully!</div>
+          <button class="cta-card__button" id="editSlackKey">
+            <svg
+              fill="#3D476D"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="32"
+              height="32"
+            >
+              <path
+                d="M 18.414062 2 C 18.158062 2 17.902031 2.0979687 17.707031 2.2929688 L 15.707031 4.2929688 L 14.292969 5.7070312 L 3 17 L 3 21 L 7 21 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.926094 2.0979687 18.670063 2 18.414062 2 z M 18.414062 4.4140625 L 19.585938 5.5859375 L 18.292969 6.8789062 L 17.121094 5.7070312 L 18.414062 4.4140625 z M 15.707031 7.1210938 L 16.878906 8.2929688 L 6.171875 19 L 5 19 L 5 17.828125 L 15.707031 7.1210938 z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="cta-card__input-box" id="setKey">
+          <div class="cta-card__input">
+            <input
+              type="text"
+              placeholder="Your Slack API key"
+              id="slackKey"
+              required
+            />
+          </div>
+          <button class="cta-card__button" id="setSlackKey">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.66669 16H25.3334"
+                stroke="#3D476D"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M20 21.3333L25.3333 16"
+                stroke="#3D476D"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M20 10.6667L25.3333 16"
+                stroke="#3D476D"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div> -->
+
+
+        
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Traversy Media Quick Launcher</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body></body>
+  <script>
+    var popupWindow = window.open(
+      chrome.extension.getURL("popup.html"),
+      "exampleName",
+      "width=400,height=400"
+    );
+    window.close(); // close the Chrome extension pop-up
+  </script>
+</html>

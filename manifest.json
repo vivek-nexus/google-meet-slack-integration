@@ -1,0 +1,23 @@
+{
+  "name": "Meet-Slack status",
+  "version": "0.0.5",
+  "manifest_version": 2,
+  "description": "Real-time Google Meet updates on Slack",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "icons": { "128": "icon.png" },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "matches": ["https://meet.google.com/*"]
+    }
+  ],
+  "permissions": ["storage", "tabs", "https://meet.google.com/*", "https://slack.com/*"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
+}
