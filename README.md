@@ -1,4 +1,4 @@
-# GMeet-Slack
+# GMeet Slack
 
 > Improve workplace communication with GMeet Slack!
 
@@ -37,7 +37,7 @@ This will be the emoji displayed in your slack status, during the meeting. Defau
 
 
 # Usage
-Join a meeting to test that your slack status updates automatically. Refresh meeting lobby page, if the extension does not load sometimes.
+Join a meeting to test that your slack status updates automatically. Refresh meeting lobby page, if the extension does not load for the first time.
 
 > **Pro-tip**: You can also use these keyboard shortcuts
 > 
@@ -68,3 +68,13 @@ Try re-installing the slack app and make sure you click allow during the install
 2. Check status emoji format. `:smile:` will work whereas `smile` or `:P` will not work. To prevent confusion, copy paste the emoji directly from a slack chat.
 3. The custom emoji used is not available in your slack workspace. Use only those emojis that are available in your slack workspace.
 
+### Extension does not work sometimes
+Refreshing the meeting page should bring the extension back.
+
+### I want to uninstall this extension and slack app
+1. Right click on the extension icon and remove the extension.
+2. When you installed the slack app, you would have recieved an email from slack. Link to uninstall the slack app is present in that email.
+
+
+# Privacy policy
+This extension or the slack app do not store any keys or data in any form. All data is stored locally inside chrome browser. Slack status API calls are made directly to Slack servers and no intermediate servers are used.
