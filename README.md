@@ -1,8 +1,8 @@
-# GMeet Slack
+# GMeet-Slack
 
 > Improve workplace communication with GMeet Slack!
 
-**GMeet Slack automatically updates your slack status, when you join and exit meetings, even for unscheduled meetings or overflowing meetings.**
+**GMeet-Slack automatically updates your slack status, when you join and exit meetings, even for unscheduled meetings or overflowing meetings.**
 
 # Demo
 ![Demo](/demo.gif)
@@ -74,7 +74,7 @@ Refreshing the meeting page should bring the extension back.
 
 ### I want to uninstall this extension and slack app
 1. Right click on the extension icon and remove the extension.
-2. When you installed the slack app, you would have recieved an email from slack. Link to uninstall the slack app is present in that email. You can also visit https://app.slack.com/apps-manage, find GMeet-Status and revoke/remove the app from the configuration tab.
+2. When you installed the slack app, you would have recieved an email from slack. Link to uninstall the slack app is present in that email. You can also visit https://app.slack.com/apps-manage, find GMeet-Slack and revoke/remove the app from the configuration tab.
 
 
 # Privacy policy
