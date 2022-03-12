@@ -5,6 +5,11 @@
 **GMeet Slack automatically updates your slack status, when you join and exit meetings, even for unscheduled meetings or overflowing meetings.**
 
 # Demo
+<div align="left">
+      <a href="https://www.youtube.com/watch?v=t-iDeDHYBy4">
+         <img src="https://img.youtube.com/vi/t-iDeDHYBy4/0.jpg" style="width:100%;">
+      </a>
+</div>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/t-iDeDHYBy4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 # Installation
