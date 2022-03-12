@@ -8,8 +8,7 @@
 {video}
 
 # Installation
-## Install chrome extension
-<a href="https://chrome.google.com/webstore/detail/meet-slack-status/kddjlbegfaiogihndmglihcgommbjmkc" target="_blank">Get Chrome extension ↗</a>
+<a href="https://chrome.google.com/webstore/detail/meet-slack-status/kddjlbegfaiogihndmglihcgommbjmkc" target="_blank">Get Chrome extension</a>
 
 ## Configure chrome extension
 Once installed, open a new tab and type `meet.new` in the address bar, to join a test meeting. Now find and open the extension that has been installed from extensions list (puzzle icon).
@@ -18,7 +17,9 @@ Once installed, open a new tab and type `meet.new` in the address bar, to join a
 
 Chrome extension requires three inputs:
 ### 1. Slack API key
-Click `GET SLACK API KEY` to install the slack app. 
+Click `GET SLACK API KEY` to install the slack app.
+> Slack API key starts with `xoxp-` 
+
 > Make sure to install the slack app to the correct workspace, where you want your status to be automatically updated.
 
 See FAQs for more help.
