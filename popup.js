@@ -8,7 +8,7 @@ window.onload = function () {
 
   chrome.storage.sync.get(["meetSlackKey", "statusText", "emojiText"], function (result) {
     if(result.meetSlackKey)
-      slackKey.value = result.meetSlackKey;
+      slackKey.placeholder = "Saved, but hidden";
     if(result.statusText)
       slackStatus.value = result.statusText;
     if(result.emojiText)
@@ -105,88 +105,88 @@ window.onload = function () {
 //   }
 // });
 
-function loadJSON(callback) {
-  var xobj = new XMLHttpRequest();
-  xobj.overrideMimeType("application/json");
-  xobj.open("GET", "emojis.json", true);
-  xobj.onreadystatechange = function () {
-    if (xobj.readyState == 4 && xobj.status == "200") {
-      // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-      callback(xobj.responseText);
-    }
-  };
-  xobj.send(null);
-}
+// function loadJSON(callback) {
+//   var xobj = new XMLHttpRequest();
+//   xobj.overrideMimeType("application/json");
+//   xobj.open("GET", "emojis.json", true);
+//   xobj.onreadystatechange = function () {
+//     if (xobj.readyState == 4 && xobj.status == "200") {
+//       // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+//       callback(xobj.responseText);
+//     }
+//   };
+//   xobj.send(null);
+// }
 
-function searchEmoji() {
-  var input, filter, ul, li, a, i, txtValue;
-  input = document.getElementById("emojiInput");
-  filter = input.value.toUpperCase();
-  ul = document.getElementById("emojiList");
-  if (filter.length > 1) {
-    ul.style.display = "block";
-  } else {
-    ul.style.display = "none";
-  }
-  li = ul.getElementsByTagName("li");
-  for (i = 0; i < li.length; i++) {
-    a = li[i];
-    txtValue = a.textContent || a.innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
-    }
-  }
-}
+// function searchEmoji() {
+//   var input, filter, ul, li, a, i, txtValue;
+//   input = document.getElementById("emojiInput");
+//   filter = input.value.toUpperCase();
+//   ul = document.getElementById("emojiList");
+//   if (filter.length > 1) {
+//     ul.style.display = "block";
+//   } else {
+//     ul.style.display = "none";
+//   }
+//   li = ul.getElementsByTagName("li");
+//   for (i = 0; i < li.length; i++) {
+//     a = li[i];
+//     txtValue = a.textContent || a.innerText;
+//     if (txtValue.toUpperCase().indexOf(filter) > -1) {
+//       li[i].style.display = "";
+//     } else {
+//       li[i].style.display = "none";
+//     }
+//   }
+// }
 
-function setSlackEmoji(e) {
-  chrome.storage.sync.set(
-    {
-      emojiText: e.target.innerText,
-      emojiUrl: actual_JSON[e.target.innerText],
-    },
-    function () {
-      var edit = document.getElementById("editEmoji");
-      var set = document.getElementById("setEmoji");
-      var emoji = document.getElementById("emoji");
-      emoji.innerHTML =
-        "<p>" +
-        e.target.innerText +
-        "</p>" +
-        '<img src="' +
-        actual_JSON[e.target.innerText] +
-        '" />';
-      edit.style.display = "block";
-      set.style.display = "none";
-    }
-  );
-}
+// function setSlackEmoji(e) {
+//   chrome.storage.sync.set(
+//     {
+//       emojiText: e.target.innerText,
+//       emojiUrl: actual_JSON[e.target.innerText],
+//     },
+//     function () {
+//       var edit = document.getElementById("editEmoji");
+//       var set = document.getElementById("setEmoji");
+//       var emoji = document.getElementById("emoji");
+//       emoji.innerHTML =
+//         "<p>" +
+//         e.target.innerText +
+//         "</p>" +
+//         '<img src="' +
+//         actual_JSON[e.target.innerText] +
+//         '" />';
+//       edit.style.display = "block";
+//       set.style.display = "none";
+//     }
+//   );
+// }
 
-function editSlackEmoji() {
-  var edit = document.getElementById("editEmoji");
-  var set = document.getElementById("setEmoji");
-  edit.style.display = "none";
-  set.style.display = "block";
-}
+// function editSlackEmoji() {
+//   var edit = document.getElementById("editEmoji");
+//   var set = document.getElementById("setEmoji");
+//   edit.style.display = "none";
+//   set.style.display = "block";
+// }
 
-function setSlackKey() {
-  var input = document.getElementById("slackKey").value;
-  if (input.length > 0) {
-    chrome.storage.sync.set({ meetSlackKey: input }, function () {
-      console.log("Meet-Slack API key set");
-      var edit = document.getElementById("editKey");
-      var set = document.getElementById("setKey");
-      edit.style.display = "block";
-      set.style.display = "none";
-      chrome.tabs.reload(function () {});
-    });
-  }
-}
+// function setSlackKey() {
+//   var input = document.getElementById("slackKey").value;
+//   if (input.length > 0) {
+//     chrome.storage.sync.set({ meetSlackKey: input }, function () {
+//       console.log("Meet-Slack API key set");
+//       var edit = document.getElementById("editKey");
+//       var set = document.getElementById("setKey");
+//       edit.style.display = "block";
+//       set.style.display = "none";
+//       chrome.tabs.reload(function () {});
+//     });
+//   }
+// }
 
-function editSlackKey() {
-  var edit = document.getElementById("editKey");
-  var set = document.getElementById("setKey");
-  edit.style.display = "none";
-  set.style.display = "block";
-}
+// function editSlackKey() {
+//   var edit = document.getElementById("editKey");
+//   var set = document.getElementById("setKey");
+//   edit.style.display = "none";
+//   set.style.display = "block";
+// }

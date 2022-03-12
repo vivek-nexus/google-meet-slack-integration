@@ -1,8 +1,8 @@
 {
-  "name": "Meet-Slack status",
+  "name": "GMeet-Slack",
   "version": "0.0.5",
   "manifest_version": 2,
-  "description": "Real-time Google Meet updates on Slack",
+  "description": "Real-time GMeet status on Slack",
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html"

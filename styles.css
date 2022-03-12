@@ -78,6 +78,7 @@ body {
   font-family: "Mulish", sans-serif;
   color: #fff;
   float: left;
+  font-weight: bold;
 }
 
 .cta-card__input {
@@ -123,7 +124,7 @@ body {
 } */
 
 .cta-card__input input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .cta-card__button {

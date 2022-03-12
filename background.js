@@ -38,7 +38,7 @@ function queryTabsInWindow() {
 }
 
 function setSlackStatus() {
-  let emoji = ":calendar:";
+  let emoji = ":telephone_receiver:";
   let text = "On a meet call • Reply may be delayed";
   chrome.storage.sync.get(["emojiText", "statusText"], function (result) {
     if (result.emojiText) {
