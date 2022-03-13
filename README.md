@@ -5,7 +5,9 @@
 **GMeet-Slack automatically updates your slack status, when you join and exit meetings, even for unscheduled meetings or overflowing meetings.**
 
 # Demo
-![Demo](/demo.gif)
+
+![demo](https://user-images.githubusercontent.com/26523871/158046509-96d508f7-fbeb-424e-9268-3d18cd791ec7.gif)
+
 
 # Installation
 <a href="https://chrome.google.com/webstore/detail/meet-slack-status/kddjlbegfaiogihndmglihcgommbjmkc" target="_blank">Get Chrome extension</a>
@@ -13,7 +15,7 @@
 ## Configure chrome extension
 Once installed, open a new tab and type `meet.new` in the address bar, to join a test meeting. Now find and open the extension that has been installed from extensions list (puzzle icon).
 
-![Extension screenshot](/extension-screenshot.png)
+![extension-screenshot](https://user-images.githubusercontent.com/26523871/158046524-3092fd1b-9204-494d-b2be-3da7c9afb5fa.png)
 
 Chrome extension requires three inputs:
 ### 1. Slack API key
