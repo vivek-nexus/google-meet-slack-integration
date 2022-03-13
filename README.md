@@ -10,7 +10,7 @@
 
 
 # Installation
-<a href="https://chrome.google.com/webstore/detail/meet-slack-status/kddjlbegfaiogihndmglihcgommbjmkc" target="_blank">Get Chrome extension</a>
+<a href="https://chrome.google.com/webstore/detail/meet-slack-status/kddjlbegfaiogihndmglihcgommbjmkc" target="_blank">Install Chrome extension from Chrome store</a>
 
 ## Configure chrome extension
 Once installed, open a new tab and type `meet.new` in the address bar, to join a test meeting. Now find and open the extension that has been installed from extensions list (puzzle icon).
