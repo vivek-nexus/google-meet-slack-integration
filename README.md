@@ -49,7 +49,7 @@ Join a meeting to test that your slack status updates automatically. Refresh mee
 > `CTRL+Q` to quit a meeting
 
 # Contributors
-[Vivek G](https://github.com/yakshaG) and [Aditya](https://github.com/aditya-67)
+[Vivek G](https://github.com/yakshaG) and [Aditya Gannavarapu](https://github.com/aditya-67)
 
 # FAQs
 
