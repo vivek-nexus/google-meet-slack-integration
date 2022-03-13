@@ -17,7 +17,7 @@ Once installed, open a new tab and type `meet.new` in the address bar, to join a
 
 Chrome extension requires three inputs:
 ### 1. Slack API key
-Click `GET SLACK API KEY` to install the slack app.
+Click `GET SLACK API KEY` to install the slack app and generate your Slack API key.
 > Slack API key starts with `xoxp-` 
 
 > Make sure to install the slack app to the correct workspace, where you want your status to be automatically updated.
