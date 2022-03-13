@@ -1,23 +1,27 @@
 {
   "name": "GMeet-Slack",
   "version": "0.0.5",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "description": "Real-time GMeet status on Slack",
-  "browser_action": {
+  "action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html"
   },
   "icons": { "128": "icon.png" },
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+   },
   "content_scripts": [
     {
       "js": ["content.js"],
       "matches": ["https://meet.google.com/*"]
     }
   ],
-  "permissions": ["storage", "tabs", "https://meet.google.com/*", "https://slack.com/*"],
+  "permissions": ["storage", "tabs"],
+  "host_permissions": [
+    "https://meet.google.com/*", "https://slack.com/*"
+  ],
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "service_worker": "background.js"
   }
 }
