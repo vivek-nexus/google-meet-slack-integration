@@ -32,7 +32,7 @@ This will be the text displayed in your slack status, during the meeting. Defaul
 ### 3. Choose meeting status emoji
 This will be the emoji displayed in your slack status, during the meeting. Default emoji is 📞.
 
-> Make sure to copy paste the full emoji text from slack, in the specified format `:telephone_receiver:`
+> Make sure to copy paste the full emoji text from slack, in the specified format `telephone_receiver`. Make sure to not have any colon before and after the emoji.
 
 > Custom emojis available in your slack workspace are supported.
 
