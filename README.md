@@ -15,7 +15,7 @@
 ## Configure chrome extension
 Once installed, open a new tab and type `meet.new` in the address bar, to join a test meeting. Now find and open the extension that has been installed from extensions list (puzzle icon).
 
-![extension-screenshot](https://user-images.githubusercontent.com/26523871/158046524-3092fd1b-9204-494d-b2be-3da7c9afb5fa.png)
+![extension-screenshot](https://user-images.githubusercontent.com/26523871/158204134-70ef4708-81de-49df-9531-44a5d40ce613.png)
 
 Chrome extension requires three inputs:
 ### 1. Slack API key
@@ -68,7 +68,7 @@ Try re-installing the slack app and make sure you click allow during the install
 
 ### Slack status is not updating
 1. Check if you have actually pasted the Slack API key. Generate and paste again, if in doubt.
-2. Check status emoji format. `:smile:` will work whereas `smile` or `:P` will not work. To prevent confusion, copy paste the emoji directly from a slack chat.
+2. Check status emoji format. `smile` will work whereas `:smile:` or `:smile` or `:P` will not work. To prevent confusion, copy paste the emoji directly from a slack chat and remove the colons before and after.
 3. The custom emoji used is not available in your slack workspace. Use only those emojis that are available in your slack workspace.
 
 ### Extension does not work sometimes
