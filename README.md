@@ -2,7 +2,7 @@
 
 > Improve workplace communication with GMeet Slack!
 
-**GMeet-Slack automatically updates your slack status, when you join and exit meetings, even for unscheduled meetings or overflowing meetings.**
+**GMeet-Slack automatically updates your slack status in real time, when you join and exit meetings, even for unscheduled meetings or overflowing meetings.**
 
 # Demo
 
@@ -30,7 +30,7 @@ See FAQs for more help.
 This will be the text displayed in your slack status, during the meeting. Default text is `On a meet call • Reply may be delayed`.
 
 ### 3. Choose meeting status emoji
-This will be the emoji displayed in your slack status, during the meeting. Default emoji is 📞.
+This will be the emoji displayed in your slack status, during the meeting. Default emoji is `telephone_receiver`, which will looks like this 📞 on your slack status.
 
 > Make sure to copy paste the full emoji text from slack, in the specified format `telephone_receiver`. Make sure to not have any colon before and after the emoji.
 
