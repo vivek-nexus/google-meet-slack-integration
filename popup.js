@@ -20,17 +20,34 @@ window.onload = function () {
     // console.log(slackStatus.value)
     // console.log(slackEmoji.value)
 
-    chrome.storage.sync.set(
-      {
-        meetSlackKey: slackKey.value,
-        emojiText: slackEmoji.value,
-        statusText: slackStatus.value
-      }, function(){
-          console.log("Storage data set")
-          window.close();
-          chrome.tabs.reload(function () {});
-      }
-    )
+    if(slackKey.placeholder == 'Saved, but hidden'){
+      chrome.storage.sync.set(
+        {
+          emojiText: slackEmoji.value,
+          statusText: slackStatus.value
+        }, function(){
+            console.log("Storage data set")
+            window.close();
+            chrome.tabs.reload(function () {});
+        }
+      )
+    }
+
+    else{
+      chrome.storage.sync.set(
+        {
+          meetSlackKey: slackKey.value,
+          emojiText: slackEmoji.value,
+          statusText: slackStatus.value
+        }, function(){
+            console.log("Storage data set")
+            window.close();
+            chrome.tabs.reload(function () {});
+        }
+      )
+    }
+
+    
   })
 }
 
