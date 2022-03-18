@@ -5,10 +5,13 @@ window.onload = function () {
   var slackStatus = document.querySelector('#slack-status');
   var slackEmoji = document.querySelector('#slack-emoji');
   var saveButton = document.querySelector('#save-button');
+  var deactivateButton = document.querySelector('#deactivate-button');
+  var deactivateMessage = document.querySelector('#deactivate-message');
+
 
   chrome.storage.sync.get(["meetSlackKey", "statusText", "emojiText"], function (result) {
     if(result.meetSlackKey)
-      slackKey.placeholder = "Saved, but hidden";
+      slackKey.value = "Saved successfully";
     if(result.statusText)
       slackStatus.value = result.statusText;
     if(result.emojiText)
@@ -20,7 +23,7 @@ window.onload = function () {
     // console.log(slackStatus.value)
     // console.log(slackEmoji.value)
 
-    if(slackKey.placeholder == 'Saved, but hidden'){
+    if(slackKey.value == 'Saved successfully'){
       chrome.storage.sync.set(
         {
           emojiText: slackEmoji.value,
@@ -46,8 +49,57 @@ window.onload = function () {
         }
       )
     }
+  })
 
-    
+  deactivateButton.addEventListener('click', function () {
+    var keyToReset;
+    chrome.storage.sync.get(["meetSlackKey"], function (result) {
+      if (result.meetSlackKey)
+        keyToReset = result.meetSlackKey;
+      else{
+        deactivateMessage.innerHTML = 'Slack key not found';
+        setTimeout(() => {
+          deactivateMessage.innerHTML = ''
+        }, 3000);
+        return
+      }
+
+      // console.log(`Bearer ${keyToReset}`);
+      
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${keyToReset}`);
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+      };
+
+      fetch("https://slack.com/api/auth.revoke", requestOptions)
+        .then(response => response.text())
+        .then((result) => {
+          console.log(result);
+
+          let parsedBody = JSON.parse(result);
+          console.log(parsedBody.ok)
+          if (parsedBody.ok === true) {
+            chrome.storage.sync.remove('meetSlackKey');
+            deactivateMessage.innerHTML = 'Successfully deactivated!';
+            slackKey.value = "";
+            setTimeout(() => {
+              deactivateMessage.innerHTML = ''
+            }, 3000);
+          }
+          else{
+            deactivateMessage.innerHTML = 'Invalid key!';
+            setTimeout(() => {
+              deactivateMessage.innerHTML = ''
+            }, 3000);
+          }
+
+        })
+        .catch(error => console.log('error', error));
+    })
   })
 }
 

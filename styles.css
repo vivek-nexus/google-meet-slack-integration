@@ -12,6 +12,7 @@
 
 html {
   font-size: 62.5%;
+  background-color: #173AB7;
 }
 
 body {
@@ -19,17 +20,18 @@ body {
   justify-content: center;
   align-items: center;
   font-family: "Mulish", sans-serif;
-  width: 400px;
+  width: 480px;
+  margin: 0px;
 }
 
 .cta-card {
   position: relative;
   width: 100rem;
-  padding: 4.5rem;
-  margin: 2rem;
-  border-radius: 2rem;
+  /* padding: 4.5rem; */
+  /* margin: 2rem; */
+  /* border-radius: 2rem; */
   text-align: center;
-  background: #173ab7;
+  /* background: #173ab7; */
   /* 5271e0 */
 }
 
@@ -222,4 +224,12 @@ a{
   border-radius: 0.5rem;
   border: none;
   font-family: "Mulish", sans-serif;
+}
+
+.form-card{
+  padding: 2rem;
+  border-radius: 1rem;
+  /* background-color: #2a4cce; */
+  border: 2px solid #7384de;
+  margin-bottom: 2rem;
 }

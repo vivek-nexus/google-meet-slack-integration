@@ -1,31 +1,34 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Traversy Media Quick Launcher</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="popup.js"></script>
-  </head>
 
-  <body>
-    <section class="cta-card">
-      <div class="cta-card__container">
-        <header class="cta-card__header">
-          <p class="cta-card__title">GMeet - Slack</p>
-          <p class="cta-card__description">
-            Real-time GMeet status on Slack
-          </p>
-        </header>
+<head>
+  <title>Traversy Media Quick Launcher</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="popup.js"></script>
+</head>
 
+<body>
+  <section class="cta-card">
+    <div class="cta-card__container">
+      <header class="cta-card__header">
+        <p class="cta-card__title">GMeet - Slack</p>
+        <p class="cta-card__description">
+          Real-time GMeet status on Slack
+        </p>
+      </header>
+
+      <div class="form-card">
         <label class="cta-card__input-label">🔑 Slack API key</label>
         <div class="cta-card__input" style="margin-bottom: 0.5rem;">
-          <input id="slack-key" type="text" placeholder="Starts with xoxp-" />
+          <input id="slack-key" type="text" placeholder="xoxp-" />
         </div>
-        <a href="https://slack.com/oauth/v2/authorize?client_id=3243307866673.3224053662614&scope=&user_scope=users.profile:write" target="blank" style="text-decoration: none;">
-          <p style="display: inline-block;">GET SLACK API KEY ↗</p>
+        <a href="https://slack.com/oauth/v2/authorize?client_id=3243307866673.3224053662614&scope=&user_scope=users.profile:write"
+          target="blank" style="text-decoration: none;">
+          <p style="margin-bottom: 4rem;">GET SLACK API KEY ↗</p>
         </a>
 
-        <hr style="margin: 2rem auto;">
+        <!-- <hr style="margin: 2rem auto; border-color: grey;"> -->
 
         <label class="cta-card__input-label">📝 Meeting status text</label>
         <div class="cta-card__input">
@@ -37,10 +40,24 @@
           <input id="slack-emoji" type="text" value="telephone_receiver" />
         </div>
 
-        <button class="save-button" id="save-button">Save</button>
-        
+        <button class="save-button" style="display: block; margin: 0rem auto 1rem auto;" id="save-button">Save</button>
+      </div>
 
-        <!-- <div class="cta-card__input-box" id="setEmoji">
+      <a href="https://github.com/yakshaG/gmeet-slack-extension#faqs"
+        target="blank" style="text-decoration: none;">
+        <p>HELP ↗</p>
+      </a>
+
+      <a style="cursor: pointer;">
+        <p id="deactivate-button" style="color: orange; margin-top: 1.5rem;">DEACTIVATE SLACK API KEY</p>
+      </a>
+
+      <p id="deactivate-message" class="cta-card__description"></p>
+
+
+
+
+      <!-- <div class="cta-card__input-box" id="setEmoji">
           <label class="cta-card__input-label"
             >Choose your emoji for Slack</label
           >
@@ -54,7 +71,7 @@
           <ul id="emojiList"></ul>
         </div> -->
 
-        <!-- <div class="cta-card__input-box" id="editEmoji">
+      <!-- <div class="cta-card__input-box" id="editEmoji">
           <div class="cta-card__success" id="emoji"></div>
           <button class="cta-card__button" id="editSlackEmoji">
             <svg
@@ -71,7 +88,7 @@
           </button>
         </div> -->
 
-        <!-- <div class="cta-card__input-box" id="editKey">
+      <!-- <div class="cta-card__input-box" id="editKey">
           <div class="cta-card__success">Slack key set successfully!</div>
           <button class="cta-card__button" id="editSlackKey">
             <svg
@@ -131,8 +148,9 @@
         </div> -->
 
 
-        
-      </div>
-    </section>
-  </body>
+
+    </div>
+  </section>
+</body>
+
 </html>
