@@ -5,8 +5,8 @@ window.onload = function () {
   var slackStatus = document.querySelector('#slack-status');
   var slackEmoji = document.querySelector('#slack-emoji');
   var saveButton = document.querySelector('#save-button');
-  var deactivateButton = document.querySelector('#deactivate-button');
-  var deactivateMessage = document.querySelector('#deactivate-message');
+  var revokeButton = document.querySelector('#revoke-button');
+  var revokeMessage = document.querySelector('#revoke-message');
 
 
   chrome.storage.sync.get(["meetSlackKey", "statusText", "emojiText"], function (result) {
@@ -51,15 +51,15 @@ window.onload = function () {
     }
   })
 
-  deactivateButton.addEventListener('click', function () {
+  revokeButton.addEventListener('click', function () {
     var keyToReset;
     chrome.storage.sync.get(["meetSlackKey"], function (result) {
       if (result.meetSlackKey)
         keyToReset = result.meetSlackKey;
       else{
-        deactivateMessage.innerHTML = 'Slack key not found';
+        revokeMessage.innerHTML = 'Slack key not found';
         setTimeout(() => {
-          deactivateMessage.innerHTML = ''
+          revokeMessage.innerHTML = ''
         }, 3000);
         return
       }
@@ -84,16 +84,16 @@ window.onload = function () {
           console.log(parsedBody.ok)
           if (parsedBody.ok === true) {
             chrome.storage.sync.remove('meetSlackKey');
-            deactivateMessage.innerHTML = 'Successfully deactivated!';
+            revokeMessage.innerHTML = 'Successfully revoked!';
             slackKey.value = "";
             setTimeout(() => {
-              deactivateMessage.innerHTML = ''
+              revokeMessage.innerHTML = ''
             }, 3000);
           }
           else{
-            deactivateMessage.innerHTML = 'Invalid key!';
+            revokeMessage.innerHTML = 'Invalid key!';
             setTimeout(() => {
-              deactivateMessage.innerHTML = ''
+              revokeMessage.innerHTML = ''
             }, 3000);
           }
 
