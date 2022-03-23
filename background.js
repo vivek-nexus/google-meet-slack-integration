@@ -38,11 +38,23 @@ function queryTabsInWindow() {
 }
 
 function setSlackStatus() {
-  let emoji = "telephone_receiver";
+  let emoji = "📞";
   let text = "On a meet call • Reply may be delayed";
   chrome.storage.sync.get(["emojiText", "statusText"], function (result) {
     if (result.emojiText) {
-      emoji = result.emojiText;
+      // https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript
+      if(/\p{Emoji}/u.test(result.emojiText)){
+        emoji = result.emojiText;
+        console.log('One char emoji')
+      }
+      else if(/^\:.*\:$/.test(result.emojiText)){
+        emoji = result.emojiText;
+        console.log('Custom emoji with both colons')
+      }
+      else{
+        emoji = ":"+result.emojiText+":";
+        console.log('Custom emoji without both colons')
+      }
     }
     if (result.statusText) {
       text = result.statusText;
@@ -51,7 +63,7 @@ function setSlackStatus() {
     var raw = JSON.stringify({
       profile: {
         status_text: text,
-        status_emoji: ":" + emoji + ":",
+        status_emoji: emoji,
         status_expiration: 0,
       },
     });

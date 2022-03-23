@@ -4,152 +4,67 @@
 <head>
   <title>Traversy Media Quick Launcher</title>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="popup.js"></script>
+  <link rel="stylesheet" href="styles-new.css" />
+  <script src="popup.js" type="module"></script>
 </head>
 
 <body>
-  <section class="cta-card">
-    <div class="cta-card__container">
-      <header class="cta-card__header">
-        <p class="cta-card__title">GMeet - Slack</p>
-        <p class="cta-card__description">
-          Real-time GMeet status on Slack
-        </p>
-      </header>
+  <section>
+    <div>
+      <h1>GMeet - Slack</h1>
+      <p style="margin: 0rem auto 2.5rem auto;">
+        Real-time GMeet status on Slack
+      </p>
 
-      <div class="form-card">
-        <label class="cta-card__input-label">🔑 Slack API key</label>
-        <div class="cta-card__input" style="margin-bottom: 0.5rem;">
-          <input id="slack-key" type="text" placeholder="xoxp-" />
-        </div>
-        <a href="https://slack.com/oauth/v2/authorize?client_id=3243307866673.3224053662614&scope=&user_scope=users.profile:write"
-          target="blank" style="text-decoration: none;">
-          <p style="margin-bottom: 4rem;">GET SLACK API KEY ↗</p>
-        </a>
+      <div class="form-container">
+        <label class="input-label">🔑 Slack API key</label>
+        <input id="slack-key" type="text" />
+        <p class="helper-text">Starts with xoxp-</p>
 
-        <!-- <hr style="margin: 2rem auto; border-color: grey;"> -->
-
-        <label class="cta-card__input-label">📝 Meeting status text</label>
-        <div class="cta-card__input">
-          <input id="slack-status" type="text" value="On a meet call • Reply may be delayed" />
+        <div style=" margin-bottom: 3rem;">
+          <a href="https://slack.com/oauth/v2/authorize?client_id=3243307866673.3224053662614&scope=&user_scope=users.profile:write"
+            target="blank" style="text-decoration: none;">
+            <button class="button-secondary">GET SLACK API KEY ↗</button>
+          </a>
         </div>
 
-        <label class="cta-card__input-label">😎 Meeting status emoji</label>
-        <div class="cta-card__input">
-          <input id="slack-emoji" type="text" value="telephone_receiver" />
-        </div>
 
-        <button class="save-button" style="display: block; margin: 0rem auto 1rem auto;" id="save-button">Save</button>
+        <label class="input-label">✏️ Meeting status emoji and text</label>
+        <div style="display: flex;">
+          <div style="width: 25%; margin-right: 1rem;">
+            <div style="position: relative; align-items: center;">
+              <img src="insert_emoticon_white_24dp.svg" id="emoji-picker" alt="emoji-picker">
+              <input id="slack-emoji" type="text" />
+            </div>
+          </div>
+          <div style="width: 75%">
+            <input id="slack-status" type="text" value="On a meet call • Reply may be delayed" />
+          </div>
+        </div>
+        <p class="helper-text">You can also paste custom slack emoji text, if available in your workspace, like <strong>:bowtie:</strong></p>
+
+        <button class="button-primary" id="save-button">SAVE</button>
       </div>
 
-      <a href="https://github.com/yakshaG/gmeet-slack-extension#faqs"
-        target="blank" style="text-decoration: none;">
-        <p>HELP ↗</p>
-      </a>
 
-      <a style="cursor: pointer;">
-        <p id="revoke-button" style="color: orange; margin-top: 1.5rem;">REVOKE SLACK API KEY</p>
-      </a>
-
-      <p id="revoke-message" class="cta-card__description"></p>
+      <div class="button-div" style="margin-bottom: 1rem;">
+        <a href="https://github.com/yakshaG/gmeet-slack-extension#faqs" target="blank" style="text-decoration: none;">
+          <button class="button-secondary">HELP ↗</button>
+        </a>
+      </div>
 
 
 
+      <div class="button-div">
+        <button class="button-secondary" id="revoke-button"
+          style="text-align: center; color: red; border-color: red;">REVOKE SLACK API KEY</button>
+      </div>
 
-      <!-- <div class="cta-card__input-box" id="setEmoji">
-          <label class="cta-card__input-label"
-            >Choose your emoji for Slack</label
-          >
-          <div class="cta-card__input">
-            <input
-              type="text"
-              id="emojiInput"
-              placeholder=":calendar:"
-            />
-          </div>
-          <ul id="emojiList"></ul>
-        </div> -->
-
-      <!-- <div class="cta-card__input-box" id="editEmoji">
-          <div class="cta-card__success" id="emoji"></div>
-          <button class="cta-card__button" id="editSlackEmoji">
-            <svg
-              fill="#3D476D"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="32"
-              height="32"
-            >
-              <path
-                d="M 18.414062 2 C 18.158062 2 17.902031 2.0979687 17.707031 2.2929688 L 15.707031 4.2929688 L 14.292969 5.7070312 L 3 17 L 3 21 L 7 21 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.926094 2.0979687 18.670063 2 18.414062 2 z M 18.414062 4.4140625 L 19.585938 5.5859375 L 18.292969 6.8789062 L 17.121094 5.7070312 L 18.414062 4.4140625 z M 15.707031 7.1210938 L 16.878906 8.2929688 L 6.171875 19 L 5 19 L 5 17.828125 L 15.707031 7.1210938 z"
-              />
-            </svg>
-          </button>
-        </div> -->
-
-      <!-- <div class="cta-card__input-box" id="editKey">
-          <div class="cta-card__success">Slack key set successfully!</div>
-          <button class="cta-card__button" id="editSlackKey">
-            <svg
-              fill="#3D476D"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="32"
-              height="32"
-            >
-              <path
-                d="M 18.414062 2 C 18.158062 2 17.902031 2.0979687 17.707031 2.2929688 L 15.707031 4.2929688 L 14.292969 5.7070312 L 3 17 L 3 21 L 7 21 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.926094 2.0979687 18.670063 2 18.414062 2 z M 18.414062 4.4140625 L 19.585938 5.5859375 L 18.292969 6.8789062 L 17.121094 5.7070312 L 18.414062 4.4140625 z M 15.707031 7.1210938 L 16.878906 8.2929688 L 6.171875 19 L 5 19 L 5 17.828125 L 15.707031 7.1210938 z"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <div class="cta-card__input-box" id="setKey">
-          <div class="cta-card__input">
-            <input
-              type="text"
-              placeholder="Your Slack API key"
-              id="slackKey"
-              required
-            />
-          </div>
-          <button class="cta-card__button" id="setSlackKey">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6.66669 16H25.3334"
-                stroke="#3D476D"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M20 21.3333L25.3333 16"
-                stroke="#3D476D"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M20 10.6667L25.3333 16"
-                stroke="#3D476D"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
-        </div> -->
-
-
+      <p id="revoke-message" class="helper-text" style="text-align: center;"></p>
 
     </div>
+
+    <p class="helper-text" style="text-align: center; margin-top: 1.5rem;">Icon adapted from design created by <br> Gregor Cresnar from the Noun Project</p>
   </section>
 </body>
 
