@@ -20,6 +20,7 @@ window.onload = function () {
   var slackKey = document.querySelector('#slack-key');
   var slackStatus = document.querySelector('#slack-status');
   var slackEmoji = document.querySelector('#slack-emoji');
+  var emojiPicker = document.querySelector('#emoji-picker');
   var saveButton = document.querySelector('#save-button');
   var revokeButton = document.querySelector('#revoke-button');
   var revokeMessage = document.querySelector('#revoke-message');
@@ -32,6 +33,10 @@ window.onload = function () {
       slackStatus.value = result.statusText;
     if(result.emojiText)
       slackEmoji.value = result.emojiText
+  })
+
+  emojiPicker.addEventListener('click', function(){
+    slackEmoji.value = '';
   })
 
   saveButton.addEventListener('click', function () {
