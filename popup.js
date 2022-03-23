@@ -1,4 +1,5 @@
 import EmojiPicker from "./vanillaEmojiPicker.js";
+// https://github.com/woody180/vanilla-javascript-emoji-picker
 
 new EmojiPicker({
   trigger: [
