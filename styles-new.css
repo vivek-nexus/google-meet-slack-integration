@@ -6,7 +6,7 @@ body{
     width: 480px;
     padding: 1.5rem;
     padding-top: 0;
-    background-color: #bbdeff;
+    background-color: white;
 }
 
 h1{
@@ -22,10 +22,12 @@ p{
 }
 
 .form-container{
-    border: 2px solid #1a73e8;
+    border: 2px solid #5cb5ff;
     border-radius: 0.25rem;
     padding: 2rem;
     margin-bottom: 2rem;
+    background-color: #def9fb;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 
 .input-label{
@@ -46,7 +48,8 @@ input{
     padding: 0.5rem;
     border-radius: 0.25rem;
     border: 2px solid #1a73e8;
-    background-color: #ebf6ff;
+    /* background-color: #ebf6ff; */
+    background-color: white;
     box-sizing:border-box;
 }
 
@@ -74,12 +77,14 @@ input{
 
 .button-secondary{
     border: 2px solid #1a73e8;
-    background-color: #ebf6ff;
+    /* background-color: #ebf6ff; */
+    background-color: white;
     color: #1a73e8;
     font-weight: 700;
     padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; */
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
@@ -91,5 +96,6 @@ input{
     padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    /* box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px; */
 }
