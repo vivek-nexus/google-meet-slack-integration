@@ -15,7 +15,7 @@
 ## Configure chrome extension
 Once installed, open a new tab and type `meet.new` in the address bar, to join a test meeting. Now find and open the extension that has been installed from extensions list (puzzle icon).
 
-![extension-screenshot](https://user-images.githubusercontent.com/26523871/158204134-70ef4708-81de-49df-9531-44a5d40ce613.png)
+![extension-screenshot](https://user-images.githubusercontent.com/26523871/159924169-95582e06-253a-45ed-87a8-e63352b7e51c.png)
 
 Chrome extension requires three inputs:
 ### 1. Slack API key
@@ -30,11 +30,10 @@ See FAQs for more help.
 This will be the text displayed in your slack status, during the meeting. Default text is `On a meet call • Reply may be delayed`.
 
 ### 3. Choose meeting status emoji
-This will be the emoji displayed in your slack status, during the meeting. Default emoji is `telephone_receiver`, which will looks like this 📞 on your slack status.
+This will be the emoji displayed in your slack status, during the meeting. Default emoji is 📞.
 
-> Make sure to copy paste the full emoji text from slack, in the specified format `telephone_receiver`. Make sure to not have any colon before and after the emoji.
 
-> Custom emojis available in your slack workspace are supported.
+> Custom emojis available in your slack workspace are supported. They must be directly copy pasted from slack, with both the colons like `:bowtie:`
 
 **Click save** for the extension to start working. You should see a green banner which indicates that the extension is working.
 
@@ -68,15 +67,16 @@ Try re-installing the slack app and make sure you click allow during the install
 
 ### Slack status is not updating
 1. Check if you have actually pasted the Slack API key. Generate and paste again, if in doubt.
-2. Check status emoji format. `smile` will work whereas `:smile:` or `:smile` or `:P` will not work. To prevent confusion, copy paste the emoji directly from a slack chat and remove the colons before and after.
-3. The custom emoji used is not available in your slack workspace. Use only those emojis that are available in your slack workspace.
+2. Try a different emoji.
+3. Check status emoji format, if you are using a custom slack emoji. `:smile:` will work whereas `:smile` or `smile:` will not work. To prevent confusion, copy paste the emoji directly from a slack chat.
+4. The custom emoji used is not available in your slack workspace. Use only those emojis that are available in your slack workspace.
 
 ### Extension does not work sometimes
 Refreshing the meeting page should bring the extension back.
 
 ### I want to uninstall this extension and slack app
-1. Right click on the extension icon and remove the extension.
-2. When you installed the slack app, you would have recieved an email from slack. Link to uninstall the slack app is present in that email. You can also visit https://app.slack.com/apps-manage, find GMeet-Slack and revoke/remove the app from the configuration tab.
+1. Unistall slack app first, by using the **Revoke Slack API key** available within the extension.
+2. Right click on the extension icon and remove the extension.
 
 
 # Privacy policy
