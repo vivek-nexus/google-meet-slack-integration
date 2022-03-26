@@ -19,7 +19,7 @@
 ## Configure chrome extension
 Once installed, open a new tab and type `meet.new` in the address bar, to join a test meeting. Now find and open the extension that has been installed from extensions list (puzzle icon).
 
-![extension-screenshot](https://user-images.githubusercontent.com/26523871/159924169-95582e06-253a-45ed-87a8-e63352b7e51c.png)
+![extension-screenshot](/extension_screenshot.png)
 
 Chrome extension requires three inputs:
 ### 1. Slack API key
