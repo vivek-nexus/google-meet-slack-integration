@@ -9,63 +9,71 @@
 </head>
 
 <body>
-  <section>
-    <div>
-      <h1>GMeet - Slack</h1>
-      <p style="margin: 0rem auto 2.5rem auto;">
-        Real-time GMeet status on Slack
-      </p>
-
-      <div class="form-container">
-        <label class="input-label">🔑 Slack API key</label>
-        <input id="slack-key" type="text" />
-        <p class="helper-text">Starts with xoxp-</p>
-
-        <div style=" margin-bottom: 3rem;">
-          <a href="https://slack.com/oauth/v2/authorize?client_id=3243307866673.3224053662614&scope=&user_scope=users.profile:write"
-            target="blank" style="text-decoration: none;">
-            <button class="button-secondary">GET SLACK API KEY ↗</button>
-          </a>
-        </div>
-
-
-        <label class="input-label">✏️ Meeting status emoji and text</label>
-        <div style="display: flex;">
-          <div style="width: 25%; margin-right: 1rem;">
-            <div style="position: relative; align-items: center;">
-              <img src="insert_emoticon_white_24dp.svg" id="emoji-picker" alt="emoji-picker">
-              <input id="slack-emoji" type="text" value="📞" />
-            </div>
-          </div>
-          <div style="width: 75%">
-            <input id="slack-status" type="text" value="On a meet call • Reply may be delayed" />
-          </div>
-        </div>
-        <p class="helper-text">You can also paste a fun custom slack emoji, if available in your workspace, like <strong>:bowtie:</strong></p>
-
-        <button class="button-primary" id="save-button">SAVE</button>
+  <div>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
+      <div>
+        <img style="height: 64px; border-radius: 8px;" src="icon.png" alt="icon">
       </div>
+      <div>
+        <h1>GMeet - Slack</h1>
+        <p style="margin: 0rem auto 2.5rem auto;">Real-time GMeet status on Slack</p>
+      </div>
+    </div>
 
+    <div class="form-container">
+      <label class="input-label">🔑 Slack API key</label>
+      <input id="slack-key" type="text" />
+      <p class="helper-text">Starts with xoxp-</p>
 
-      <div class="button-div" style="margin-bottom: 1rem;">
-        <a href="https://github.com/yakshaG/gmeet-slack-extension#faqs" target="blank" style="text-decoration: none;">
-          <button class="button-secondary">HELP ↗</button>
+      <div style=" margin-bottom: 3rem;">
+        <a href="https://slack.com/oauth/v2/authorize?client_id=3243307866673.3224053662614&scope=&user_scope=users.profile:write"
+          target="_blank">
+          <button class="button-secondary">GET SLACK API KEY ↗</button>
         </a>
       </div>
 
 
-
-      <div class="button-div">
-        <button class="button-secondary" id="revoke-button"
-          style="text-align: center; color: red; border-color: red;">REVOKE SLACK API KEY</button>
+      <label class="input-label">✏️ Meeting status emoji and text</label>
+      <div style="display: flex;">
+        <div style="width: 25%; margin-right: 1rem;">
+          <div style="position: relative; align-items: center;">
+            <img src="insert_emoticon_white_24dp.svg" id="emoji-picker" alt="emoji-picker">
+            <input id="slack-emoji" type="text" value="📞" />
+          </div>
+        </div>
+        <div style="width: 75%">
+          <input id="slack-status" type="text" value="On a meet call • Reply may be delayed" />
+        </div>
       </div>
+      <!-- <p class="helper-text">You can also paste a fun custom slack emoji, from your workspace, like
+        <strong>:bowtie:</strong>
+      </p> -->
+      <a style="display: block; margin-bottom: 1rem;" class="helper-text"
+        href="https://github.com/yakshaG/gmeet-slack-integration#3-choose-meeting-status-emoji" target="_blank">How to paste a fun custom slack emoji? ↗</a>
 
-      <p id="revoke-message" class="helper-text" style="text-align: center;"></p>
-
+      <button class="button-primary" id="save-button">SAVE</button>
     </div>
 
-    <p class="helper-text" style="text-align: center; margin-top: 1.5rem;">Icon adapted from design created by <br> Gregor Cresnar from the Noun Project</p>
-  </section>
+
+    <div class="button-div" style="margin-bottom: 1rem;">
+      <a href="https://github.com/yakshaG/gmeet-slack-extension#faqs" target="_blank">
+        <button class="button-secondary">HELP ↗</button>
+      </a>
+    </div>
+
+
+
+    <div class="button-div">
+      <button class="button-secondary" id="revoke-button" style="color: red; border-color: red;">REVOKE SLACK API
+        KEY</button>
+    </div>
+
+    <p id="revoke-message" class="helper-text" style="text-align: center;"></p>
+
+  </div>
+
+  <p class="helper-text" style="text-align: center; margin-top: 1.5rem;">Icon adapted from design created by <br> Gregor
+    Cresnar from the Noun Project</p>
 </body>
 
 </html>

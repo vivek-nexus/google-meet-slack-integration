@@ -28,7 +28,7 @@ window.onload = function () {
 
   chrome.storage.sync.get(["meetSlackKey", "statusText", "emojiText"], function (result) {
     if(result.meetSlackKey)
-      slackKey.value = "Saved successfully";
+      slackKey.value = "Saved, but hidden for security";
     if(result.statusText)
       slackStatus.value = result.statusText;
     if(result.emojiText)
@@ -41,7 +41,7 @@ window.onload = function () {
 
   saveButton.addEventListener('click', function () {
 
-    if(slackKey.value == 'Saved successfully'){
+    if(slackKey.value == 'Saved, but hidden for security'){
       chrome.storage.sync.set(
         {
           emojiText: slackEmoji.value,

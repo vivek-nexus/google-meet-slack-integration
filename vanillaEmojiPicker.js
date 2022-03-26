@@ -294,10 +294,10 @@ const EmojiPicker = function(options) {
                 "emoji": "😶",
                 "title": "Face Without Mouth"
             },
-            {
-                "emoji": "😶‍🌫️",
-                "title": "Face in Clouds"
-            },
+            // {
+            //     "emoji": "😶‍🌫️",
+            //     "title": "Face in Clouds"
+            // },
             {
                 "emoji": "😏",
                 "title": "Smirking Face"
@@ -314,10 +314,10 @@ const EmojiPicker = function(options) {
                 "emoji": "😬",
                 "title": "Grimacing Face"
             },
-            {
-                "emoji": "😮‍💨",
-                "title": "Face Exhaling"
-            },
+            // {
+            //     "emoji": "😮‍💨",
+            //     "title": "Face Exhaling"
+            // },
             {
                 "emoji": "🤥",
                 "title": "Lying Face"
@@ -382,10 +382,10 @@ const EmojiPicker = function(options) {
                 "emoji": "😵",
                 "title": "Face with Crossed-Out Eyes"
             },
-            {
-                "emoji": "😵‍💫",
-                "title": "Face with Spiral Eyes"
-            },
+            // {
+            //     "emoji": "😵‍💫",
+            //     "title": "Face with Spiral Eyes"
+            // },
             {
                 "emoji": "🤯",
                 "title": "Exploding Head"
@@ -5274,14 +5274,14 @@ const EmojiPicker = function(options) {
                 "emoji": "💔",
                 "title": "Broken Heart"
             },
-            {
-                "emoji": "❤️‍🔥",
-                "title": "Heart on Fire"
-            },
-            {
-                "emoji": "❤️‍🩹",
-                "title": "Mending Heart"
-            },
+            // {
+            //     "emoji": "❤️‍🔥",
+            //     "title": "Heart on Fire"
+            // },
+            // {
+            //     "emoji": "❤️‍🩹",
+            //     "title": "Mending Heart"
+            // },
             {
                 "emoji": "❤️",
                 "title": "Red Heart"

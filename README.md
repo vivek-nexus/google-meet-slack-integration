@@ -1,12 +1,16 @@
-# GMeet-Slack
+# GMeet-Slack integration
 
-> Improve workplace communication with GMeet Slack!
+> Improve workplace communication with Google Meet-Slack integration!
 
 **GMeet-Slack automatically updates your slack status in real time, when you join and exit meetings, even for unscheduled meetings or overflowing meetings.**
+
+<br><br>
 
 # Demo
 
 ![demo](https://user-images.githubusercontent.com/26523871/158046509-96d508f7-fbeb-424e-9268-3d18cd791ec7.gif)
+
+<br><br>
 
 
 # Installation
@@ -33,9 +37,11 @@ This will be the text displayed in your slack status, during the meeting. Defaul
 This will be the emoji displayed in your slack status, during the meeting. Default emoji is 📞.
 
 
-> Custom emojis available in your slack workspace are supported. They must be directly copy pasted from slack, with both the colons like `:bowtie:`
+> Custom emojis available in your slack workspace are supported. They must be directly copy pasted from slack in text format, with both the colons like `:bowtie:`. Read more in this [FAQ](#slack-status-is-not-updating).
 
 **Click save** for the extension to start working. You should see a green banner which indicates that the extension is working.
+
+<br><br>
 
 
 # Usage
@@ -47,8 +53,14 @@ Join a meeting to test that your slack status updates automatically. Refresh mee
 > 
 > `CTRL+Q` to quit a meeting
 
+
+<br><br>
+
+
 # Contributors
 [Vivek G](https://github.com/yakshaG) and [Aditya Gannavarapu](https://github.com/aditya-67)
+
+<br><br>
 
 # FAQs
 
@@ -78,6 +90,7 @@ Refreshing the meeting page should bring the extension back.
 1. Unistall slack app first, by using the **Revoke Slack API key** available within the extension.
 2. Right click on the extension icon and remove the extension.
 
+<br><br>
 
 # Privacy policy
 This extension or the slack app do not store any keys or data in any form. All data is stored locally inside chrome browser. Slack status API calls are made directly to Slack servers and no intermediate servers are used.
