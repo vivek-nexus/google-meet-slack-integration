@@ -1,6 +1,6 @@
 {
   "name": "GMeet-Slack",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "manifest_version": 3,
   "description": "Real-time GMeet status on Slack",
   "action": {
