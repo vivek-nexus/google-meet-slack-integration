@@ -94,3 +94,10 @@ Refreshing the meeting page should bring the extension back.
 
 # Privacy policy
 This extension or the slack app do not store any keys or data in any form. All data is stored locally inside chrome browser. Slack status API calls are made directly to Slack servers and no intermediate servers are used.
+
+<br><br>
+
+# Change log and Wiki
+Take a look at the project's wiki at https://github.com/yakshaG/gmeet-slack-integration/wiki
+
+
