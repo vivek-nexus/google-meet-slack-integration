@@ -16,14 +16,14 @@ window.addEventListener("load", function () {
       obj.style.cssText =
         "z-index:99999;color: red; text-align: center; padding: 0.5rem;border: 1px solid red; background: #ff000026;font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
       obj.innerText =
-        "Slack API key not set. Open the Meet-Slack extension to set the key.";
+        "Slack API key not set. Open GMeet-Slack extension to set the key.";
       block.prepend(obj);
     } else {
       var obj = document.createElement("div");
       obj.style.cssText =
         "z-index:99999;color: green; text-align: center; padding: 0.5rem;border: 1px solid green; background: rgb(0 255 8 / 15%);font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
       obj.innerText =
-        "Meet-Slack status running. Use Ctrl + V to join meeting, Ctrl + Q to exit meeting.";
+        "GMeet-Slack is running. Use Ctrl + V to join meeting, Ctrl + Q to exit meeting.";
       block.prepend(obj);
       setTimeout(checkClass, 3000);
     }
