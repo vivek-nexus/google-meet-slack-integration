@@ -1,6 +1,6 @@
 {
   "name": "GMeet-Slack integration",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "manifest_version": 3,
   "description": "Real-time Google Meet status on Slack",
   "action": {
