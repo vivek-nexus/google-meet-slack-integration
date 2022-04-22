@@ -62,7 +62,7 @@ function createJoinNowButton(meetingType) {
   var span2 = document.createElement("span");
 
   // Add attribites to button
-  button.className = "uArJ5e UQuaGc Y5sE8d uyXBBb xKiqt M9Bg4d";
+  button.className = "VfPpkd-LgbsSe VfPpkd-LgbsSe-OWXEXe-k8QpJ VfPpkd-LgbsSe-OWXEXe-dgl2Hf nCP5yc AjY5Oe DuMIQc qfvgSe jEvJdc QJgqC";
   button.setAttribute("role", "button");
   button.setAttribute("tabindex", "0");
   button.id = "meet-slack-join";
@@ -100,9 +100,9 @@ document.addEventListener("keydown", function (event) {
 function setJoinKey(meetingType) {
   console.log("Join key pressed");
   if (meetingType == 'external')
-    contains("div", "Ask to join")[15].click();
+    contains("div", "Ask to join")[15].firstChild.click();
   else
-    contains("div", "Join now")[15].click();
+    contains("div", "Join now")[15].firstChild.click();
 
   // https://stackoverflow.com/a/53269990
   // Waiting until the host lets you in
