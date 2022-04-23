@@ -26,9 +26,9 @@ Chrome extension requires three inputs:
 Click `GET SLACK API KEY` to install the slack app and generate your Slack API key.
 > Slack API key starts with `xoxp-` 
 
-> Make sure to install the slack app to the correct workspace, where you want your status to be automatically updated.
+> Make sure to install the slack app to the correct workspace, where you want your status to be automatically updated. Select the workspace on top right corner before clicking "Allow".
 
-See FAQs for more help.
+See [FAQs](#faqs)  for more help.
 
 ### 2. Choose meeting status text
 This will be the text displayed in your slack status, during the meeting. Default text is `On a meet call • Reply may be delayed`.
@@ -39,6 +39,9 @@ This will be the emoji displayed in your slack status, during the meeting. Defau
 
 > Custom emojis available in your slack workspace are supported. They must be directly copy pasted from slack in text format, with both the colons like `:bowtie:`. Read more in this [FAQ](#slack-status-is-not-updating).
 
+![image](https://user-images.githubusercontent.com/26523871/164879068-b9cf8fcf-7d50-4a33-9856-0dc3cd94bd64.png)
+
+
 **Click save** for the extension to start working. You should see a green banner which indicates that the extension is working.
 
 <br><br>
@@ -47,7 +50,7 @@ This will be the emoji displayed in your slack status, during the meeting. Defau
 # Usage
 Join a meeting to test that your slack status updates automatically. Refresh meeting lobby page, if the extension does not load for the first time.
 
-> **Pro-tip**: You can also use these keyboard shortcuts
+> **Pro-tip**: You can also use these keyboard shortcuts (even on a Mac)
 > 
 >  `CTRL+V` to join a meeting
 > 
@@ -79,9 +82,10 @@ Try re-installing the slack app and make sure you click allow during the install
 
 ### Slack status is not updating
 1. Check if you have actually pasted the Slack API key. Generate and paste again, if in doubt.
-2. Try a different emoji.
-3. Check status emoji format, if you are using a custom slack emoji. `:smile:` will work whereas `:smile` or `smile:` will not work. To prevent confusion, copy paste the emoji directly from a slack chat.
-4. The custom emoji used is not available in your slack workspace. Use only those emojis that are available in your slack workspace.
+2. Check if you have installed the slack app to the correct workspace, where you want your status to be automatically updated. Select the workspace on top right corner before clicking "Allow".
+3. Try a different emoji.
+4. Check status emoji format, if you are using a custom slack emoji. `:smile:` will work whereas `:smile` or `smile:` will not work. To prevent confusion, copy paste the emoji directly from a slack chat.
+5. The custom emoji used is not available in your slack workspace. Use only those emojis that are available in your slack workspace.
 
 ### Extension does not work sometimes
 Refreshing the meeting page should bring the extension back.
