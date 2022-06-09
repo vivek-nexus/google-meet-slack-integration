@@ -1,7 +1,7 @@
-checkExtensionStatus().then((response) => {
-  console.log("Extension status " + response);
+checkExtensionStatus().then((extensionStatus) => {
+  console.log("Extension status " + extensionStatus);
 
-  if (response == 200) {
+  if (extensionStatus == 200) {
     window.addEventListener("load", function () {
       let buttons = document.querySelectorAll(".oTVIqe");
       //buttons[0].click(); //turns off microhphone, comment to disable
@@ -108,17 +108,23 @@ function createJoinNowButton(meetingType) {
 
 document.addEventListener("keydown", function (event) {
   if (event.ctrlKey && event.key === "v") {
-    setJoinKey(meetingType);
+    checkExtensionStatus().then(extensionStatus => {
+      if (extensionStatus == 200)
+        setJoinKey(meetingType);
+    })
   }
 });
 
 document.addEventListener("keydown", function (event) {
   if (event.ctrlKey && event.key === "q") {
-    contains("i", "call_end")[0].parentElement.click();
-    // clearSlackStatus
-    chrome.runtime.sendMessage({ message: "Clear Slack status" }, function (response) {
-      console.log(response);
-    });
+    checkExtensionStatus().then(extensionStatus => {
+      if (extensionStatus == 200)
+        contains("i", "call_end")[0].parentElement.click();
+      // clearSlackStatus
+      chrome.runtime.sendMessage({ message: "Clear Slack status" }, function (response) {
+        console.log(response);
+      });
+    })
   }
 });
 
