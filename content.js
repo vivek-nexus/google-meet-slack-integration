@@ -1,34 +1,58 @@
-window.addEventListener("load", function () {
-  let buttons = document.querySelectorAll(".oTVIqe");
-  //buttons[0].click(); //turns off microhphone, comment to disable
-  buttons[2].click(); //turns off camera, comment to disable
-  contains("div", "Join now")[15].style.display = "none";
+checkExtensionStatus().then((response) => {
+  console.log("Extension status " + response);
+  if (response == 200) {
+    window.addEventListener("load", function () {
+      let buttons = document.querySelectorAll(".oTVIqe");
+      //buttons[0].click(); //turns off microhphone, comment to disable
+      buttons[2].click(); //turns off camera, comment to disable
+      contains("div", "Join now")[15].style.display = "none";
 
-  chrome.runtime.sendMessage({message: "Content Loaded"}, function (response) {
-    console.log(response);
-  });
+      chrome.runtime.sendMessage({ message: "Content Loaded" }, function (response) {
+        console.log(response);
+      });
 
-  chrome.storage.sync.get(["meetSlackKey"], function (result) {
+      chrome.storage.sync.get(["meetSlackKey"], function (result) {
+        let block = document.querySelectorAll(".vgJExf")[0];
+
+        if (!result.meetSlackKey) {
+          var obj = document.createElement("div");
+          obj.style.cssText =
+            "z-index:99999;color: red; text-align: center; padding: 0.5rem;border: 1px solid red; background: #ff000026;font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
+          obj.innerText =
+            "Slack API key not set. Open GMeet-Slack extension to set the key.";
+          block.prepend(obj);
+        } else {
+          var obj = document.createElement("div");
+          obj.style.cssText =
+            "z-index:99999;color: green; text-align: center; padding: 0.5rem;border: 1px solid green; background: rgb(0 255 8 / 15%);font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
+          obj.innerText =
+            "GMeet-Slack is running. Use Ctrl + V to join meeting, Ctrl + Q to exit meeting.";
+          block.prepend(obj);
+          setTimeout(checkClass, 3000);
+        }
+      });
+    });
+  }
+
+  else {
     let block = document.querySelectorAll(".vgJExf")[0];
+    var obj = document.createElement("div");
+    var link = document.createElement("a");
 
-    if (!result.meetSlackKey) {
-      var obj = document.createElement("div");
-      obj.style.cssText =
-        "z-index:99999;color: red; text-align: center; padding: 0.5rem;border: 1px solid red; background: #ff000026;font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
-      obj.innerText =
-        "Slack API key not set. Open GMeet-Slack extension to set the key.";
-      block.prepend(obj);
-    } else {
-      var obj = document.createElement("div");
-      obj.style.cssText =
-        "z-index:99999;color: green; text-align: center; padding: 0.5rem;border: 1px solid green; background: rgb(0 255 8 / 15%);font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
-      obj.innerText =
-        "GMeet-Slack is running. Use Ctrl + V to join meeting, Ctrl + Q to exit meeting.";
-      block.prepend(obj);
-      setTimeout(checkClass, 3000);
-    }
-  });
-});
+    link.setAttribute("href", "https://github.com/yakshaG/gmeet-slack-integration")
+    link.setAttribute("target", "_blank");
+    link.textContent = "here";
+
+    obj.style.cssText =
+      "z-index:99999;color: red; text-align: center; padding: 0.5rem;border: 1px solid red; background: #ff000026;font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
+    obj.innerText =
+      "GMeet-Slack is disabled for temporary maintainence. You can continue to use GMeet normally till we update the extension. Check status "
+    block.prepend(obj);
+    return;
+  }
+})
+
+
 
 var meetingType = 'internal';
 
@@ -36,7 +60,7 @@ function checkClass() {
   if (document.getElementsByClassName("XCoPyb").length) {
     var main = document.getElementsByClassName("XCoPyb")[0];
 
-    if(contains("div", "Ask to join")[15])
+    if (contains("div", "Ask to join")[15])
       meetingType = 'external';
 
     console.log(meetingType);
@@ -46,7 +70,7 @@ function checkClass() {
     var joinKey = document.getElementById("meet-slack-join");
 
     if (joinKey) {
-      joinKey.addEventListener("click", function(){
+      joinKey.addEventListener("click", function () {
         setJoinKey(meetingType);
       });
     }
@@ -71,7 +95,7 @@ function createJoinNowButton(meetingType) {
   span1.className = "l4V7wb Fxmcue";
   span2.className = "NPEfkd RveJvd snByac";
 
-  if(meetingType == 'external')
+  if (meetingType == 'external')
     span2.innerText = "Ask to Join";
   else
     span2.innerText = "Join Now";
@@ -91,7 +115,7 @@ document.addEventListener("keydown", function (event) {
   if (event.ctrlKey && event.key === "q") {
     contains("i", "call_end")[0].parentElement.click();
     // clearSlackStatus
-    chrome.runtime.sendMessage({message: "Clear Slack status"}, function (response) {
+    chrome.runtime.sendMessage({ message: "Clear Slack status" }, function (response) {
       console.log(response);
     });
   }
@@ -108,13 +132,13 @@ function setJoinKey(meetingType) {
   // Waiting until the host lets you in
   checkElement('.MQKmmc, .SudKRc, .Q4etDd, .wYNW7d').then((selector) => {
     // setSlackStatus
-    chrome.runtime.sendMessage({message: "Set Slack status"}, function (response) {
+    chrome.runtime.sendMessage({ message: "Set Slack status" }, function (response) {
       console.log(response);
     });
     setTimeout(function () {
       contains("i", "call_end")[0].parentElement.onclick = function () {
         // clearSlackStatus
-        chrome.runtime.sendMessage({message: "Clear Slack status"}, function (response) {
+        chrome.runtime.sendMessage({ message: "Clear Slack status" }, function (response) {
           console.log(response);
         });
       };
@@ -131,8 +155,28 @@ function contains(selector, text) {
 
 // https://stackoverflow.com/a/53269990
 const checkElement = async selector => {
-  while ( document.querySelector(selector) === null) {
-    await new Promise( resolve =>  requestAnimationFrame(resolve) )
+  while (document.querySelector(selector) === null) {
+    await new Promise(resolve => requestAnimationFrame(resolve))
   }
-  return document.querySelector(selector); 
+  return document.querySelector(selector);
 };
+
+async function checkExtensionStatus() {
+  let status = 400;
+
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  await fetch("https://yakshag.github.io/gmeet-slack-integration-status/", requestOptions)
+    .then(response => response.text())
+    .then(result => {
+      const parser = new DOMParser();
+      let rawHTML = parser.parseFromString(result, 'text/html');
+      status = parseInt(rawHTML.querySelector('p').textContent);
+    })
+    .catch(error => console.log('error', error));
+
+  return status;
+}

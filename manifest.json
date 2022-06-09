@@ -7,19 +7,30 @@
     "default_icon": "icon.png",
     "default_popup": "popup.html"
   },
-  "icons": { "128": "icon.png" },
+  "icons": {
+    "128": "icon.png"
+  },
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
-   },
+  },
   "content_scripts": [
     {
-      "js": ["content.js", "vanillaEmojiPicker.js"],
-      "matches": ["https://meet.google.com/*"]
+      "js": [
+        "content.js",
+        "vanillaEmojiPicker.js"
+      ],
+      "matches": [
+        "https://meet.google.com/*"
+      ]
     }
   ],
-  "permissions": ["storage", "tabs"],
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
   "host_permissions": [
-    "https://meet.google.com/*", "https://slack.com/*"
+    "https://meet.google.com/*",
+    "https://slack.com/*"
   ],
   "background": {
     "service_worker": "background.js"
