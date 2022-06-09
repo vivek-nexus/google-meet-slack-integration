@@ -26,7 +26,8 @@
   ],
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "webRequest"
   ],
   "host_permissions": [
     "https://meet.google.com/*",
