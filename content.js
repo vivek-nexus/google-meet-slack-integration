@@ -1,5 +1,6 @@
 checkExtensionStatus().then((response) => {
   console.log("Extension status " + response);
+
   if (response == 200) {
     window.addEventListener("load", function () {
       let buttons = document.querySelectorAll(".oTVIqe");
@@ -46,7 +47,7 @@ checkExtensionStatus().then((response) => {
     obj.style.cssText =
       "z-index:99999;color: red; text-align: center; padding: 0.5rem;border: 1px solid red; background: #ff000026;font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
     obj.innerText =
-      "GMeet-Slack is disabled for temporary maintainence. You can continue to use GMeet normally till we update the extension. Check status "
+      "GMeet-Slack is disabled for temporary maintainence. You can continue to use GMeet normally until we automatically update the extension. Check status "
     block.prepend(obj);
     return;
   }
@@ -164,12 +165,7 @@ const checkElement = async selector => {
 async function checkExtensionStatus() {
   let status = 400;
 
-  var requestOptions = {
-    method: 'GET',
-    redirect: 'follow'
-  };
-
-  await fetch("https://yakshag.github.io/gmeet-slack-integration-status/", requestOptions)
+  await fetch("https://yakshag.github.io/gmeet-slack-integration-status/", { cache: "no-store" })
     .then(response => response.text())
     .then(result => {
       const parser = new DOMParser();
