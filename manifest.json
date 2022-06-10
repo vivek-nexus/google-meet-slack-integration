@@ -2,7 +2,7 @@
   "name": "GMeet-Slack integration",
   "version": "0.0.10",
   "manifest_version": 3,
-  "description": "Real-time Google Meet status on Slack",
+  "description": "Real-time Google Meet status on Slack, just like Slack huddles",
   "action": {
     "default_icon": "icon.png",
     "default_popup": "popup.html"
