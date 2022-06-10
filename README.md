@@ -4,6 +4,8 @@
 
 **GMeet-Slack automatically updates your slack status in real time, when you join and exit meetings, even for unscheduled meetings or overflowing meetings.**
 
+Extension status: 🟢 OPERATIONAL 
+
 <br><br>
 
 # Demo

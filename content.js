@@ -11,7 +11,7 @@ checkExtensionStatus().then((extensionStatus) => {
         console.log(response);
       });
 
-      chrome.runtime.sendMessage({ message: "Clear Slack status" }, function (response) {
+      chrome.runtime.sendMessage({ message: "Purge Slack status" }, function (response) {
         console.log(response);
         console.log("Purging slack status")
       });
@@ -41,16 +41,21 @@ checkExtensionStatus().then((extensionStatus) => {
   else {
     let block = document.querySelectorAll(".vgJExf")[0];
     var obj = document.createElement("div");
+    var message = document.createElement("p");
     var link = document.createElement("a");
+
+    message.innerHTML = "GMeet-Slack is disabled for temporary maintainence. You can continue to use GMeet normally until we automatically update the extension. Check status ";
 
     link.setAttribute("href", "https://github.com/yakshaG/gmeet-slack-integration")
     link.setAttribute("target", "_blank");
-    link.textContent = "here";
+    link.innerHTML = "here.";
+
+    message.appendChild(link);
 
     obj.style.cssText =
-      "z-index:99999;color: red; text-align: center; padding: 0.5rem;border: 1px solid red; background: #ff000026;font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
-    obj.innerText =
-      "GMeet-Slack is disabled for temporary maintainence. You can continue to use GMeet normally until we automatically update the extension. Check status "
+      "z-index:99999;color: red; text-align: center;border: 1px solid red; background: #ff000026;font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
+
+    obj.appendChild(message);
     block.prepend(obj);
     return;
   }

@@ -8,6 +8,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     sendResponse("All set! Watching this tab.");
   }
 
+  if (request.message == "Purge Slack status") {
+    isStatusSet = false;
+    sendResponse("Slack status purged!");
+  }
+
   if (request.message == "Set Slack status") {
     setSlackStatus();
     sendResponse("Slack status set!");
