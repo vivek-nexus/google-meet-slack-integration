@@ -1,6 +1,11 @@
 checkExtensionStatus().then((extensionStatus) => {
   console.log("Extension status " + extensionStatus);
 
+  chrome.runtime.sendMessage({ message: `Extension status ${extensionStatus}` }, function (response) {
+    console.log(response);
+  });
+
+
   if (extensionStatus == 200) {
     window.addEventListener("load", function () {
       let buttons = document.querySelectorAll(".oTVIqe");
@@ -13,7 +18,6 @@ checkExtensionStatus().then((extensionStatus) => {
 
       chrome.runtime.sendMessage({ message: "Purge Slack status" }, function (response) {
         console.log(response);
-        console.log("Purging slack status")
       });
 
       chrome.storage.sync.get(["meetSlackKey"], function (result) {
@@ -24,14 +28,14 @@ checkExtensionStatus().then((extensionStatus) => {
           obj.style.cssText =
             "z-index:99999;color: red; text-align: center; padding: 0.5rem;border: 1px solid red; background: #ff000026;font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
           obj.innerText =
-            "Slack API key not set. Open GMeet-Slack extension to set the key.";
+            "Slack API key not set. Open Google Meet ⇔ Slack extension to set the key.";
           block.prepend(obj);
         } else {
           var obj = document.createElement("div");
           obj.style.cssText =
             "z-index:99999;color: green; text-align: center; padding: 0.5rem;border: 1px solid green; background: rgb(0 255 8 / 15%);font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
           obj.innerText =
-            "GMeet-Slack is running. Use Ctrl + V to join meeting, Ctrl + Q to exit meeting.";
+            "Google Meet ⇔ Slack is running. Use Ctrl + V to join meeting, Ctrl + Q to exit meeting.";
           block.prepend(obj);
         }
       });
@@ -44,7 +48,7 @@ checkExtensionStatus().then((extensionStatus) => {
     var message = document.createElement("p");
     var link = document.createElement("a");
 
-    message.innerHTML = "GMeet-Slack is disabled for temporary maintainence. You can continue to use GMeet normally until we automatically update the extension. Check status ";
+    message.innerHTML = "Google Meet ⇔ Slack is disabled for temporary maintainence. You can continue to use Google Meet normally until we automatically update the extension. Check status ";
 
     link.setAttribute("href", "https://github.com/yakshaG/gmeet-slack-integration")
     link.setAttribute("target", "_blank");

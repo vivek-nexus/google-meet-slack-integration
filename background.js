@@ -1,16 +1,28 @@
 var isStatusSet = false;
+var extensionStatus = 400;
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log("Extension loaded");
 
   if (request.message == "Content Loaded. Watch this tab!") {
     queryTabsInWindow();
-    sendResponse("All set! Watching this tab.");
+    sendResponse("Monitoring closure of this meeting tab!");
+  }
+
+  if (request.message == "Extension status 200") {
+    extensionStatus = 200;
+    sendResponse("Noted extension is operational!");
+  }
+
+  if (request.message == "Extension status 400") {
+    console.log("Extension status is " + extensionStatus)
+    extensionStatus = 400;
+    sendResponse("Noted extension is under maintainence!");
   }
 
   if (request.message == "Purge Slack status") {
+    console.log("Extension status is " + extensionStatus)
     isStatusSet = false;
-    sendResponse("Slack status purged!");
+    sendResponse("Ready to set slack status!");
   }
 
   if (request.message == "Set Slack status") {
@@ -24,33 +36,36 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   }
 });
 
-
 chrome.webRequest.onCompleted.addListener(function () {
-  if (isStatusSet) {
-    console.log("Successfully intercepted network request. Clearing slack status")
-    clearSlackStatus();
+  if (extensionStatus == 200) {
+    console.log(extensionStatus + " Executing slack API call");
+    if (isStatusSet) {
+      console.log("Successfully intercepted network request. Clearing slack status")
+      clearSlackStatus();
+    }
+    else {
+      console.log("Successfully intercepted network request. Setting slack status")
+      setSlackStatus();
+    }
   }
   else {
-    console.log("Successfully intercepted network request. Setting slack status")
-    setSlackStatus();
+    console.log(extensionStatus + " Aborting slack API call");
+    return;
   }
 }, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice"] })
+
+
+
+
+
 
 function queryTabsInWindow() {
   chrome.tabs.query({ url: "https://meet.google.com/*" }, function (tabs) {
     tabs.forEach(function (tab) {
       let tabId = tab.id;
       chrome.tabs.onRemoved.addListener(function (tabid, removed) {
-        if (tabId === tabid) {
-          var raw = {
-            profile: {
-              status_text: "",
-              status_emoji: "",
-              status_expiration: 0,
-            },
-          };
+        if (tabId === tabid)
           clearSlackStatus();
-        }
       });
     });
   });
