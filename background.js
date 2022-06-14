@@ -6,21 +6,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
   }
 
-  if (chrome.tabs.onRemoved.hasListeners()) {
-    console.log("Some tab event listeners are active. Removing them.")
-    chrome.tabs.onRemoved.removeListener(joinMeetingCallback);
-  }
-
   if (request.message == "Extension status 200") {
     sendResponse("Noted extension is operational!");
 
     console.log("Registering meeting join listener")
     // Registering event listener for meeting join
     chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice"] })
-
-    console.log("Registering query tabs listener")
-    // Registering event listener for tabs join
-    queryTabsInWindow();
   }
   else if (request.message == "Extension status 400") {
     sendResponse("Noted extension is under maintainence!");
@@ -55,6 +46,9 @@ function joinMeetingCallback() {
 
   console.log("Registering meeting exit listener")
   // Registering event listener for meeting exit
+  console.log("Registering query tabs listener")
+  // Registering event listener for tabs join
+  queryTabsInWindow();
   chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
 }
 
