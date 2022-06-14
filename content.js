@@ -8,9 +8,13 @@ checkExtensionStatus().then((extensionStatus) => {
 
   if (extensionStatus == 200) {
     window.addEventListener("load", function () {
-      let buttons = document.querySelectorAll(".oTVIqe");
-      //buttons[0].click(); //turns off microhphone, comment to disable
-      buttons[2].click(); //turns off camera, comment to disable
+
+      checkElement('.oTVIqe').then((selector) => {
+        console.log("Camera button is active");
+        let buttons = document.querySelectorAll(".oTVIqe");
+        //buttons[0].click(); //turns off microhphone, comment to disable
+        buttons[2].click(); //turns off camera, comment to disable
+      });
 
       chrome.storage.sync.get(["meetSlackKey"], function (result) {
         let block = document.querySelectorAll(".vgJExf")[0];
@@ -88,6 +92,13 @@ function contains(selector, text) {
     return RegExp(text).test(element.textContent);
   });
 }
+
+const checkElement = async selector => {
+  while (document.querySelector(selector) === null) {
+    await new Promise(resolve => requestAnimationFrame(resolve))
+  }
+  return document.querySelector(selector);
+};
 
 
 async function checkExtensionStatus() {

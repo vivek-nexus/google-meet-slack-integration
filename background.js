@@ -1,5 +1,16 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
+  if (chrome.webRequest.onCompleted.hasListeners()) {
+    console.log("Some weRequest event listeners are active. Removing them.")
+    chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
+    chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
+  }
+
+  if (chrome.tabs.onRemoved.hasListeners()) {
+    console.log("Some tab event listeners are active. Removing them.")
+    chrome.tabs.onRemoved.removeListener(joinMeetingCallback);
+  }
+
   if (request.message == "Extension status 200") {
     sendResponse("Noted extension is operational!");
 
@@ -16,16 +27,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     console.log("Doing nothing as extension status is 400")
     return;
   }
-
-  if (request.message == "Set Slack status") {
-    setSlackStatus();
-    sendResponse("Slack status set!");
-  }
-
-  if (request.message == "Clear Slack status") {
-    clearSlackStatus();
-    sendResponse("Slack status cleared!");
-  }
 });
 
 
@@ -34,9 +35,12 @@ function queryTabsInWindow() {
   chrome.tabs.query({ url: "https://meet.google.com/*" }, function (tabs) {
     tabs.forEach(function (tab) {
       let tabId = tab.id;
-      chrome.tabs.onRemoved.addListener(function (tabid, removed) {
+      // https://stackoverflow.com/a/3107221
+      chrome.tabs.onRemoved.addListener(function tabsListenerCallback(tabid, removed) {
         if (tabId === tabid)
           clearSlackStatus();
+        console.log("Removing tabs event listener.")
+        chrome.tabs.onRemoved.removeListener(tabsListenerCallback);
       });
     });
   });
@@ -45,6 +49,7 @@ function queryTabsInWindow() {
 function joinMeetingCallback() {
   console.log("Successfully intercepted network request. Setting slack status")
   setSlackStatus();
+  // https://stackoverflow.com/q/23001428
   console.log("Removing meeting join listener")
   chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
 
