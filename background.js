@@ -1,28 +1,20 @@
-var isStatusSet = false;
-var extensionStatus = 400;
-
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
-  if (request.message == "Content Loaded. Watch this tab!") {
-    queryTabsInWindow();
-    sendResponse("Monitoring closure of this meeting tab!");
-  }
-
   if (request.message == "Extension status 200") {
-    extensionStatus = 200;
     sendResponse("Noted extension is operational!");
-  }
 
-  if (request.message == "Extension status 400") {
-    console.log("Extension status is " + extensionStatus)
-    extensionStatus = 400;
+    console.log("Registering meeting join listener")
+    // Registering event listener for meeting join
+    chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice"] })
+
+    console.log("Registering query tabs listener")
+    // Registering event listener for tabs join
+    queryTabsInWindow();
+  }
+  else if (request.message == "Extension status 400") {
     sendResponse("Noted extension is under maintainence!");
-  }
-
-  if (request.message == "Purge Slack status") {
-    console.log("Extension status is " + extensionStatus)
-    isStatusSet = false;
-    sendResponse("Ready to set slack status!");
+    console.log("Doing nothing as extension status is 400")
+    return;
   }
 
   if (request.message == "Set Slack status") {
@@ -35,27 +27,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     sendResponse("Slack status cleared!");
   }
 });
-
-chrome.webRequest.onCompleted.addListener(function () {
-  if (extensionStatus == 200) {
-    console.log(extensionStatus + " Executing slack API call");
-    if (isStatusSet) {
-      console.log("Successfully intercepted network request. Clearing slack status")
-      clearSlackStatus();
-    }
-    else {
-      console.log("Successfully intercepted network request. Setting slack status")
-      setSlackStatus();
-    }
-  }
-  else {
-    console.log(extensionStatus + " Aborting slack API call");
-    return;
-  }
-}, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice"] })
-
-
-
 
 
 
@@ -70,6 +41,25 @@ function queryTabsInWindow() {
     });
   });
 }
+
+function joinMeetingCallback() {
+  console.log("Successfully intercepted network request. Setting slack status")
+  setSlackStatus();
+  console.log("Removing meeting join listener")
+  chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
+
+  console.log("Registering meeting exit listener")
+  // Registering event listener for meeting exit
+  chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
+}
+
+function exitMeetingCallback() {
+  console.log("Successfully intercepted network request. Clearing slack status")
+  clearSlackStatus();
+  console.log("Removing meeting exit listener")
+  chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
+}
+
 
 function setSlackStatus() {
   let emoji = "📞";
@@ -103,7 +93,6 @@ function setSlackStatus() {
     });
 
     makeSlackAPICall(raw, "set");
-    isStatusSet = true;
   });
 }
 
@@ -117,7 +106,6 @@ function clearSlackStatus() {
   });
 
   makeSlackAPICall(raw, "clear");
-  isStatusSet = false;
 }
 
 

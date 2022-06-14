@@ -12,14 +12,6 @@ checkExtensionStatus().then((extensionStatus) => {
       //buttons[0].click(); //turns off microhphone, comment to disable
       buttons[2].click(); //turns off camera, comment to disable
 
-      chrome.runtime.sendMessage({ message: "Content Loaded. Watch this tab!" }, function (response) {
-        console.log(response);
-      });
-
-      chrome.runtime.sendMessage({ message: "Purge Slack status" }, function (response) {
-        console.log(response);
-      });
-
       chrome.storage.sync.get(["meetSlackKey"], function (result) {
         let block = document.querySelectorAll(".vgJExf")[0];
 
