@@ -21,7 +21,7 @@ Extension status: 🟢 OPERATIONAL
 </a>
 
 ## Configure chrome extension
-Once installed, open a new tab and type `meet.new` in the address bar, to join a test meeting. Now find and open the extension that has been installed from extensions list (puzzle icon).
+Once installed, open a new tab and join any meeting link. Now find and open the extension that has been installed from extensions list (puzzle icon).
 
 ![extension-screenshot](/extension_screenshot.png)
 
