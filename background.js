@@ -7,17 +7,31 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   }
 
   if (request.message == "Extension status 200") {
-    sendResponse("Noted extension is operational!");
+    sendResponse("Noted extension is operational");
 
     console.log("Registering meeting join listener")
     // Registering event listener for meeting join
     chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice"] })
   }
-  else if (request.message == "Extension status 400") {
-    sendResponse("Noted extension is under maintainence!");
+
+  if (request.message == "Now watch for meeting exit") {
+
+    console.log("Registering query tabs listener")
+    // Registering event listener for tabs join
+    queryTabsInWindow();
+    console.log("Registering meeting exit listener")
+    // Registering event listener for meeting exit
+    chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
+  }
+
+
+
+  if (request.message == "Extension status 400") {
+    sendResponse("Noted extension is under maintainence");
     console.log("Doing nothing as extension status is 400")
     return;
   }
+
 });
 
 
@@ -44,12 +58,11 @@ function joinMeetingCallback() {
   console.log("Removing meeting join listener")
   chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
 
-  console.log("Registering meeting exit listener")
-  // Registering event listener for meeting exit
-  console.log("Registering query tabs listener")
-  // Registering event listener for tabs join
-  queryTabsInWindow();
-  chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, { message: "Slack status set" }, function (response) {
+      console.log(response);
+    });
+  });
 }
 
 function exitMeetingCallback() {

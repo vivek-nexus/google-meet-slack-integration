@@ -1,12 +1,31 @@
 checkExtensionStatus().then((extensionStatus) => {
   console.log("Extension status " + extensionStatus);
 
+
   chrome.runtime.sendMessage({ message: `Extension status ${extensionStatus}` }, function (response) {
     console.log(response);
   });
 
 
   if (extensionStatus == 200) {
+    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+      if (request.message == "Slack status set") {
+        sendResponse("Okay thanks for setting slack status");
+        chrome.runtime.sendMessage({ message: "Now watch for meeting exit" }, function (response) {
+          console.log(response);
+        });
+
+        setInterval(() => {
+          chrome.runtime.sendMessage({ message: "Now watch for meeting exit" }, function (response) {
+            console.log(response);
+          });
+          console.log("Told the service worker to watch for meeting exit")
+        }, 10000);
+      }
+    })
+
+
+
     window.addEventListener("load", function () {
 
       checkElement('.oTVIqe').then((selector) => {
