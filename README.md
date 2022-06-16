@@ -65,7 +65,7 @@ Join a meeting to test that your slack status updates automatically. Refresh mee
 
 
 # Contributors
-[Vivek G](https://github.com/yakshaG) and [Aditya Gannavarapu](https://github.com/aditya-67)
+[Vivek G](https://github.com/yakshaG) and [Aditya Gannavarapu](https://github.com/aditya-67). Thanks to [Ritwick Dey](https://github.com/ritwickdey) for suggestions.
 
 <br><br>
 
