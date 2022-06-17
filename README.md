@@ -107,6 +107,6 @@ This extension or the slack app do not store any keys or data in any form. All d
 <br><br>
 
 # Change log and Wiki
-Take a look at the project's wiki at https://github.com/yakshaG/gmeet-slack-integration/wiki
+Take a look at the project's wiki at https://github.com/yakshaG/google-meet-slack-integration/wiki
 
 

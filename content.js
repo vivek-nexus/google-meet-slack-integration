@@ -65,7 +65,7 @@ checkExtensionStatus().then((extensionStatus) => {
 
     message.innerHTML = "Google Meet ⇔ Slack is disabled for temporary maintainence. You can continue to use Google Meet normally until we automatically update the extension. Check status ";
 
-    link.setAttribute("href", "https://github.com/yakshaG/gmeet-slack-integration")
+    link.setAttribute("href", "https://github.com/yakshaG/google-meet-slack-integration")
     link.setAttribute("target", "_blank");
     link.innerHTML = "here.";
 
