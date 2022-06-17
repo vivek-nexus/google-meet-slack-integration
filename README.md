@@ -4,7 +4,8 @@
 
 **Google Meet ⇔ Slack automatically updates your slack status in real time, when you join and exit meetings, even for unscheduled meetings or overflowing meetings.**
 
-Extension status: 🟢 OPERATIONAL 
+Extension status: 🟢 OPERATIONAL
+Join our [slack community](https://join.slack.com/t/gmeet-slack/shared_invite/zt-1baltvk0g-KAOVMiMYnEFbYMWyyIfZwg)
 
 <br><br>
 
