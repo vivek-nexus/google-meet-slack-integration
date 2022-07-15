@@ -11,8 +11,10 @@ checkExtensionStatus().then((extensionStatus) => {
     chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       if (request.message == "Slack status set") {
         sendResponse("Okay thanks for setting slack status");
-        chrome.runtime.sendMessage({ message: "Now watch for meeting exit" }, function (response) {
-          console.log(response);
+        setTimeout(() => {
+          chrome.runtime.sendMessage({ message: "Now watch for meeting exit" }, function (response) {
+            console.log(response);
+          }, 1000);
         });
 
         setInterval(() => {
