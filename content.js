@@ -14,8 +14,8 @@ checkExtensionStatus().then((extensionStatus) => {
         setTimeout(() => {
           chrome.runtime.sendMessage({ message: "Now watch for meeting exit" }, function (response) {
             console.log(response);
-          }, 200);
-        });
+          });
+        }, 1000);
 
         setInterval(() => {
           chrome.runtime.sendMessage({ message: "Now watch for meeting exit" }, function (response) {
