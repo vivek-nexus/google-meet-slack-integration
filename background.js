@@ -1,7 +1,7 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
   if ((request.message == "Extension status 200") && (chrome.webRequest.onCompleted.hasListeners())) {
-    console.log("Some weRequest event listeners are active. Removing them.")
+    console.log("Some weRequest event listeners are active on initial page load. Removing them.")
     chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
     chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
   }
@@ -23,9 +23,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message == "Watch for meeting exit") {
     setTimeout(() => {
       sendResponse("Watching for meeting exit after 1s");
-      console.log("Registering query tabs listener")
-      // Registering event listener for tabs join
-      queryTabsInWindow();
+      // console.log("Registering query tabs listener")
+      // // Registering event listener for tabs join
+      // queryTabsInWindow();
       console.log("Registering meeting exit listener after 1s")
       // Registering event listener for meeting exit
       chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
@@ -38,7 +38,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     console.log("Doing nothing as extension status is 400")
     return;
   }
-
 });
 
 

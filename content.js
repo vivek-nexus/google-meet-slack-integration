@@ -11,18 +11,18 @@ checkExtensionStatus().then((extensionStatus) => {
     chrome.runtime.sendMessage({ message: "Watch for meeting join" }, function (response) {
       console.log(response);
     });
-    console.log("Told the service worker to watch for meeting join")
+    console.log("Asked the service worker to watch for meeting join")
 
     chrome.runtime.sendMessage({ message: "Watch for meeting exit" }, function (response) {
       console.log(response);
     });
-    console.log("Told the service worker to watch for meeting exit")
+    console.log("Asked the service worker to watch for meeting exit")
 
     setInterval(() => {
-      chrome.runtime.sendMessage({ message: "Stay awake" }, function (response) {
+      chrome.runtime.sendMessage({ message: "Watch for meeting exit" }, function (response) {
         console.log(response);
       });
-      console.log("Told the service worker to stay awake")
+      console.log("Asked the service worker to watch for meeting exit")
     }, 5000);
     // chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     //   if (request.message == "Slack status set") {
