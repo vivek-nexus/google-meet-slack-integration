@@ -1,27 +1,35 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
-  if (chrome.webRequest.onCompleted.hasListeners()) {
+  if ((request.message == "Extension status 200") && (chrome.webRequest.onCompleted.hasListeners())) {
     console.log("Some weRequest event listeners are active. Removing them.")
     chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
     chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
   }
+  if (request.message == "Stay awake") {
+    sendResponse("Staying awake");
+    console.log("Staying awake");
+  }
 
-  if (request.message == "Extension status 200") {
-    sendResponse("Noted extension is operational");
-
-    console.log("Registering meeting join listener")
-    // Registering event listener for meeting join
-    chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice"] })
+  if (request.message == "Watch for meeting join") {
+    setTimeout(() => {
+      sendResponse("Watching for meeting join after 1s");
+      console.log("Registering meeting join listener after 1s")
+      // Registering event listener for meeting join
+      chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://meet.google.com/hangouts/v1_meetings/media_streams/add?key=*"] })
+    }, 1000);
   }
 
 
-  if (request.message == "Now watch for meeting exit") {
-    console.log("Registering query tabs listener")
-    // Registering event listener for tabs join
-    queryTabsInWindow();
-    console.log("Registering meeting exit listener")
-    // Registering event listener for meeting exit
-    chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
+  if (request.message == "Watch for meeting exit") {
+    setTimeout(() => {
+      sendResponse("Watching for meeting exit after 1s");
+      console.log("Registering query tabs listener")
+      // Registering event listener for tabs join
+      queryTabsInWindow();
+      console.log("Registering meeting exit listener after 1s")
+      // Registering event listener for meeting exit
+      chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
+    }, 1000);
   }
 
 
@@ -51,17 +59,20 @@ function queryTabsInWindow() {
 }
 
 function joinMeetingCallback() {
-  console.log("Successfully intercepted network request. Setting slack status")
-  setSlackStatus();
+  setTimeout(() => {
+    console.log("Successfully intercepted network request. Setting slack status after 1s.")
+    setSlackStatus();
+    console.log("Removing meeting join listener")
+    chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
+  }, 1000);
   // https://stackoverflow.com/q/23001428
-  console.log("Removing meeting join listener")
-  chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
 
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, { message: "Slack status set" }, function (response) {
-      console.log(response);
-    });
-  });
+
+  // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  //   chrome.tabs.sendMessage(tabs[0].id, { message: "Slack status set" }, function (response) {
+  //     console.log(response);
+  //   });
+  // });
 }
 
 function exitMeetingCallback() {
@@ -69,6 +80,11 @@ function exitMeetingCallback() {
   clearSlackStatus();
   console.log("Removing meeting exit listener")
   chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
+  setTimeout(() => {
+    console.log("Adding back meeting exit listener after 1s")
+    // Registering event listener for meeting exit
+    chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
+  }, 1000);
 }
 
 
