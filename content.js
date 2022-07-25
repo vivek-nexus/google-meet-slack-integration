@@ -1,7 +1,6 @@
 checkExtensionStatus().then((extensionStatus) => {
   console.log("Extension status " + extensionStatus);
 
-
   chrome.runtime.sendMessage({ message: `Extension status ${extensionStatus}` }, function (response) {
     console.log(response);
   });
@@ -19,11 +18,17 @@ checkExtensionStatus().then((extensionStatus) => {
     console.log("Asked the service worker to watch for meeting exit")
 
     setInterval(() => {
+      // Keeping join and exit listeners awake
+      chrome.runtime.sendMessage({ message: "Watch for meeting join" }, function (response) {
+        console.log(response);
+      });
+      console.log("Asked the service worker to watch for meeting join")
+
       chrome.runtime.sendMessage({ message: "Watch for meeting exit" }, function (response) {
         console.log(response);
       });
       console.log("Asked the service worker to watch for meeting exit")
-    }, 5000);
+    }, 10000);
     // chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     //   if (request.message == "Slack status set") {
     //     sendResponse("Okay thanks for setting slack status");
@@ -139,7 +144,7 @@ const checkElement = async selector => {
 
 
 async function checkExtensionStatus() {
-  let status = 400;
+  let status = 200;
 
   // https://stackoverflow.com/a/42518434
   await fetch("https://yakshag.github.io/gmeet-slack-integration-status/", { cache: "no-store" })
