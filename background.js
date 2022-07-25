@@ -1,14 +1,14 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
   if ((request.message == "Extension status 200") && (chrome.webRequest.onCompleted.hasListeners())) {
-    console.log("Some weRequest event listeners are active on initial page load. Removing them.")
+    console.log("Some webRequest event listeners are active on initial page load. Removing them.")
     chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
     chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
   }
-  if (request.message == "Stay awake") {
-    sendResponse("Staying awake");
-    console.log("Staying awake");
-  }
+  // if (request.message == "Stay awake") {
+  //   sendResponse("Staying awake");
+  //   console.log("Staying awake");
+  // }
 
   if (request.message == "Watch for meeting join") {
     setTimeout(() => {
