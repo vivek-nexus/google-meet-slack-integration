@@ -29,23 +29,6 @@ checkExtensionStatus().then((extensionStatus) => {
       });
       console.log("Asked the service worker to watch for meeting exit")
     }, 10000);
-    // chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    //   if (request.message == "Slack status set") {
-    //     sendResponse("Okay thanks for setting slack status");
-    //     setTimeout(() => {
-    //       chrome.runtime.sendMessage({ message: "Now watch for meeting exit" }, function (response) {
-    //         console.log(response);
-    //       });
-    //     }, 1000);
-
-    //     setInterval(() => {
-    //       chrome.runtime.sendMessage({ message: "Now watch for meeting exit" }, function (response) {
-    //         console.log(response);
-    //       });
-    //       console.log("Told the service worker to watch for meeting exit")
-    //     }, 10000);
-    //   }
-    // })
 
 
 

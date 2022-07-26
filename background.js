@@ -1,19 +1,15 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
   if ((request.message == "Extension status 200") && (chrome.webRequest.onCompleted.hasListeners())) {
-    console.log("Some webRequest event listeners are active on initial page load. Removing them.")
+    console.log("RESET ON PAGE LOAD: Some webRequest event listeners are active on initial page load. Removing them.")
     chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
     chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
   }
-  // if (request.message == "Stay awake") {
-  //   sendResponse("Staying awake");
-  //   console.log("Staying awake");
-  // }
 
   if (request.message == "Watch for meeting join") {
+    sendResponse("Watching for meeting join after 1s");
     setTimeout(() => {
-      sendResponse("Watching for meeting join after 1s");
-      console.log("Registering meeting join listener after 1s")
+      // console.log("Registering meeting join listener after 1s")
       // Registering event listener for meeting join
       chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://meet.google.com/hangouts/v1_meetings/media_streams/add?key=*"] })
     }, 1000);
@@ -21,12 +17,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 
   if (request.message == "Watch for meeting exit") {
+    sendResponse("Watching for meeting exit after 1s");
     setTimeout(() => {
-      sendResponse("Watching for meeting exit after 1s");
-      // console.log("Registering query tabs listener")
-      // // Registering event listener for tabs join
-      // queryTabsInWindow();
-      console.log("Registering meeting exit listener after 1s")
+      // console.log("Registering query tabs listener after 1s")
+      // Registering event listener for tabs join
+      queryTabsInWindow();
+      // console.log("Registering meeting exit listener after 1s")
       // Registering event listener for meeting exit
       chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
     }, 1000);
@@ -50,7 +46,7 @@ function queryTabsInWindow() {
       chrome.tabs.onRemoved.addListener(function tabsListenerCallback(tabid, removed) {
         if (tabId === tabid)
           clearSlackStatus();
-        console.log("Removing tabs event listener.")
+        // console.log("Removing tabs event listener.")
         chrome.tabs.onRemoved.removeListener(tabsListenerCallback);
       });
     });
@@ -61,26 +57,18 @@ function joinMeetingCallback() {
   setTimeout(() => {
     console.log("Successfully intercepted network request. Setting slack status after 1s.")
     setSlackStatus();
-    console.log("Removing meeting join listener")
+    // console.log("Removing meeting join listener")
     chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
   }, 1000);
-  // https://stackoverflow.com/q/23001428
-
-
-  // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-  //   chrome.tabs.sendMessage(tabs[0].id, { message: "Slack status set" }, function (response) {
-  //     console.log(response);
-  //   });
-  // });
 }
 
 function exitMeetingCallback() {
   console.log("Successfully intercepted network request. Clearing slack status")
   clearSlackStatus();
-  console.log("Removing meeting exit listener")
+  // console.log("Removing meeting exit listener")
   chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
   setTimeout(() => {
-    console.log("Adding back meeting exit listener after 1s")
+    // console.log("Adding back meeting exit listener after 1s")
     // Registering event listener for meeting exit
     chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
   }, 1000);
@@ -95,15 +83,15 @@ function setSlackStatus() {
       // https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript
       if (/\p{Emoji}/u.test(result.emojiText)) {
         emoji = result.emojiText;
-        console.log('One char emoji')
+        // console.log('One char emoji')
       }
       else if (/^\:.*\:$/.test(result.emojiText)) {
         emoji = result.emojiText;
-        console.log('Custom emoji with both colons')
+        // console.log('Custom emoji with both colons')
       }
       else {
         emoji = ":" + result.emojiText + ":";
-        console.log('Custom emoji without both colons')
+        // console.log('Custom emoji without both colons')
       }
     }
     if (result.statusText) {
@@ -158,7 +146,9 @@ function makeSlackAPICall(raw, type) {
 
       fetch("https://slack.com/api/users.profile.set", requestOptions)
         .then((response) => response.text())
-        .then((result) => console.log("Slack status altered"))
+        .then((result) => {
+          // console.log("Slack status altered")
+        })
         .catch((error) => console.log("error", error));
     }
   });
