@@ -17,18 +17,29 @@ checkExtensionStatus().then((extensionStatus) => {
     });
     console.log("Asked the service worker to watch for meeting exit")
 
-    setInterval(() => {
-      // Keeping join and exit listeners awake
-      chrome.runtime.sendMessage({ message: "Watch for meeting join" }, function (response) {
-        console.log(response);
-      });
-      console.log("Asked the service worker to watch for meeting join")
+    // setInterval(() => {
+    //   // Keeping join and exit listeners awake
+    //   chrome.runtime.sendMessage({ message: "Watch for meeting join" }, function (response) {
+    //     console.log(response);
+    //   });
+    //   console.log("Asked the service worker to watch for meeting join")
 
-      chrome.runtime.sendMessage({ message: "Watch for meeting exit" }, function (response) {
-        console.log(response);
+    //   chrome.runtime.sendMessage({ message: "Watch for meeting exit" }, function (response) {
+    //     console.log(response);
+    //   });
+    //   console.log("Asked the service worker to watch for meeting exit")
+    // }, 10000);
+
+    // Keeping the service worker alive
+    let port;
+    function connect() {
+      port = chrome.runtime.connect({ name: 'foo' });
+      port.onDisconnect.addListener(connect);
+      port.onMessage.addListener(msg => {
+        console.log('received', msg, 'from bg');
       });
-      console.log("Asked the service worker to watch for meeting exit")
-    }, 10000);
+    }
+    connect();
 
 
 

@@ -1,3 +1,25 @@
+// Keeping this service worker alive
+chrome.runtime.onConnect.addListener(port => {
+  if (port.name !== 'foo') return;
+  port.onMessage.addListener(onMessage);
+  port.onDisconnect.addListener(deleteTimer);
+  port._timer = setTimeout(forceReconnect, 250e3, port);
+});
+function onMessage(msg, port) {
+  console.log('received', msg, 'from', port.sender);
+}
+function forceReconnect(port) {
+  deleteTimer(port);
+  port.disconnect();
+}
+function deleteTimer(port) {
+  if (port._timer) {
+    clearTimeout(port._timer);
+    delete port._timer;
+  }
+}
+
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
   if ((request.message == "Extension status 200") && (chrome.webRequest.onCompleted.hasListeners())) {
@@ -44,8 +66,10 @@ function queryTabsInWindow() {
       let tabId = tab.id;
       // https://stackoverflow.com/a/3107221
       chrome.tabs.onRemoved.addListener(function tabsListenerCallback(tabid, removed) {
-        if (tabId === tabid)
+        if (tabId === tabid) {
+          console.log("Successfully intercepted tab close. Clearing slack status")
           clearSlackStatus();
+        }
         // console.log("Removing tabs event listener.")
         chrome.tabs.onRemoved.removeListener(tabsListenerCallback);
       });
