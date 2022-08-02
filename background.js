@@ -4,10 +4,14 @@ let keepAlive;
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message == "Extension status 200") {
-    keepAlive = setInterval(() => {
-      console.log("SW alive!")
-    }, 5000);
     sendResponse("RESET ON PAGE LOAD");
+
+    if ((keepAlive == false) || (keepAlive == undefined)) {
+      keepAlive = setInterval(() => {
+        console.log("SW alive!")
+      }, 5000);
+    }
+
     if (chrome.webRequest.onCompleted.hasListeners()) {
       console.log("RESET ON PAGE LOAD: Some webRequest event listeners are active on initial page load. Removing them.")
       chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
