@@ -1,55 +1,25 @@
-// Keeping this service worker alive
-chrome.runtime.onConnect.addListener(port => {
-  if (port.name !== 'foo') return;
-  port.onMessage.addListener(onMessage);
-  port.onDisconnect.addListener(deleteTimer);
-  port._timer = setTimeout(forceReconnect, 250e3, port);
-});
-function onMessage(msg, port) {
-  console.log('received', msg, 'from', port.sender);
-}
-function forceReconnect(port) {
-  deleteTimer(port);
-  port.disconnect();
-}
-function deleteTimer(port) {
-  if (port._timer) {
-    clearTimeout(port._timer);
-    delete port._timer;
-  }
-}
+let keepAlive;
+
 
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-
-  if ((request.message == "Extension status 200") && (chrome.webRequest.onCompleted.hasListeners())) {
-    console.log("RESET ON PAGE LOAD: Some webRequest event listeners are active on initial page load. Removing them.")
-    chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
-    chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
+  if (request.message == "Extension status 200") {
+    keepAlive = setInterval(() => {
+      console.log("SW alive!")
+    }, 5000);
+    sendResponse("RESET ON PAGE LOAD");
+    if (chrome.webRequest.onCompleted.hasListeners()) {
+      console.log("RESET ON PAGE LOAD: Some webRequest event listeners are active on initial page load. Removing them.")
+      chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
+      chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
+    }
   }
 
   if (request.message == "Watch for meeting join") {
-    sendResponse("Watching for meeting join after 1s");
-    setTimeout(() => {
-      // console.log("Registering meeting join listener after 1s")
-      // Registering event listener for meeting join
-      chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://meet.google.com/hangouts/v1_meetings/media_streams/add?key=*"] })
-    }, 1000);
+    sendResponse("Watching for meeting join");
+    console.log("Registered meeting join listener")
+    chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://meet.google.com/hangouts/v1_meetings/media_streams/add?key=*"] })
   }
-
-
-  if (request.message == "Watch for meeting exit") {
-    sendResponse("Watching for meeting exit after 1s");
-    setTimeout(() => {
-      // console.log("Registering query tabs listener after 1s")
-      // Registering event listener for tabs join
-      queryTabsInWindow();
-      // console.log("Registering meeting exit listener after 1s")
-      // Registering event listener for meeting exit
-      chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
-    }, 1000);
-  }
-
 
   if (request.message == "Extension status 400") {
     sendResponse("Noted extension is under maintainence");
@@ -60,6 +30,26 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 
 
+
+
+function joinMeetingCallback() {
+  console.log("Successfully intercepted network request. Setting slack status.")
+  setSlackStatus();
+  setTimeout(() => {
+    console.log("Registering meeting exit listener and tabs listener after 1s.")
+    chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
+    queryTabsInWindow();
+    chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
+  }, 1000);
+}
+
+function exitMeetingCallback() {
+  console.log("Successfully intercepted network request. Clearing slack status.")
+  clearSlackStatus();
+  chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
+  clearInterval(keepAlive);
+}
+
 function queryTabsInWindow() {
   chrome.tabs.query({ url: "https://meet.google.com/*" }, function (tabs) {
     tabs.forEach(function (tab) {
@@ -69,33 +59,12 @@ function queryTabsInWindow() {
         if (tabId === tabid) {
           console.log("Successfully intercepted tab close. Clearing slack status")
           clearSlackStatus();
+          clearInterval(keepAlive);
         }
-        // console.log("Removing tabs event listener.")
         chrome.tabs.onRemoved.removeListener(tabsListenerCallback);
       });
     });
   });
-}
-
-function joinMeetingCallback() {
-  setTimeout(() => {
-    console.log("Successfully intercepted network request. Setting slack status after 1s.")
-    setSlackStatus();
-    // console.log("Removing meeting join listener")
-    chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
-  }, 1000);
-}
-
-function exitMeetingCallback() {
-  console.log("Successfully intercepted network request. Clearing slack status")
-  clearSlackStatus();
-  // console.log("Removing meeting exit listener")
-  chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
-  setTimeout(() => {
-    // console.log("Adding back meeting exit listener after 1s")
-    // Registering event listener for meeting exit
-    chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
-  }, 1000);
 }
 
 
