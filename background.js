@@ -100,9 +100,10 @@ chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https:/
 
 
 function joinMeetingCallback() {
-  console.log("Successfully intercepted network request. Setting slack status.")
+  console.log("Successfully intercepted network request.")
   readPreMeetingSlackStatus();
   setTimeout(() => {
+    console.log("Setting slack status.")
     setSlackStatus();
   }, 1000);
 }
@@ -170,9 +171,9 @@ function queryTabsInWindow() {
 
 function readPreMeetingSlackStatus() {
   var key;
-  chrome.storage.sync.get(["meetSlackKey"], function (result) {
-    if (result.meetSlackKey) {
-      key = result.meetSlackKey;
+  chrome.storage.sync.get(["meetSlackKey", "statusText"], function (data) {
+    if (data.meetSlackKey) {
+      key = data.meetSlackKey;
 
       var myHeaders = new Headers();
       myHeaders.append(
@@ -192,13 +193,26 @@ function readPreMeetingSlackStatus() {
         .then((result) => {
           // Save Pre meeting slack status, if status read was successful
           if (result.ok === true) {
-            console.log(result.profile.status_emoji + " " + result.profile.status_text + " " + result.profile.status_expiration)
+            console.log(result.profile.status_emoji + " " + result.profile.status_text + " " + data.statusText + " " + result.profile.status_expiration)
 
-            let preMeetingSlackStatusJSON = {
-              status_text: result.profile.status_text,
-              status_emoji: result.profile.status_emoji,
-              status_expiration: result.profile.status_expiration
+            let preMeetingSlackStatusJSON;
+            if (data.statusText == result.profile.status_text) {
+              console.log("Oh no! Status from previous meeting is stuck. Time to reset")
+              preMeetingSlackStatusJSON = {
+                status_text: "",
+                status_emoji: "",
+                status_expiration: 0
+              }
             }
+
+            else {
+              preMeetingSlackStatusJSON = {
+                status_text: result.profile.status_text,
+                status_emoji: result.profile.status_emoji,
+                status_expiration: result.profile.status_expiration
+              }
+            }
+
             let preMeetingSlackStatus = JSON.stringify(preMeetingSlackStatusJSON);
             chrome.storage.sync.set(
               {
