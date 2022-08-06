@@ -12,6 +12,8 @@ checkExtensionStatus().then((extensionStatus) => {
     });
     console.log("Asked the service worker to watch for meeting join")
 
+
+
     // var port = chrome.runtime.connect({ name: "knockknock" });
     // port.postMessage({ joke: "Knock knock" });
 
@@ -91,6 +93,7 @@ checkExtensionStatus().then((extensionStatus) => {
     return;
   }
 })
+
 
 
 

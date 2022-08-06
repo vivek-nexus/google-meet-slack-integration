@@ -73,6 +73,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message == "Extension status 200") {
     // Registering tabs listener on meeting page first load
     queryTabsInWindow();
+    readPreMeetingSlackStatus();
 
     // // Clear any previous alarms
     // chrome.alarms.clearAll(function () {
@@ -100,12 +101,8 @@ chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https:/
 
 
 function joinMeetingCallback() {
-  console.log("Successfully intercepted network request.")
-  readPreMeetingSlackStatus();
-  setTimeout(() => {
-    console.log("Setting slack status.")
-    setSlackStatus();
-  }, 1000);
+  console.log("Successfully intercepted network request. Setting slack status.")
+  setSlackStatus();
 }
 
 function exitMeetingCallback() {
@@ -124,7 +121,6 @@ function queryTabsInWindow() {
           console.log("Successfully intercepted tab close. Clearing slack status")
           clearSlackStatus();
         }
-        chrome.tabs.onRemoved.removeListener(tabsListenerCallback);
       });
     });
   });
@@ -193,7 +189,7 @@ function readPreMeetingSlackStatus() {
         .then((result) => {
           // Save Pre meeting slack status, if status read was successful
           if (result.ok === true) {
-            console.log(result.profile.status_emoji + " " + result.profile.status_text + " " + data.statusText + " " + result.profile.status_expiration)
+            console.log(result.profile.status_emoji + " | " + result.profile.status_text + " | " + data.statusText + " | " + result.profile.status_expiration)
 
             let preMeetingSlackStatusJSON;
             if (data.statusText == result.profile.status_text) {
@@ -271,7 +267,7 @@ function clearSlackStatus() {
   chrome.storage.sync.get(["preMeetingSlackStatus"], function (result) {
     let raw;
     if (result.preMeetingSlackStatus) {
-      console.log("Found pre meeting slack status. Putting it back.")
+      console.log("Found pre meeting slack status. Putting it back. " + result.preMeetingSlackStatus)
       let preMeetingSlackStatus = JSON.parse(result.preMeetingSlackStatus)
       raw = JSON.stringify({
         profile: {
