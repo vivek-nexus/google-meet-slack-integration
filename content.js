@@ -12,6 +12,30 @@ checkExtensionStatus().then((extensionStatus) => {
     });
     console.log("Asked the service worker to watch for meeting join")
 
+    // var port = chrome.runtime.connect({ name: "knockknock" });
+    // port.postMessage({ joke: "Knock knock" });
+
+    // port.onMessage.addListener(function (msg) {
+    //   if (msg.question === "Who's there?")
+    //     console.log("SW is alive")
+    // });
+
+    // setInterval(() => {
+    //   port.postMessage({ joke: "Knock knock" });
+    // }, 5000);
+
+    // https://stackoverflow.com/a/66618269
+    let port;
+    function connect() {
+      port = chrome.runtime.connect({ name: 'foo' });
+      port.onDisconnect.addListener(connect);
+      port.onMessage.addListener(msg => {
+        console.log('received', msg, 'from bg');
+      });
+    }
+    connect();
+
+
 
 
     window.addEventListener("load", function () {
