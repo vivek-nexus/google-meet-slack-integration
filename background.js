@@ -92,7 +92,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/join_call_*", "https://meet.google.com/hangouts/v1_meetings/media_streams/add?key=*"] })
 
-chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/leave_call_*", "https://www.gstatic.com/meet/security_shield_*", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
+chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/leave_call_*", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
 
 
 
