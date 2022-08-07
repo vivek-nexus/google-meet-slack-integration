@@ -90,9 +90,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 //   console.log('Alarm keeping alive')
 // });
 
-chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/join_call_6a6a67d6bcc7a4e373ed40fdeff3930a.ogg"] })
+chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/join_call_*", "https://meet.google.com/hangouts/v1_meetings/media_streams/add?key=*"] })
 
-chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/leave_call_bfab46cf473a2e5d474c1b71ccf843a1.ogg", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
+chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/leave_call_*", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
 
 
 
@@ -103,6 +103,7 @@ chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https:/
 function joinMeetingCallback() {
   console.log("Successfully intercepted network request. Setting slack status.")
   setSlackStatus();
+
 }
 
 function exitMeetingCallback() {
@@ -125,7 +126,6 @@ function queryTabsInWindow() {
     });
   });
 }
-
 
 
 
