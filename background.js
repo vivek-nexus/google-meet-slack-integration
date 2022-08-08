@@ -1,48 +1,3 @@
-// let keepAlive;
-// keepAlive = setInterval(() => {
-//   console.log("SW alive!")
-// }, 5000);
-
-
-
-
-// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-//   if (request.message == "Extension status 200") {
-//     sendResponse("RESET ON PAGE LOAD");
-//     console.log(keepAlive)
-//     clearInterval(keepAlive);
-//     keepAlive = setInterval(() => {
-//       console.log("SW alive!")
-//     }, 5000);
-
-//     if (chrome.webRequest.onCompleted.hasListeners()) {
-//       console.log("RESET ON PAGE LOAD: Some webRequest event listeners are active on initial page load. Removing them.")
-//       chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
-//       chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
-//     }
-//   }
-
-//   if (request.message == "Watch for meeting join") {
-//     sendResponse("Watching for meeting join");
-//     console.log("Registered meeting join listener")
-//     chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/join_call_6a6a67d6bcc7a4e373ed40fdeff3930a.ogg"] })
-//   }
-
-//   if (request.message == "Extension status 400") {
-//     sendResponse("Noted extension is under maintainence");
-//     console.log("Doing nothing as extension status is 400")
-//     return;
-//   }
-// });
-
-// chrome.runtime.onConnect.addListener(function (port) {
-//   console.assert(port.name === "knockknock");
-//   port.onMessage.addListener(function (msg) {
-//     console.log(msg.joke)
-//     if (msg.joke === "Knock knock")
-//       port.postMessage({ question: "Who's there?" });
-//   });
-// });
 
 
 
@@ -74,21 +29,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // Registering tabs listener on meeting page first load
     queryTabsInWindow();
     readPreMeetingSlackStatus();
-
-    // // Clear any previous alarms
-    // chrome.alarms.clearAll(function () {
-    //   console.log('Cleared all previous alarms')
-    // });
-    // // Alarm of one minute to keep the service worker alive https://stackoverflow.com/questions/66618136/persistent-service-worker-in-chrome-extension
-    // chrome.alarms.create({ periodInMinutes: 1 })
+    // sendResponse("Service worker up and running");
   }
 })
 
 
 
-// chrome.alarms.onAlarm.addListener(() => {
-//   console.log('Alarm keeping alive')
-// });
 
 chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/join_call_*", "https://meet.google.com/hangouts/v1_meetings/media_streams/add?key=*"] })
 
@@ -130,40 +76,6 @@ function queryTabsInWindow() {
 
 
 
-// function joinMeetingCallback() {
-//   console.log("Successfully intercepted network request. Setting slack status.")
-//   setSlackStatus();
-//   setTimeout(() => {
-//     console.log("Registering meeting exit listener and tabs listener after 1s.")
-//     chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/leave_call_bfab46cf473a2e5d474c1b71ccf843a1.ogg", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
-//     queryTabsInWindow();
-//     chrome.webRequest.onCompleted.removeListener(joinMeetingCallback);
-//   }, 1000);
-// }
-
-// function exitMeetingCallback() {
-//   console.log("Successfully intercepted network request. Clearing slack status.")
-//   clearSlackStatus();
-//   chrome.webRequest.onCompleted.removeListener(exitMeetingCallback);
-//   clearInterval(keepAlive);
-// }
-
-// function queryTabsInWindow() {
-//   chrome.tabs.query({ url: "https://meet.google.com/*" }, function (tabs) {
-//     tabs.forEach(function (tab) {
-//       let tabId = tab.id;
-//       // https://stackoverflow.com/a/3107221
-//       chrome.tabs.onRemoved.addListener(function tabsListenerCallback(tabid, removed) {
-//         if (tabId === tabid) {
-//           console.log("Successfully intercepted tab close. Clearing slack status")
-//           clearSlackStatus();
-//           clearInterval(keepAlive);
-//         }
-//         chrome.tabs.onRemoved.removeListener(tabsListenerCallback);
-//       });
-//     });
-//   });
-// }
 
 function readPreMeetingSlackStatus() {
   var key;
@@ -219,7 +131,10 @@ function readPreMeetingSlackStatus() {
             )
           }
           else {
-            console.log("Cannot read pre meeting slack status. Please generate a fresh API key and paste in the extension.")
+            console.log("Cannot read pre meeting slack status. Please generate a fresh API key and paste in the extension.");
+            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+              chrome.tabs.sendMessage(tabs[0].id, { message: "Slack status read scope missing" });
+            });
           }
         })
         .catch((error) => console.log("error", error));

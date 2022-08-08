@@ -7,24 +7,6 @@ checkExtensionStatus().then((extensionStatus) => {
 
 
   if (extensionStatus == 200) {
-    chrome.runtime.sendMessage({ message: "Watch for meeting join" }, function (response) {
-      console.log(response);
-    });
-    console.log("Asked the service worker to watch for meeting join")
-
-
-
-    // var port = chrome.runtime.connect({ name: "knockknock" });
-    // port.postMessage({ joke: "Knock knock" });
-
-    // port.onMessage.addListener(function (msg) {
-    //   if (msg.question === "Who's there?")
-    //     console.log("SW is alive")
-    // });
-
-    // setInterval(() => {
-    //   port.postMessage({ joke: "Knock knock" });
-    // }, 5000);
 
     // https://stackoverflow.com/a/66618269
     let port;
@@ -95,6 +77,16 @@ checkExtensionStatus().then((extensionStatus) => {
 })
 
 
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    if (request.message === "Slack status read scope missing") {
+      if (confirm("New feature added to meeting extension! \n\n Do you want to regenerate Slack API key now?")) {
+        window.open("https://slack.com/oauth/v2/authorize?client_id=3243307866673.3224053662614&scope=&user_scope=users.profile:read,users.profile:write", '_blank').focus();
+      }
+      sendResponse({ message: "Alerted the user to generate slack API key again" });
+    }
+  }
+);
 
 
 document.addEventListener("keydown", function (event) {
