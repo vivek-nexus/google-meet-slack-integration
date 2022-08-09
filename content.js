@@ -46,7 +46,7 @@ checkExtensionStatus().then((extensionStatus) => {
           obj.style.cssText =
             "z-index:99999;color: green; text-align: center; padding: 0.5rem;border: 1px solid green; background: rgb(0 255 8 / 15%);font-size: 1.2em;font-weight: 400;position: fixed;width: 95%;margin:auto;left:0;right:0;border-radius: 8px;margin-top:1rem;";
           obj.innerText =
-            "Google Meet ⇔ Slack is running. Use Ctrl + V to join meeting, Ctrl + Q to exit meeting.";
+            "Google Meet ⇔ Slack is running. Use Ctrl + V to join meeting, Ctrl + Q to exit meeting.\n\n Status updates sometimes may not work for back-to-back, super short meetings (<1min).";
           block.prepend(obj);
         }
       });
