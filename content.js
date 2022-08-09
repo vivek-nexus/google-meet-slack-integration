@@ -80,7 +80,7 @@ checkExtensionStatus().then((extensionStatus) => {
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
     if (request.message === "Slack status read scope missing") {
-      if (confirm("New feature added to meeting extension! \n\n Do you want to regenerate Slack API key now?")) {
+      if (confirm("New feature added to Google Meet ⇔ Slack extension! \n\n Do you want to regenerate Slack API key now?")) {
         window.open("https://slack.com/oauth/v2/authorize?client_id=3243307866673.3224053662614&scope=&user_scope=users.profile:read,users.profile:write", '_blank').focus();
       }
       sendResponse({ message: "Alerted the user to generate slack API key again" });
