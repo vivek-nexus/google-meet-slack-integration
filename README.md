@@ -96,7 +96,7 @@ Try re-installing the slack app and make sure you click allow during the install
 5. The custom emoji used is not available in your slack workspace. Use only those emojis that are available in your slack workspace.
 
 ### Extension does not work sometimes
-Refreshing the meeting page should bring the extension back.
+Refreshing the meeting page should bring the extension back. Status updates may not work if you join super short meetings (less than a min approx), in a back to back fashion.
 
 ### I want to uninstall this extension and slack app
 1. Unistall slack app first, by using the **Revoke Slack API key** available within the extension.

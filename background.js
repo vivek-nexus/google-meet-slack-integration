@@ -25,11 +25,19 @@ function deleteTimer(port) {
 
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.message == "Extension status 200") {
-    // Registering tabs listener on meeting page first load
-    queryTabsInWindow();
-    readPreMeetingSlackStatus();
-    // sendResponse("Service worker up and running");
+  if (request.message == "New meeting starting") {
+    chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+      let extensionStatusJSON = result.extensionStatusJSON;
+      if (extensionStatusJSON.status == 200) {
+        // Registering tabs listener on meeting page first load
+        queryTabsInWindow();
+        readPreMeetingSlackStatus();
+        // sendResponse("Service worker up and running");
+      }
+      else {
+        console.log("Not doing any page load actions as extension status is 400")
+      }
+    })
   }
 })
 
@@ -47,14 +55,29 @@ chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https:/
 
 
 function joinMeetingCallback() {
-  console.log("Successfully intercepted network request. Setting slack status.")
-  setSlackStatus();
-
+  chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+    let extensionStatusJSON = result.extensionStatusJSON;
+    if (extensionStatusJSON.status == 200) {
+      console.log("Successfully intercepted network request. Setting slack status.")
+      setSlackStatus();
+    }
+    else {
+      console.log("Not setting slack status as extension status is 400")
+    }
+  })
 }
 
 function exitMeetingCallback() {
-  console.log("Successfully intercepted network request. Clearing slack status.")
-  clearSlackStatus();
+  chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+    let extensionStatusJSON = result.extensionStatusJSON;
+    if (extensionStatusJSON.status == 200) {
+      console.log("Successfully intercepted network request. Clearing slack status.")
+      clearSlackStatus();
+    }
+    else {
+      console.log("Not clearing slack status as extension status is 400")
+    }
+  })
 }
 
 
