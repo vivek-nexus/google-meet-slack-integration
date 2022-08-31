@@ -54,8 +54,7 @@ checkExtensionStatus().then(() => {
           else {
             obj.style.cssText =
               "border: 1px solid green; color: green; background: rgb(0 255 8 / 15%); display: flex; justify-content: center; align-items: center; gap: 16px;  font-size: 1.2em;  padding: 0.25rem;  margin-top:1rem; line-height: 1.5; font-family: 'Google Sans',Roboto,Arial,sans-serif;"
-            text.innerHTML =
-              "<strong>Google Meet ⇔ Slack is running. Use Ctrl + V to join meeting, Ctrl + Q to exit meeting.</strong><br />Status updates sometimes may not work for back-to-back, super short meetings (<1min).";
+            text.innerHTML = extensionStatusJSON.message;
           }
 
           obj.prepend(text);
