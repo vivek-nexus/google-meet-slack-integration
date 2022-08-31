@@ -8,6 +8,42 @@ checkExtensionStatus().then(() => {
       console.log(response);
     });
 
+    // Banner CSS
+    let block = document.querySelectorAll(".vgJExf")[0];
+    let obj = document.createElement("div");
+    let logo = document.createElement("img");
+    let text = document.createElement("p");
+
+    const commonCSS = `background: rgb(255 255 255 / 75%); 
+    backdrop-filter: blur(16px); 
+    position: absolute; 
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto;
+    max-width: 780px;  
+    z-index: 1000; 
+    padding: 0rem 1rem;
+    border-radius: 8px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 16px;  
+    font-size: 1rem; 
+    line-height: 1.5; 
+    font-family: 'Google Sans',Roboto,Arial,sans-serif; 
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;`;
+
+    logo.setAttribute("src", "https://github.com/yakshaG/google-meet-slack-integration/raw/main/icon.png")
+    logo.setAttribute("height", "32px")
+    logo.setAttribute("width", "32px");
+    logo.style.cssText = "border-radius: 4px";
+
+    // Remove banner after 5s
+    setTimeout(() => {
+      obj.style.display = "none";
+    }, 5000);
+
 
     if (extensionStatusJSON.status == 200) {
 
@@ -35,25 +71,13 @@ checkExtensionStatus().then(() => {
         });
 
         chrome.storage.sync.get(["meetSlackKey"], function (result) {
-          let block = document.querySelectorAll(".vgJExf")[0];
-          var obj = document.createElement("div");
-          var logo = document.createElement("img");
-          var text = document.createElement("p");
-          logo.setAttribute("src", "https://github.com/yakshaG/google-meet-slack-integration/raw/main/icon.png")
-          logo.setAttribute("height", "32px")
-          logo.setAttribute("width", "32px");
-          logo.style.cssText = "border-radius: 4px";
-          text.innerHTML = extensionStatusJSON.message;
 
           if (!result.meetSlackKey) {
-            obj.style.cssText =
-              "border: 1px solid red; color: red; background: #ff000026; display: flex; justify-content: center; align-items: center; gap: 16px;  font-size: 1.2em;  padding: 0.25rem;  margin-top:1rem;  line-height: 1.75; font-family: 'Google Sans',Roboto,Arial,sans-serif;";
-            text.innerHTML =
-              "Slack API key not set. Open Google Meet ⇔ Slack extension to set the API key.";
+            obj.style.cssText = `color: red; ${commonCSS}`;
+            text.innerHTML = "Slack API key not set. Open Google Meet ⇔ Slack extension to set the API key.";
           }
           else {
-            obj.style.cssText =
-              "border: 1px solid green; color: green; background: rgb(0 255 8 / 15%); display: flex; justify-content: center; align-items: center; gap: 16px;  font-size: 1.2em;  padding: 0.25rem;  margin-top:1rem; line-height: 1.5; font-family: 'Google Sans',Roboto,Arial,sans-serif;"
+            obj.style.cssText = `color: green; ${commonCSS}`;
             text.innerHTML = extensionStatusJSON.message;
           }
 
@@ -65,18 +89,10 @@ checkExtensionStatus().then(() => {
     }
 
     else {
-      let block = document.querySelectorAll(".vgJExf")[0];
-      var obj = document.createElement("div");
-      var logo = document.createElement("img");
-      var text = document.createElement("p");
-      logo.setAttribute("src", "https://github.com/yakshaG/google-meet-slack-integration/raw/main/icon.png")
-      logo.setAttribute("height", "32px")
-      logo.setAttribute("width", "32px");
-      logo.style.cssText = "border-radius: 4px";
       text.innerHTML = extensionStatusJSON.message;
 
       obj.style.cssText =
-        "border: 1px solid red; color: red; background: #ff000026; display: flex; justify-content: center; align-items: center; gap: 16px;  font-size: 1.2em;  padding: 0.25rem;  margin-top:1rem;  line-height: 1.75; font-family: 'Google Sans',Roboto,Arial,sans-serif;";
+        `color: grey; ${commonCSS}`;
 
       obj.prepend(text);
       obj.prepend(logo);
@@ -153,5 +169,6 @@ async function checkExtensionStatus() {
     }, function () {
       console.log("Extension status fetched and saved")
     })
-  })
+  }).catch((err) => { console.log(err) })
 }
+
