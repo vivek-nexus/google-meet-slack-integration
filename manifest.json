@@ -18,8 +18,12 @@
       "js": [
         "content.js"
       ],
+      "run_at": "document_start",
       "matches": [
         "https://meet.google.com/*"
+      ],
+      "exclude_matches": [
+        "https://meet.google.com/"
       ]
     }
   ],
