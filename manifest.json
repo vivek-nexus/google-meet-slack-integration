@@ -16,8 +16,7 @@
   "content_scripts": [
     {
       "js": [
-        "content.js",
-        "vanillaEmojiPicker.js"
+        "content.js"
       ],
       "matches": [
         "https://meet.google.com/*"

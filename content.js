@@ -70,8 +70,10 @@ checkExtensionStatus().then(() => {
           buttons[2].click(); //turns off camera, comment to disable
         });
 
-        chrome.storage.sync.get(["meetSlackKey"], function (result) {
+        joinKeyBoardShortcutListener();
+        exitKeyBoardShortcutListener();
 
+        chrome.storage.sync.get(["meetSlackKey"], function (result) {
           if (!result.meetSlackKey) {
             obj.style.cssText = `color: red; ${commonCSS}`;
             text.innerHTML = "Slack API key not set. Open Google Meet ⇔ Slack extension to set the API key.";
@@ -115,27 +117,33 @@ chrome.runtime.onMessage.addListener(
 );
 
 
-document.addEventListener("keydown", function (event) {
-  if (event.ctrlKey && event.key === "v") {
-    checkExtensionStatus().then(extensionStatus => {
-      if (extensionStatus == 200) {
-        if (contains("div", "Ask to join")[15])
-          contains("div", "Ask to join")[15].firstChild.click();
-        else
-          contains("div", "Join now")[15].firstChild.click();
-      }
-    })
-  }
-});
+function joinKeyBoardShortcutListener() {
+  document.addEventListener("keydown", function (event) {
+    if (event.ctrlKey && event.key === "v") {
+      chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+        let extensionStatusJSON = result.extensionStatusJSON;
+        if (extensionStatusJSON.status == 200) {
+          if (contains("div", "Ask to join")[15])
+            contains("div", "Ask to join")[15].firstChild.click();
+          else
+            contains("div", "Join now")[15].firstChild.click();
+        }
+      })
+    }
+  });
+}
 
-document.addEventListener("keydown", function (event) {
-  if (event.ctrlKey && event.key === "q") {
-    checkExtensionStatus().then(extensionStatus => {
-      if (extensionStatus == 200)
-        contains("i", "call_end")[0].parentElement.click();
-    })
-  }
-});
+function exitKeyBoardShortcutListener() {
+  document.addEventListener("keydown", function (event) {
+    if (event.ctrlKey && event.key === "q") {
+      chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+        let extensionStatusJSON = result.extensionStatusJSON;
+        if (extensionStatusJSON.status == 200)
+          contains("i", "call_end")[0].parentElement.click();
+      })
+    }
+  });
+}
 
 
 function contains(selector, text) {
