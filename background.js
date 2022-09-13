@@ -205,7 +205,8 @@ function clearSlackStatus() {
   chrome.storage.sync.get(["preMeetingSlackStatus"], function (result) {
     let raw;
     let preMeetingSlackStatus = JSON.parse(result.preMeetingSlackStatus)
-    if (result.preMeetingSlackStatus && ((preMeetingSlackStatus.status_expiration - Date.now()) > 0)) {
+    console.log("Status expiry diff " + (preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000)))
+    if (result.preMeetingSlackStatus && ((preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000)) > 0)) {
       console.log("Found pre meeting slack status. Putting it back. " + result.preMeetingSlackStatus)
 
       raw = JSON.stringify({
