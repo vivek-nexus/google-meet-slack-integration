@@ -204,9 +204,10 @@ function setSlackStatus() {
 function clearSlackStatus() {
   chrome.storage.sync.get(["preMeetingSlackStatus"], function (result) {
     let raw;
-    if (result.preMeetingSlackStatus) {
+    let preMeetingSlackStatus = JSON.parse(result.preMeetingSlackStatus)
+    if (result.preMeetingSlackStatus && ((preMeetingSlackStatus.status_expiration - Date.now()) > 0)) {
       console.log("Found pre meeting slack status. Putting it back. " + result.preMeetingSlackStatus)
-      let preMeetingSlackStatus = JSON.parse(result.preMeetingSlackStatus)
+
       raw = JSON.stringify({
         profile: {
           status_text: preMeetingSlackStatus.status_text,
@@ -216,7 +217,7 @@ function clearSlackStatus() {
       });
     }
     else {
-      console.log("Did not find pre meeting slack status. Setting empty status.")
+      console.log("Did not find pre meeting slack status or status validity has expired. Setting empty status.")
       raw = JSON.stringify({
         profile: {
           status_text: "",
