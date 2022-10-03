@@ -1,6 +1,6 @@
 {
   "name": "Google Meet ⇔ Slack integration",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "manifest_version": 3,
   "description": "Real-time Google Meet status on Slack, just like Slack huddles.",
   "action": {
@@ -16,11 +16,14 @@
   "content_scripts": [
     {
       "js": [
-        "content.js",
-        "vanillaEmojiPicker.js"
+        "content.js"
       ],
+      "run_at": "document_start",
       "matches": [
         "https://meet.google.com/*"
+      ],
+      "exclude_matches": [
+        "https://meet.google.com/"
       ]
     }
   ],

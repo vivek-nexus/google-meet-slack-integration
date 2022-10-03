@@ -25,11 +25,19 @@ function deleteTimer(port) {
 
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.message == "Extension status 200") {
-    // Registering tabs listener on meeting page first load
-    queryTabsInWindow();
-    readPreMeetingSlackStatus();
-    // sendResponse("Service worker up and running");
+  if (request.message == "New meeting starting") {
+    chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+      let extensionStatusJSON = result.extensionStatusJSON;
+      if (extensionStatusJSON.status == 200) {
+        // Registering tabs listener on meeting page first load
+        queryTabsInWindow();
+        readPreMeetingSlackStatus();
+        // sendResponse("Service worker up and running");
+      }
+      else {
+        console.log("Not doing any page load actions as extension status is 400")
+      }
+    })
   }
 })
 
@@ -47,14 +55,29 @@ chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https:/
 
 
 function joinMeetingCallback() {
-  console.log("Successfully intercepted network request. Setting slack status.")
-  setSlackStatus();
-
+  chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+    let extensionStatusJSON = result.extensionStatusJSON;
+    if (extensionStatusJSON.status == 200) {
+      console.log("Successfully intercepted network request. Setting slack status.")
+      setSlackStatus();
+    }
+    else {
+      console.log("Not setting slack status as extension status is 400")
+    }
+  })
 }
 
 function exitMeetingCallback() {
-  console.log("Successfully intercepted network request. Clearing slack status.")
-  clearSlackStatus();
+  chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+    let extensionStatusJSON = result.extensionStatusJSON;
+    if (extensionStatusJSON.status == 200) {
+      console.log("Successfully intercepted network request. Clearing slack status.")
+      clearSlackStatus();
+    }
+    else {
+      console.log("Not clearing slack status as extension status is 400")
+    }
+  })
 }
 
 
@@ -181,9 +204,11 @@ function setSlackStatus() {
 function clearSlackStatus() {
   chrome.storage.sync.get(["preMeetingSlackStatus"], function (result) {
     let raw;
-    if (result.preMeetingSlackStatus) {
+    let preMeetingSlackStatus = JSON.parse(result.preMeetingSlackStatus)
+    console.log("Status expiry diff " + (preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000)))
+    if (result.preMeetingSlackStatus && ((preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000)) > 0)) {
       console.log("Found pre meeting slack status. Putting it back. " + result.preMeetingSlackStatus)
-      let preMeetingSlackStatus = JSON.parse(result.preMeetingSlackStatus)
+
       raw = JSON.stringify({
         profile: {
           status_text: preMeetingSlackStatus.status_text,
@@ -193,7 +218,7 @@ function clearSlackStatus() {
       });
     }
     else {
-      console.log("Did not find pre meeting slack status. Setting empty status.")
+      console.log("Did not find pre meeting slack status or status validity has expired. Setting empty status.")
       raw = JSON.stringify({
         profile: {
           status_text: "",
