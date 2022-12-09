@@ -113,7 +113,7 @@ function showNotification(type, extensionStatusJSON) {
 
   logo.setAttribute(
     "src",
-    "https://github.com/yakshaG/google-meet-slack-integration/raw/main/icon.png"
+    "https://yakshag.github.io/gmeet-slack-integration-status/icon.png"
   );
   logo.setAttribute("height", "32px");
   logo.setAttribute("width", "32px");
@@ -172,7 +172,7 @@ async function checkExtensionStatus() {
 
   // https://stackoverflow.com/a/42518434
   await fetch(
-    "https://raw.githubusercontent.com/yakshaG/gmeet-slack-integration-status/main/status-prod.json",
+    "https://yakshag.github.io/gmeet-slack-integration-status/status-prod.json",
     { cache: "no-store" }
   )
     .then((response) => response.json())
