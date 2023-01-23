@@ -69,9 +69,11 @@ function joinKeyBoardShortcutListener() {
       chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
         let extensionStatusJSON = result.extensionStatusJSON;
         if (extensionStatusJSON.status == 200) {
-          if (contains("div", "Ask to join")[15])
-            contains("div", "Ask to join")[15].firstChild.click();
-          else contains("div", "Join now")[15].firstChild.click();
+          let askToJoin = contains("div", "Ask to join")
+          let joinNow = contains("div", "Join now")
+          if (askToJoin)
+            askToJoin[askToJoin.length - 1].firstChild.click();
+          else joinNow[joinNow.length - 1].firstChild.click();
         }
       });
     }
