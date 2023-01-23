@@ -25,13 +25,13 @@ window.onload = function () {
   })
 
   saveButton.addEventListener('click', function () {
-
     if (slackKey.value == 'Saved, but hidden for security') {
       chrome.storage.sync.set(
         {
           emojiText: slackEmoji.value,
           statusText: slackStatus.value
         }, function () {
+          alert("Settings saved! Join a meeting to test.")
           console.log("Storage data set")
           window.close();
           chrome.tabs.reload(function () { });
@@ -46,6 +46,7 @@ window.onload = function () {
           emojiText: slackEmoji.value,
           statusText: slackStatus.value
         }, function () {
+          alert("Settings saved! Join a meeting to test.")
           console.log("Storage data set")
           window.close();
           chrome.tabs.reload(function () { });
