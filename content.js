@@ -71,7 +71,7 @@ function joinKeyBoardShortcutListener() {
         if (extensionStatusJSON.status == 200) {
           let askToJoin = contains("div", "Ask to join")
           let joinNow = contains("div", "Join now")
-          if (askToJoin)
+          if (askToJoin.length > 0)
             askToJoin[askToJoin.length - 1].firstChild.click();
           else joinNow[joinNow.length - 1].firstChild.click();
         }
