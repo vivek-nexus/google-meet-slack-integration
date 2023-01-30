@@ -2,7 +2,11 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 body{
+    margin: 0;
     font-family: 'Manrope', sans-serif;
+}
+
+.container{
     width: 480px;
     padding: 1.5rem;
     padding-top: 0;
@@ -100,4 +104,25 @@ input{
     cursor: pointer;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
     /* box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px; */
+}
+
+#saved-drawer-bg{
+    z-index: 10;
+    background-color: rgba(128, 128, 128, 0.75);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#saved-drawer-sheet{
+    position: absolute;
+    bottom: 0;
+    left:0;
+    height: 30%;
+    width: 100%;
+    z-index: 11;
+    background-color: white;
+    text-align: center;
 }

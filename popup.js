@@ -9,6 +9,8 @@ window.onload = function () {
   var saveButton = document.querySelector('#save-button');
   var revokeButton = document.querySelector('#revoke-button');
   var revokeMessage = document.querySelector('#revoke-message');
+  var savedDrawer = document.querySelector('#saved-drawer-bg')
+  var closeButton = document.querySelector('#close-button');
 
 
   chrome.storage.sync.get(["meetSlackKey", "statusText", "emojiText"], function (result) {
@@ -31,10 +33,7 @@ window.onload = function () {
           emojiText: slackEmoji.value,
           statusText: slackStatus.value
         }, function () {
-          alert("Settings saved! Join a meeting to test.")
-          console.log("Storage data set")
-          window.close();
-          chrome.tabs.reload(function () { });
+          savedDrawer.style.display='block';
         }
       )
     }
@@ -46,13 +45,15 @@ window.onload = function () {
           emojiText: slackEmoji.value,
           statusText: slackStatus.value
         }, function () {
-          alert("Settings saved! Join a meeting to test.")
-          console.log("Storage data set")
-          window.close();
-          chrome.tabs.reload(function () { });
+          savedDrawer.style.display='block';
         }
       )
     }
+  })
+
+  closeButton.addEventListener('click', function(){
+    console.log("Storage data set")
+    window.close();
   })
 
   revokeButton.addEventListener('click', function () {
