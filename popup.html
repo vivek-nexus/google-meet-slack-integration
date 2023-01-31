@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <div>
+  <div class="container">
     <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
       <div>
         <img style="height: 64px; border-radius: 8px;" src="icon.png" alt="icon">
@@ -77,10 +77,21 @@
 
     <p id="revoke-message" class="helper-text" style="text-align: center;"></p>
 
+    <p class="helper-text" style="text-align: center; margin-top: 1.5rem;">Icon adapted from design created by <br> Gregor
+      Cresnar from the Noun Project
+    </p>
   </div>
 
-  <p class="helper-text" style="text-align: center; margin-top: 1.5rem;">Icon adapted from design created by <br> Gregor
-    Cresnar from the Noun Project</p>
+  <div id="saved-drawer-bg" style="display: none;">
+    <div id="saved-drawer-sheet">
+      <h1>Settings saved!</h1>
+      <p>Join a new meeting to see changes</p>
+      <a href="https://meet.google.com/"
+      target="_blank"><button class="button-primary" id="close-button">OKAY SWEET!</button></a>
+    </div>
+  </div>
+
+ 
 </body>
 
 </html>
