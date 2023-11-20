@@ -25,10 +25,14 @@ checkExtensionStatus().then(() => {
 
       window.addEventListener("load", function () {
         checkElement(".oTVIqe").then((selector) => {
-          console.log("Camera button is active");
+          console.log("Camera button is available");
           let buttons = document.querySelectorAll(".oTVIqe");
-          //buttons[0].click(); //turns off microhphone, comment to disable
-          buttons[2].click(); //turns off camera, comment to disable
+          if (buttons) {
+            setTimeout(() => {
+              //buttons[0].click(); //turns off microhphone, comment to disable
+              buttons[2].click(); //turns off camera, comment to disable
+            }, 750);
+          }
         });
 
         showNotification(200, extensionStatusJSON);
@@ -85,7 +89,7 @@ function exitKeyBoardShortcutListener() {
     if (event.ctrlKey && event.key === "q") {
       chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
         let extensionStatusJSON = result.extensionStatusJSON;
-        if (extensionStatusJSON.status == 200)
+        if (extensionStatusJSON.status == 200 && contains("i", "call_end")[0])
           contains("i", "call_end")[0].parentElement.click();
       });
     }
@@ -108,7 +112,7 @@ const checkElement = async (selector) => {
 
 function showNotification(type, extensionStatusJSON) {
   // Banner CSS
-  let block = document.querySelectorAll(".vgJExf")[0];
+  let html = document.querySelector("html");
   let obj = document.createElement("div");
   let logo = document.createElement("img");
   let text = document.createElement("p");
@@ -141,14 +145,17 @@ function showNotification(type, extensionStatusJSON) {
     obj.style.cssText = `color: grey; ${commonCSS}`;
     text.innerHTML = extensionStatusJSON.message;
   }
+
   obj.prepend(text);
   obj.prepend(logo);
-  block.prepend(obj);
+  if (html)
+    html.append(obj);
 }
 
 const commonCSS = `background: rgb(255 255 255 / 75%); 
     backdrop-filter: blur(16px); 
-    position: absolute; 
+    position: fixed;
+    top: 10%; 
     left: 0; 
     right: 0; 
     margin-left: auto; 
