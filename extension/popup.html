@@ -10,13 +10,12 @@
 
 <body>
   <div class="container">
-    <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
-      <div>
-        <img style="height: 64px; border-radius: 8px;" src="icon.png" alt="icon">
-      </div>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 2.5rem 0rem;">
+      <img style="height: 64px; border-radius: 8px; filter:  drop-shadow(0px 2px 4px #00000061)" src="icon.png"
+        alt="icon">
       <div>
         <h1>Google Meet ⇔ Slack</h1>
-        <p style="margin: 0rem auto 2.5rem auto;">Real-time Google Meet status on Slack</p>
+        <p style="margin: 0.25rem;">Real-time Google Meet status on Slack</p>
       </div>
     </div>
 
@@ -45,9 +44,6 @@
           <input id="slack-status" type="text" value="On a meet call • Reply may be delayed" />
         </div>
       </div>
-      <!-- <p class="helper-text">You can also paste a fun custom slack emoji, from your workspace, like
-        <strong>:bowtie:</strong>
-      </p> -->
       <a style="display: block; margin-bottom: 1rem;" class="helper-text"
         href="https://github.com/yakshaG/google-meet-slack-integration#3-choose-meeting-status-emoji"
         target="_blank"><strong>How to
@@ -76,22 +72,18 @@
 
 
     <p id="revoke-message" class="helper-text" style="text-align: center;"></p>
-
-    <p class="helper-text" style="text-align: center; margin-top: 1.5rem;">Icon adapted from design created by <br> Gregor
-      Cresnar from the Noun Project
-    </p>
   </div>
 
   <div id="saved-drawer-bg" style="display: none;">
     <div id="saved-drawer-sheet">
       <h1>Settings saved!</h1>
       <p>Join a new meeting to see changes</p>
-      <a href="https://meet.google.com/"
-      target="_blank"><button class="button-primary" id="close-button">OKAY SWEET!</button></a>
+      <a href="https://meet.google.com/" target="_blank"><button class="button-primary" id="close-button">OKAY
+          SWEET!</button></a>
     </div>
   </div>
 
- 
+
 </body>
 
 </html>
