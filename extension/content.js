@@ -1,3 +1,7 @@
+chrome.storage.sync.set({ meetingState: "over" }, function () {
+  console.log("Meeting state set to over")
+})
+
 checkExtensionStatus().then(() => {
   // Read the status JSON
   chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
@@ -24,6 +28,11 @@ checkExtensionStatus().then(() => {
       connect();
 
       window.addEventListener("load", function () {
+        chrome.storage.sync.set({ meetingState: "lobby" }, function () {
+          console.log("Meeting state set to lobby")
+        })
+
+        // disabling camera or microphone
         checkElement(".oTVIqe").then((selector) => {
           console.log("Camera button is available");
           let buttons = document.querySelectorAll(".oTVIqe");

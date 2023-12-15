@@ -44,10 +44,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 
 
+chrome.webRequest.onCompleted.addListener(joinMeetingCallback,
+  { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice"] })
 
-chrome.webRequest.onCompleted.addListener(joinMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/join_call_*", "https://meet.google.com/hangouts/v1_meetings/media_streams/add?key=*"] })
-
-chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https://www.gstatic.com/meet/sounds/leave_call_*", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
+chrome.webRequest.onCompleted.addListener(exitMeetingCallback,
+  { urls: ["https://www.gstatic.com/meet/sounds/leave_call_*", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
 
 
 
@@ -56,24 +57,48 @@ chrome.webRequest.onCompleted.addListener(exitMeetingCallback, { urls: ["https:/
 
 
 function joinMeetingCallback() {
+  console.log("Successfully intercepted UpdateMeetingDevice network request")
   chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
     let extensionStatusJSON = result.extensionStatusJSON;
     if (extensionStatusJSON.status == 200) {
-      console.log("Successfully intercepted network request. Setting slack status.")
-      setSlackStatus();
+      chrome.storage.sync.get(["meetingState"], function (result) {
+        console.log(`Meeting state at network request intercept is ${result.meetingState}`)
+
+        if (result.meetingState == "lobby") {
+          chrome.storage.sync.set({ meetingState: "incall" }, function () {
+            console.log("Meeting state set to incall")
+            console.log("Setting slack status")
+            setSlackStatus();
+          })
+        }
+        else if (result.meetingState == "incall") {
+          console.log("Doing nothing. Meeting in progress.")
+          return
+        }
+        else if (result.meetingState == "over" || !result.meetingState) {
+          console.log("Doing nothing. False alarm.")
+        }
+      })
     }
     else {
       console.log("Not setting slack status as extension status is 400")
     }
   })
+
+
+
 }
 
-function exitMeetingCallback() {
+function exitMeetingCallback(source) {
+  console.log(`Successfully intercepted ${typeof (source) == "string" ? source : `exit network request`}`)
   chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
     let extensionStatusJSON = result.extensionStatusJSON;
     if (extensionStatusJSON.status == 200) {
-      console.log("Successfully intercepted network request. Clearing slack status.")
-      clearSlackStatus();
+      chrome.storage.sync.set({ meetingState: "over" }, function () {
+        console.log("Meeting state set to over")
+        console.log("Clearing slack status")
+        clearSlackStatus();
+      })
     }
     else {
       console.log("Not clearing slack status as extension status is 400")
@@ -89,8 +114,8 @@ function queryTabsInWindow() {
       // https://stackoverflow.com/a/3107221
       chrome.tabs.onRemoved.addListener(function tabsListenerCallback(tabid, removed) {
         if (tabId === tabid) {
-          console.log("Successfully intercepted tab close. Clearing slack status")
-          clearSlackStatus();
+          console.log("Successfully intercepted tab close")
+          exitMeetingCallback("tab close")
         }
       });
     });
