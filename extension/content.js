@@ -18,7 +18,6 @@ checkExtensionStatus().then(() => {
       window.addEventListener("load", function () {
         // disabling camera or microphone
         checkElement(".oTVIqe").then((selector) => {
-          console.log("Camera button is available");
           let buttons = document.querySelectorAll(".oTVIqe");
           if (buttons) {
             setTimeout(() => {

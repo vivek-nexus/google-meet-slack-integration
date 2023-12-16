@@ -176,21 +176,33 @@ function setSlackStatus() {
 function clearSlackStatus() {
   chrome.storage.local.get(["preMeetingSlackStatus"], function (result) {
     let raw;
-    let preMeetingSlackStatus = JSON.parse(result.preMeetingSlackStatus)
-    console.log("Status expiry diff " + (preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000)))
-    if (result.preMeetingSlackStatus && ((preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000)) > 0)) {
-      console.log("Found pre meeting slack status. Putting it back. " + result.preMeetingSlackStatus)
+    if (result.preMeetingSlackStatus) {
+      let preMeetingSlackStatus = JSON.parse(result.preMeetingSlackStatus)
+      console.log("Status expiry diff " + (preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000)))
+      if (((preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000)) > 0)) {
+        console.log("Found pre meeting slack status. Putting it back. " + result.preMeetingSlackStatus)
 
-      raw = JSON.stringify({
-        profile: {
-          status_text: preMeetingSlackStatus.status_text,
-          status_emoji: preMeetingSlackStatus.status_emoji,
-          status_expiration: preMeetingSlackStatus.status_expiration,
-        },
-      });
+        raw = JSON.stringify({
+          profile: {
+            status_text: preMeetingSlackStatus.status_text,
+            status_emoji: preMeetingSlackStatus.status_emoji,
+            status_expiration: preMeetingSlackStatus.status_expiration,
+          },
+        });
+      }
+      else {
+        console.log("Status validity has expired. Setting empty status.")
+        raw = JSON.stringify({
+          profile: {
+            status_text: "",
+            status_emoji: "",
+            status_expiration: 0,
+          },
+        });
+      }
     }
     else {
-      console.log("Did not find pre meeting slack status or status validity has expired. Setting empty status.")
+      console.log("Did not find pre meeting slack status. Setting empty status.")
       raw = JSON.stringify({
         profile: {
           status_text: "",
