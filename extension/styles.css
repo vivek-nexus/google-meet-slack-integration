@@ -44,7 +44,7 @@ a {
 
 }
 
-input {
+input[type=text] {
     width: 100%;
     font-family: 'Manrope', sans-serif;
     font-size: 1rem;
@@ -54,6 +54,10 @@ input {
     border: 2px solid #1a73e8;
     background-color: white;
     box-sizing: border-box;
+}
+
+input[type=checkbox] {
+    accent-color: #1a73e8;
 }
 
 .helper-text {

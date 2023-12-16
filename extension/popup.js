@@ -2,24 +2,40 @@
 
 
 window.onload = function () {
-  var slackKey = document.querySelector('#slack-key');
-  var slackStatus = document.querySelector('#slack-status');
-  var slackEmoji = document.querySelector('#slack-emoji');
-  var emojiPicker = document.querySelector('#emoji-picker');
-  var saveButton = document.querySelector('#save-button');
-  var revokeButton = document.querySelector('#revoke-button');
-  var revokeMessage = document.querySelector('#revoke-message');
-  var savedDrawer = document.querySelector('#saved-drawer-bg')
-  var closeButton = document.querySelector('#close-button');
+  const slackKey = document.querySelector('#slack-key');
+  const slackStatus = document.querySelector('#slack-status');
+  const slackEmoji = document.querySelector('#slack-emoji');
+  const emojiPicker = document.querySelector('#emoji-picker');
+  const microphoneToggle = document.querySelector('#microphone-toggle')
+  const cameraToggle = document.querySelector('#camera-toggle')
+  const saveButton = document.querySelector('#save-button');
+  const revokeButton = document.querySelector('#revoke-button');
+  const revokeMessage = document.querySelector('#revoke-message');
+  const savedDrawer = document.querySelector('#saved-drawer-bg')
+  const closeButton = document.querySelector('#close-button');
 
 
-  chrome.storage.sync.get(["meetSlackKey", "statusText", "emojiText"], function (result) {
+  chrome.storage.sync.get(["meetSlackKey", "statusText", "emojiText", "microphoneToggle", "cameraToggle"], function (result) {
     if (result.meetSlackKey)
       slackKey.value = "Saved, but hidden for security";
     if (result.statusText)
       slackStatus.value = result.statusText;
     if (result.emojiText)
       slackEmoji.value = result.emojiText
+
+    if (result.microphoneToggle == true)
+      microphoneToggle.checked = true
+    else if (result.microphoneToggle == undefined)
+      microphoneToggle.checked = false
+    else
+      microphoneToggle.checked = false
+
+    if (result.cameraToggle == true)
+      cameraToggle.checked = true
+    else if (result.cameraToggle == undefined)
+      cameraToggle.checked = true
+    else
+      cameraToggle.checked = false
   })
 
   emojiPicker.addEventListener('click', function () {
@@ -27,37 +43,30 @@ window.onload = function () {
   })
 
   saveButton.addEventListener('click', function () {
-    if (slackKey.value == 'Saved, but hidden for security') {
+    chrome.storage.sync.set(
+      {
+        emojiText: slackEmoji.value,
+        statusText: slackStatus.value,
+        microphoneToggle: microphoneToggle.checked,
+        cameraToggle: cameraToggle.checked
+      }, function () {
+        savedDrawer.style.display = 'block';
+      }
+    )
+    if (slackKey.value != 'Saved, but hidden for security') {
       chrome.storage.sync.set(
-        {
-          emojiText: slackEmoji.value,
-          statusText: slackStatus.value
-        }, function () {
-          savedDrawer.style.display='block';
-        }
-      )
-    }
-
-    else {
-      chrome.storage.sync.set(
-        {
-          meetSlackKey: slackKey.value,
-          emojiText: slackEmoji.value,
-          statusText: slackStatus.value
-        }, function () {
-          savedDrawer.style.display='block';
-        }
-      )
+        { meetSlackKey: slackKey.value }, function () {
+        })
     }
   })
 
-  closeButton.addEventListener('click', function(){
+  closeButton.addEventListener('click', function () {
     console.log("Storage data set")
     window.close();
   })
 
   revokeButton.addEventListener('click', function () {
-    var keyToReset;
+    let keyToReset;
     chrome.storage.sync.get(["meetSlackKey"], function (result) {
       if (result.meetSlackKey)
         keyToReset = result.meetSlackKey;
@@ -69,10 +78,10 @@ window.onload = function () {
         return
       }
 
-      var myHeaders = new Headers();
+      const myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${keyToReset}`);
 
-      var requestOptions = {
+      const requestOptions = {
         method: 'GET',
         headers: myHeaders,
         redirect: 'follow'

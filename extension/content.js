@@ -25,8 +25,12 @@ checkExtensionStatus().then(() => {
           let buttons = document.querySelectorAll(".oTVIqe");
           if (buttons) {
             setTimeout(() => {
-              //buttons[0].click(); //turns off microhphone, comment to disable
-              buttons[2].click(); //turns off camera, comment to disable
+              chrome.storage.sync.get(["microphoneToggle", "cameraToggle"], function (result) {
+                if (result.microphoneToggle == true)
+                  buttons[0].click()
+                if (result.cameraToggle == true)
+                  buttons[2].click()
+              })
             }, 750);
           }
         });
