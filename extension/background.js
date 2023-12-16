@@ -29,6 +29,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
       let extensionStatusJSON = result.extensionStatusJSON;
       if (extensionStatusJSON.status == 200) {
+        console.log("-------------NEW MEETING-------------")
         // Registering tabs listener on meeting page first load
         queryTabsInWindow();
         readPreMeetingSlackStatus();

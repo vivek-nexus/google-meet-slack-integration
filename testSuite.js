@@ -1,6 +1,6 @@
 // Run this test suite using extensions like https://chrome.google.com/webstore/detail/custom-javascript-for-web/ddbjnfjiigjmcpcpkmhogomapikjbjdk
 
-let meetURL = 'https://meet.google.com/mnw-uath-ank';
+let meetURL = 'https://meet.google.com/sgk-jtrv-vcb';
 
 window.addEventListener('focus', function () {
     window.location.href = meetURL;
@@ -146,7 +146,7 @@ window.addEventListener("load", async function () {
 
 async function clicker(delayBefore, delayMeeting) {
     setTimeout(function () {
-        contains("div", "Join now")[15].firstChild.click()
+        contains("div", "Join now")[14].firstChild.click()
     }, delayBefore);
 
     setTimeout(function () {

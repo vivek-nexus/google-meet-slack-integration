@@ -1,4 +1,5 @@
 chrome.storage.sync.set({ meetingState: "over" }, function () {
+  console.log("-------------NEW MEETING-------------")
   console.log("Meeting state set to over")
 })
 
