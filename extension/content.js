@@ -1,6 +1,7 @@
-chrome.storage.local.set({ meetingState: "over" }, function () {
+chrome.storage.local.set({ inMeeting: false, attendeeUUID: null }, function () {
   console.log("-------------NEW MEETING-------------")
-  console.log("Meeting state set to over")
+  console.log("inMeeting set to false")
+  console.log("Attendee UUID set to undefined")
 })
 
 checkExtensionStatus().then(() => {
@@ -15,10 +16,6 @@ checkExtensionStatus().then(() => {
       });
 
       window.addEventListener("load", function () {
-        chrome.storage.local.set({ meetingState: "lobby" }, function () {
-          console.log("Meeting state set to lobby")
-        })
-
         // disabling camera or microphone
         checkElement(".oTVIqe").then((selector) => {
           console.log("Camera button is available");

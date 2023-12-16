@@ -5,9 +5,19 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       if (request.message == "New meeting starting") {
         console.log("-------------NEW MEETING-------------")
         readPreMeetingSlackStatus()
+        chrome.storage.local.get(["inMeeting", "attendeeUUID"], function (result) {
+          console.log(`Saved inMeeting: ${result.inMeeting}`)
+          console.log(`Saved attendee UUID: ${result.attendeeUUID}`)
+        })
       }
       if (request.message == "Page unloaded") {
-        exitMeetingCallback("page unload")
+        console.log("Successfully intercepted page unload")
+        chrome.storage.local.set({ inMeeting: false, attendeeUUID: null }, function () {
+          console.log("inMeeting set to false")
+          console.log(`Attendee UUID set to null`)
+          console.log("Clearing slack status")
+          clearSlackStatus();
+        })
       }
     }
     else {
@@ -17,41 +27,44 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   return true
 })
 
-
-
-chrome.webRequest.onCompleted.addListener(joinMeetingCallback,
-  { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice"] })
-
-chrome.webRequest.onCompleted.addListener(exitMeetingCallback,
-  { urls: ["https://www.gstatic.com/meet/sounds/leave_call_*", "https://meet.google.com/v1/spaces/*/devices:close?key=*"] })
-
-
-
-
-
-
-
-function joinMeetingCallback() {
+chrome.webRequest.onBeforeRequest.addListener((details) => {
   console.log("Successfully intercepted UpdateMeetingDevice network request")
+  // https://stackoverflow.com/a/56521708
+  const parsedBody = extractInfoFromString(decodeURIComponent(String.fromCharCode.apply(null, new Uint8Array(details.requestBody.raw[0].bytes))))
+  webRequestCallback(parsedBody.eventType, parsedBody.uuid)
+},
+  { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice"] }, ["requestBody"])
+
+
+
+
+
+function webRequestCallback(eventType, uuid) {
   chrome.storage.local.get(["extensionStatusJSON"], function (result) {
     let extensionStatusJSON = result.extensionStatusJSON;
     if (extensionStatusJSON.status == 200) {
-      chrome.storage.local.get(["meetingState"], function (result) {
-        console.log(`Meeting state at network request intercept is ${result.meetingState}`)
+      chrome.storage.local.get(["inMeeting", "attendeeUUID"], function (result) {
+        console.log(`Saved inMeeting: ${result.inMeeting}`)
+        console.log(`Saved attendee UUID: ${result.attendeeUUID}`)
 
-        if (result.meetingState == "lobby") {
-          chrome.storage.local.set({ meetingState: "incall" }, function () {
-            console.log("Meeting state set to incall")
+        if ((eventType == "g") && (result.inMeeting == false) && (result.attendeeUUID == null)) {
+          chrome.storage.local.set({ inMeeting: true, attendeeUUID: uuid }, function () {
+            console.log(`Correct event of type "${eventType}", with ${uuid}`)
+            console.log(`inMeeting set to true. Attendee UUID set to ${uuid}.`)
             console.log("Setting slack status")
             setSlackStatus();
           })
         }
-        else if (result.meetingState == "incall") {
-          console.log("Doing nothing. Meeting in progress.")
-          return
+        else if ((eventType == "D") && (result.inMeeting == true) && (result.attendeeUUID == uuid)) {
+          chrome.storage.local.set({ inMeeting: false, attendeeUUID: null }, function () {
+            console.log(`Correct event of type "${eventType}", with ${uuid}`)
+            console.log(`inMeeting set to false. Attendee UUID set to null.`)
+            console.log("Clearing slack status")
+            clearSlackStatus();
+          })
         }
-        else if (result.meetingState == "over" || !result.meetingState) {
-          console.log("Doing nothing. False alarm.")
+        else {
+          console.log(`False event of type "${eventType}", with ${uuid}`)
         }
       })
     }
@@ -59,28 +72,7 @@ function joinMeetingCallback() {
       console.log("Not setting slack status as extension status is 400")
     }
   })
-
-
-
 }
-
-function exitMeetingCallback(source) {
-  console.log(`Successfully intercepted ${typeof (source) == "string" ? source : `exit network request`}`)
-  chrome.storage.local.get(["extensionStatusJSON"], function (result) {
-    let extensionStatusJSON = result.extensionStatusJSON;
-    if (extensionStatusJSON.status == 200) {
-      chrome.storage.local.set({ meetingState: "over" }, function () {
-        console.log("Meeting state set to over")
-        console.log("Clearing slack status")
-        clearSlackStatus();
-      })
-    }
-    else {
-      console.log("Not clearing slack status as extension status is 400")
-    }
-  })
-}
-
 
 
 
@@ -242,4 +234,17 @@ function makeSlackAPICall(raw, type) {
         .catch((error) => console.log("error", error));
     }
   });
+}
+
+function extractInfoFromString(str) {
+  const regex = /\n[gD]\n@spaces\/[^\/]+\/devices\/([a-fA-F0-9-]+)\b/;
+  const match = str.match(regex);
+
+  if (match) {
+    const eventType = match[0][1];
+    const uuid = match[1];
+    return { eventType, uuid };
+  }
+
+  return null;
 }
