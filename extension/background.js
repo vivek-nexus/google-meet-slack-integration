@@ -30,8 +30,16 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.webRequest.onBeforeRequest.addListener((details) => {
   console.log("Successfully intercepted UpdateMeetingDevice network request")
   // https://stackoverflow.com/a/56521708
-  const parsedBody = extractInfoFromString(decodeURIComponent(String.fromCharCode.apply(null, new Uint8Array(details.requestBody.raw[0].bytes))))
-  webRequestCallback(parsedBody.eventType, parsedBody.uuid)
+  const extractedBody = extractInfoFromString(decodeURIComponent(String.fromCharCode.apply(null, new Uint8Array(details.requestBody.raw[0].bytes))))
+  if (extractedBody != null) {
+    chrome.storage.local.get(["extensionStatusJSON"], function (result) {
+      let extensionStatusJSON = result.extensionStatusJSON;
+      if (extensionStatusJSON.status == 200)
+        webRequestCallback(extractedBody.eventType, extractedBody.uuid)
+      else
+        console.log("Not doing any page load actions as extension status is 400")
+    })
+  }
 },
   { urls: ["https://meet.google.com/$rpc/google.rtc.meetings.v1.MeetingDeviceService/UpdateMeetingDevice"] }, ["requestBody"])
 
@@ -40,36 +48,28 @@ chrome.webRequest.onBeforeRequest.addListener((details) => {
 
 
 function webRequestCallback(eventType, uuid) {
-  chrome.storage.local.get(["extensionStatusJSON"], function (result) {
-    let extensionStatusJSON = result.extensionStatusJSON;
-    if (extensionStatusJSON.status == 200) {
-      chrome.storage.local.get(["inMeeting", "attendeeUUID"], function (result) {
-        console.log(`Saved inMeeting: ${result.inMeeting}`)
-        console.log(`Saved attendee UUID: ${result.attendeeUUID}`)
+  chrome.storage.local.get(["inMeeting", "attendeeUUID"], function (result) {
+    console.log(`Saved inMeeting: ${result.inMeeting}`)
+    console.log(`Saved attendee UUID: ${result.attendeeUUID}`)
 
-        if ((eventType == "g") && (result.inMeeting == false) && (result.attendeeUUID == null)) {
-          chrome.storage.local.set({ inMeeting: true, attendeeUUID: uuid }, function () {
-            console.log(`Correct event of type "${eventType}", with ${uuid}`)
-            console.log(`inMeeting set to true. Attendee UUID set to ${uuid}.`)
-            console.log("Setting slack status")
-            setSlackStatus();
-          })
-        }
-        else if ((eventType == "D") && (result.inMeeting == true) && (result.attendeeUUID == uuid)) {
-          chrome.storage.local.set({ inMeeting: false, attendeeUUID: null }, function () {
-            console.log(`Correct event of type "${eventType}", with ${uuid}`)
-            console.log(`inMeeting set to false. Attendee UUID set to null.`)
-            console.log("Clearing slack status")
-            clearSlackStatus();
-          })
-        }
-        else {
-          console.log(`False event of type "${eventType}", with ${uuid}`)
-        }
+    if ((eventType == "g") && (result.inMeeting == false) && (result.attendeeUUID == null)) {
+      chrome.storage.local.set({ inMeeting: true, attendeeUUID: uuid }, function () {
+        console.log(`Correct event of type "${eventType}", with ${uuid}`)
+        console.log(`inMeeting set to true. Attendee UUID set to ${uuid}.`)
+        console.log("Setting slack status")
+        setSlackStatus();
+      })
+    }
+    else if ((eventType == "D") && (result.inMeeting == true) && (result.attendeeUUID == uuid)) {
+      chrome.storage.local.set({ inMeeting: false, attendeeUUID: null }, function () {
+        console.log(`Correct event of type "${eventType}", with ${uuid}`)
+        console.log(`inMeeting set to false. Attendee UUID set to null.`)
+        console.log("Clearing slack status")
+        clearSlackStatus();
       })
     }
     else {
-      console.log("Not setting slack status as extension status is 400")
+      console.log(`False event of type "${eventType}", with ${uuid}`)
     }
   })
 }
