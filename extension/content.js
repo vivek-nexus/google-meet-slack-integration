@@ -1,11 +1,11 @@
-chrome.storage.sync.set({ meetingState: "over" }, function () {
+chrome.storage.local.set({ meetingState: "over" }, function () {
   console.log("-------------NEW MEETING-------------")
   console.log("Meeting state set to over")
 })
 
 checkExtensionStatus().then(() => {
   // Read the status JSON
-  chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+  chrome.storage.local.get(["extensionStatusJSON"], function (result) {
     let extensionStatusJSON = result.extensionStatusJSON;
     console.log("Extension status " + extensionStatusJSON.status);
 
@@ -15,7 +15,7 @@ checkExtensionStatus().then(() => {
       });
 
       window.addEventListener("load", function () {
-        chrome.storage.sync.set({ meetingState: "lobby" }, function () {
+        chrome.storage.local.set({ meetingState: "lobby" }, function () {
           console.log("Meeting state set to lobby")
         })
 
@@ -72,7 +72,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 function joinKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
     if (event.ctrlKey && event.key === "v") {
-      chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+      chrome.storage.local.get(["extensionStatusJSON"], function (result) {
         let extensionStatusJSON = result.extensionStatusJSON;
         if (extensionStatusJSON.status == 200) {
           let askToJoin = contains("div", "Ask to join")
@@ -89,7 +89,7 @@ function joinKeyBoardShortcutListener() {
 function exitKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
     if (event.ctrlKey && event.key === "q") {
-      chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+      chrome.storage.local.get(["extensionStatusJSON"], function (result) {
         let extensionStatusJSON = result.extensionStatusJSON;
         if (extensionStatusJSON.status == 200 && contains("i", "call_end")[0])
           contains("i", "call_end")[0].parentElement.click();
@@ -177,7 +177,7 @@ const commonCSS = `background: rgb(255 255 255 / 75%);
 
 async function checkExtensionStatus() {
   // Set default value as 200
-  chrome.storage.sync.set({
+  chrome.storage.local.set({
     extensionStatusJSON: { status: 200, message: "" },
   });
 
@@ -189,7 +189,7 @@ async function checkExtensionStatus() {
     .then((response) => response.json())
     .then((result) => {
       // Write status to chrome local storage
-      chrome.storage.sync.set({ extensionStatusJSON: result }, function () {
+      chrome.storage.local.set({ extensionStatusJSON: result }, function () {
         console.log("Extension status fetched and saved")
       });
     })

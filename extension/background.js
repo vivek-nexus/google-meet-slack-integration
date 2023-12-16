@@ -1,5 +1,5 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+  chrome.storage.local.get(["extensionStatusJSON"], function (result) {
     let extensionStatusJSON = result.extensionStatusJSON;
     if (extensionStatusJSON.status == 200) {
       if (request.message == "New meeting starting") {
@@ -33,14 +33,14 @@ chrome.webRequest.onCompleted.addListener(exitMeetingCallback,
 
 function joinMeetingCallback() {
   console.log("Successfully intercepted UpdateMeetingDevice network request")
-  chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+  chrome.storage.local.get(["extensionStatusJSON"], function (result) {
     let extensionStatusJSON = result.extensionStatusJSON;
     if (extensionStatusJSON.status == 200) {
-      chrome.storage.sync.get(["meetingState"], function (result) {
+      chrome.storage.local.get(["meetingState"], function (result) {
         console.log(`Meeting state at network request intercept is ${result.meetingState}`)
 
         if (result.meetingState == "lobby") {
-          chrome.storage.sync.set({ meetingState: "incall" }, function () {
+          chrome.storage.local.set({ meetingState: "incall" }, function () {
             console.log("Meeting state set to incall")
             console.log("Setting slack status")
             setSlackStatus();
@@ -66,10 +66,10 @@ function joinMeetingCallback() {
 
 function exitMeetingCallback(source) {
   console.log(`Successfully intercepted ${typeof (source) == "string" ? source : `exit network request`}`)
-  chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+  chrome.storage.local.get(["extensionStatusJSON"], function (result) {
     let extensionStatusJSON = result.extensionStatusJSON;
     if (extensionStatusJSON.status == 200) {
-      chrome.storage.sync.set({ meetingState: "over" }, function () {
+      chrome.storage.local.set({ meetingState: "over" }, function () {
         console.log("Meeting state set to over")
         console.log("Clearing slack status")
         clearSlackStatus();
@@ -129,13 +129,9 @@ function readPreMeetingSlackStatus() {
             }
 
             let preMeetingSlackStatus = JSON.stringify(preMeetingSlackStatusJSON);
-            chrome.storage.sync.set(
-              {
-                preMeetingSlackStatus: preMeetingSlackStatus
-              }, function () {
-                console.log("Pre meeting emoji saved")
-              }
-            )
+            chrome.storage.local.set({ preMeetingSlackStatus: preMeetingSlackStatus }, function () {
+              console.log("Pre meeting emoji saved")
+            })
           }
           else {
             console.log("Cannot read pre meeting slack status. Please generate a fresh API key and paste in the extension.");
@@ -186,7 +182,7 @@ function setSlackStatus() {
 }
 
 function clearSlackStatus() {
-  chrome.storage.sync.get(["preMeetingSlackStatus"], function (result) {
+  chrome.storage.local.get(["preMeetingSlackStatus"], function (result) {
     let raw;
     let preMeetingSlackStatus = JSON.parse(result.preMeetingSlackStatus)
     console.log("Status expiry diff " + (preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000)))
