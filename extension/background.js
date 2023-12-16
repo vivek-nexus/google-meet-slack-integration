@@ -1,45 +1,19 @@
-
-
-
-// https://stackoverflow.com/a/66618269
-chrome.runtime.onConnect.addListener(port => {
-  if (port.name !== 'foo') return;
-  port.onMessage.addListener(onMessage);
-  port.onDisconnect.addListener(deleteTimer);
-  port._timer = setTimeout(forceReconnect, 5000, port);
-});
-
-function onMessage(msg, port) {
-  console.log('received', msg, 'from', port.sender);
-}
-function forceReconnect(port) {
-  deleteTimer(port);
-  port.disconnect();
-}
-function deleteTimer(port) {
-  if (port._timer) {
-    clearTimeout(port._timer);
-    delete port._timer;
-  }
-}
-
-
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.message == "New meeting starting") {
-    chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
-      let extensionStatusJSON = result.extensionStatusJSON;
-      if (extensionStatusJSON.status == 200) {
+  chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+    let extensionStatusJSON = result.extensionStatusJSON;
+    if (extensionStatusJSON.status == 200) {
+      if (request.message == "New meeting starting") {
         console.log("-------------NEW MEETING-------------")
-        // Registering tabs listener on meeting page first load
-        queryTabsInWindow();
-        readPreMeetingSlackStatus();
-        // sendResponse("Service worker up and running");
+        readPreMeetingSlackStatus()
       }
-      else {
-        console.log("Not doing any page load actions as extension status is 400")
+      if (request.message == "Page unloaded") {
+        exitMeetingCallback("page unload")
       }
-    })
-  }
+    }
+    else {
+      console.log("Not doing any page load actions as extension status is 400")
+    }
+  })
   return true
 })
 
@@ -106,23 +80,6 @@ function exitMeetingCallback(source) {
     }
   })
 }
-
-
-function queryTabsInWindow() {
-  chrome.tabs.query({ url: "https://meet.google.com/*" }, function (tabs) {
-    tabs.forEach(function (tab) {
-      let tabId = tab.id;
-      // https://stackoverflow.com/a/3107221
-      chrome.tabs.onRemoved.addListener(function tabsListenerCallback(tabid, removed) {
-        if (tabId === tabid) {
-          console.log("Successfully intercepted tab close")
-          exitMeetingCallback("tab close")
-        }
-      });
-    });
-  });
-}
-
 
 
 

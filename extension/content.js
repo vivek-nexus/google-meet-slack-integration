@@ -9,24 +9,10 @@ checkExtensionStatus().then(() => {
     let extensionStatusJSON = result.extensionStatusJSON;
     console.log("Extension status " + extensionStatusJSON.status);
 
-    chrome.runtime.sendMessage(
-      { message: "New meeting starting" },
-      function (response) {
-        console.log(response);
-      }
-    );
-
     if (extensionStatusJSON.status == 200) {
-      // https://stackoverflow.com/a/66618269
-      let port;
-      function connect() {
-        port = chrome.runtime.connect({ name: "foo" });
-        port.onDisconnect.addListener(connect);
-        port.onMessage.addListener((msg) => {
-          console.log("received", msg, "from bg");
-        });
-      }
-      connect();
+      chrome.runtime.sendMessage({ message: "New meeting starting" }, function (response) {
+        console.log(response);
+      });
 
       window.addEventListener("load", function () {
         chrome.storage.sync.set({ meetingState: "lobby" }, function () {
@@ -50,6 +36,12 @@ checkExtensionStatus().then(() => {
         joinKeyBoardShortcutListener();
         exitKeyBoardShortcutListener();
       });
+
+      window.addEventListener("beforeunload", function () {
+        chrome.runtime.sendMessage({ message: "Page unloaded" }, function (response) {
+          console.log(response);
+        });
+      })
     } else {
       window.addEventListener("load", function () {
         showNotification(400, extensionStatusJSON);
@@ -197,14 +189,9 @@ async function checkExtensionStatus() {
     .then((response) => response.json())
     .then((result) => {
       // Write status to chrome local storage
-      chrome.storage.sync.set(
-        {
-          extensionStatusJSON: result,
-        },
-        function () {
-          console.log("Extension status fetched and saved");
-        }
-      );
+      chrome.storage.sync.set({ extensionStatusJSON: result }, function () {
+        console.log("Extension status fetched and saved")
+      });
     })
     .catch((err) => {
       console.log(err);
