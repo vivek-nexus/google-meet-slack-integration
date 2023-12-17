@@ -77,19 +77,19 @@ function webRequestCallback(eventType, uuid) {
 
 
 function readPreMeetingSlackStatus() {
-  var key;
+  let key;
   chrome.storage.sync.get(["meetSlackKey", "statusText"], function (data) {
     if (data.meetSlackKey) {
       key = data.meetSlackKey;
 
-      var myHeaders = new Headers();
+      const myHeaders = new Headers();
       myHeaders.append(
         "Authorization",
         `Bearer ${key}`
       );
       myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-      var requestOptions = {
+      const requestOptions = {
         method: "GET",
         headers: myHeaders,
         redirect: "follow",
@@ -100,7 +100,7 @@ function readPreMeetingSlackStatus() {
         .then((result) => {
           // Save Pre meeting slack status, if status read was successful
           if (result.ok === true) {
-            console.log(result.profile.status_emoji + " | " + result.profile.status_text + " | " + data.statusText + " | " + result.profile.status_expiration)
+            console.log(data.statusText + " | " + result.profile.status_emoji + " | " + result.profile.status_text + " | " + result.profile.status_expiration)
 
             let preMeetingSlackStatusJSON;
             if (data.statusText == result.profile.status_text) {
@@ -161,7 +161,7 @@ function setSlackStatus() {
       text = result.statusText;
     }
 
-    var raw = JSON.stringify({
+    const raw = JSON.stringify({
       profile: {
         status_text: text,
         status_emoji: emoji,
@@ -169,7 +169,7 @@ function setSlackStatus() {
       },
     });
 
-    makeSlackAPICall(raw, "set");
+    makeSlackAPICall(raw);
   });
 }
 
@@ -178,10 +178,20 @@ function clearSlackStatus() {
     let raw;
     if (result.preMeetingSlackStatus) {
       let preMeetingSlackStatus = JSON.parse(result.preMeetingSlackStatus)
-      console.log("Status expiry diff " + (preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000)))
-      if (((preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000)) > 0)) {
+      const statusExpiryDelta = (preMeetingSlackStatus.status_expiration - parseInt(Date.now() / 1000))
+      console.log(`Status expiry diff ${statusExpiryDelta}`)
+      if (preMeetingSlackStatus.status_expiration == 0) {
+        console.log("Status validity is indefinite. Setting that status blindly.")
+        raw = JSON.stringify({
+          profile: {
+            status_text: preMeetingSlackStatus.status_text,
+            status_emoji: preMeetingSlackStatus.status_emoji,
+            status_expiration: preMeetingSlackStatus.status_expiration,
+          },
+        });
+      }
+      else if (statusExpiryDelta > 0) {
         console.log("Found pre meeting slack status. Putting it back. " + result.preMeetingSlackStatus)
-
         raw = JSON.stringify({
           profile: {
             status_text: preMeetingSlackStatus.status_text,
@@ -212,26 +222,26 @@ function clearSlackStatus() {
       });
     }
 
-    makeSlackAPICall(raw, "clear");
+    makeSlackAPICall(raw);
   })
 }
 
 
-function makeSlackAPICall(raw, type) {
-  var key;
+function makeSlackAPICall(raw) {
+  let key;
   chrome.storage.sync.get(["meetSlackKey"], function (result) {
 
     if (result.meetSlackKey) {
       key = result.meetSlackKey;
 
-      var myHeaders = new Headers();
+      const myHeaders = new Headers();
       myHeaders.append(
         "Authorization",
         `Bearer ${key}`
       );
       myHeaders.append("Content-Type", "application/json");
 
-      var requestOptions = {
+      const requestOptions = {
         method: "POST",
         headers: myHeaders,
         body: raw,
@@ -241,7 +251,7 @@ function makeSlackAPICall(raw, type) {
       fetch("https://slack.com/api/users.profile.set", requestOptions)
         .then((response) => response.text())
         .then((result) => {
-          // console.log("Slack status altered")
+          console.log(`Slack status altered ${JSON.parse(result).ok}`)
         })
         .catch((error) => console.log("error", error));
     }
