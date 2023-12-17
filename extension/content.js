@@ -71,7 +71,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 function joinKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
-    if (event.ctrlKey && event.key === "v") {
+    if ((event.ctrlKey || event.metaKey) && (event.key.toLowerCase() === "v")) {
       chrome.storage.local.get(["extensionStatusJSON"], function (result) {
         let extensionStatusJSON = result.extensionStatusJSON;
         if (extensionStatusJSON.status == 200) {
@@ -88,7 +88,7 @@ function joinKeyBoardShortcutListener() {
 
 function exitKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
-    if (event.ctrlKey && event.key === "q") {
+    if ((event.ctrlKey || event.metaKey) && (event.shiftKey) && (event.key.toLowerCase() === "v")) {
       chrome.storage.local.get(["extensionStatusJSON"], function (result) {
         let extensionStatusJSON = result.extensionStatusJSON;
         if (extensionStatusJSON.status == 200 && contains("i", "call_end")[0])
