@@ -1,7 +1,7 @@
 chrome.storage.local.set({ inMeeting: false, attendeeUUID: null }, function () {
   console.log("-------------NEW MEETING-------------")
   console.log("inMeeting set to false")
-  console.log("Attendee UUID set to undefined")
+  console.log("Attendee UUID set to null")
 })
 
 checkExtensionStatus().then(() => {
@@ -15,38 +15,35 @@ checkExtensionStatus().then(() => {
         console.log(response);
       });
 
-      window.addEventListener("load", function () {
-        // disabling camera or microphone
-        checkElement(".oTVIqe").then((selector) => {
-          let buttons = document.querySelectorAll(".oTVIqe");
-          if (buttons) {
-            setTimeout(() => {
-              chrome.storage.sync.get(["microphoneToggle", "cameraToggle"], function (result) {
-                if (result.microphoneToggle == true)
-                  buttons[0].click()
-                if (result.cameraToggle == true)
-                  buttons[2].click()
-              })
-            }, 750);
-          }
-        });
-
-        showNotification(200, extensionStatusJSON);
-
-        joinKeyBoardShortcutListener();
-        exitKeyBoardShortcutListener();
+      // disabling camera or microphone
+      checkElement(".oTVIqe").then((selector) => {
+        let buttons = document.querySelectorAll(".oTVIqe");
+        if (buttons) {
+          setTimeout(() => {
+            chrome.storage.sync.get(["microphoneToggle", "cameraToggle"], function (result) {
+              if (result.microphoneToggle == true)
+                buttons[0].click()
+              if (result.cameraToggle == true)
+                buttons[2].click()
+            })
+          }, 500);
+        }
       });
+
+      showNotification(200, extensionStatusJSON);
+
+      joinKeyBoardShortcutListener();
+      exitKeyBoardShortcutListener();
 
       window.addEventListener("beforeunload", function () {
         chrome.runtime.sendMessage({ message: "Page unloaded" }, function (response) {
           console.log(response);
         });
       })
-    } else {
-      window.addEventListener("load", function () {
-        showNotification(400, extensionStatusJSON);
-        return;
-      });
+    }
+    else {
+      showNotification(400, extensionStatusJSON);
+      return;
     }
   });
 });
