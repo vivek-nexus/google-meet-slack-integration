@@ -13,8 +13,8 @@ Join our [slack community](https://join.slack.com/t/gmeet-slack/shared_invite/zt
 <br><br>
 
 # Demo
-
-![demo](https://user-images.githubusercontent.com/26523871/158046509-96d508f7-fbeb-424e-9268-3d18cd791ec7.gif)
+View demo on [YouTube](https://www.youtube.com/watch?v=XtJR7ox_WH4)
+![demo](/demo.gif)
 
 <br><br>
 
