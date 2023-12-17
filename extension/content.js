@@ -1,50 +1,49 @@
+chrome.storage.local.set({ inMeeting: false, attendeeUUID: null }, function () {
+  console.log("-------------NEW MEETING-------------")
+  console.log("inMeeting set to false")
+  console.log("Attendee UUID set to null")
+})
+
 checkExtensionStatus().then(() => {
   // Read the status JSON
-  chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+  chrome.storage.local.get(["extensionStatusJSON"], function (result) {
     let extensionStatusJSON = result.extensionStatusJSON;
     console.log("Extension status " + extensionStatusJSON.status);
 
-    chrome.runtime.sendMessage(
-      { message: "New meeting starting" },
-      function (response) {
-        console.log(response);
-      }
-    );
-
     if (extensionStatusJSON.status == 200) {
-      // https://stackoverflow.com/a/66618269
-      let port;
-      function connect() {
-        port = chrome.runtime.connect({ name: "foo" });
-        port.onDisconnect.addListener(connect);
-        port.onMessage.addListener((msg) => {
-          console.log("received", msg, "from bg");
-        });
-      }
-      connect();
-
-      window.addEventListener("load", function () {
-        checkElement(".oTVIqe").then((selector) => {
-          console.log("Camera button is available");
-          let buttons = document.querySelectorAll(".oTVIqe");
-          if (buttons) {
-            setTimeout(() => {
-              //buttons[0].click(); //turns off microhphone, comment to disable
-              buttons[2].click(); //turns off camera, comment to disable
-            }, 750);
-          }
-        });
-
-        showNotification(200, extensionStatusJSON);
-
-        joinKeyBoardShortcutListener();
-        exitKeyBoardShortcutListener();
+      chrome.runtime.sendMessage({ message: "New meeting starting" }, function (response) {
+        console.log(response);
       });
-    } else {
-      window.addEventListener("load", function () {
-        showNotification(400, extensionStatusJSON);
-        return;
+
+      // disabling camera or microphone
+      checkElement(".oTVIqe").then((selector) => {
+        let buttons = document.querySelectorAll(".oTVIqe");
+        if (buttons) {
+          setTimeout(() => {
+            chrome.storage.sync.get(["microphoneToggle", "cameraToggle"], function (result) {
+              if (result.microphoneToggle == true)
+                buttons[0].click()
+              if (result.cameraToggle == true)
+                buttons[2].click()
+            })
+          }, 500);
+        }
       });
+
+      showNotification(200, extensionStatusJSON);
+
+      joinKeyBoardShortcutListener();
+      exitKeyBoardShortcutListener();
+
+      window.addEventListener("beforeunload", function () {
+        chrome.runtime.sendMessage({ message: "Page unloaded" }, function (response) {
+          console.log(response);
+        });
+      })
+    }
+    else {
+      showNotification(400, extensionStatusJSON);
+      return;
     }
   });
 });
@@ -69,8 +68,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 function joinKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
-    if (event.ctrlKey && event.key === "v") {
-      chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+    if ((event.ctrlKey || event.metaKey) && (event.key.toLowerCase() === "v")) {
+      chrome.storage.local.get(["extensionStatusJSON"], function (result) {
         let extensionStatusJSON = result.extensionStatusJSON;
         if (extensionStatusJSON.status == 200) {
           let askToJoin = contains("div", "Ask to join")
@@ -86,8 +85,8 @@ function joinKeyBoardShortcutListener() {
 
 function exitKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
-    if (event.ctrlKey && event.key === "q") {
-      chrome.storage.sync.get(["extensionStatusJSON"], function (result) {
+    if ((event.ctrlKey || event.metaKey) && (event.shiftKey) && (event.key.toLowerCase() === "v")) {
+      chrome.storage.local.get(["extensionStatusJSON"], function (result) {
         let extensionStatusJSON = result.extensionStatusJSON;
         if (extensionStatusJSON.status == 200 && contains("i", "call_end")[0])
           contains("i", "call_end")[0].parentElement.click();
@@ -119,7 +118,7 @@ function showNotification(type, extensionStatusJSON) {
 
   logo.setAttribute(
     "src",
-    "https://yakshag.github.io/gmeet-slack-integration-status/icon.png"
+    "https://ejnana.github.io/gmeet-slack-integration-status/icon.png"
   );
   logo.setAttribute("height", "32px");
   logo.setAttribute("width", "32px");
@@ -175,26 +174,21 @@ const commonCSS = `background: rgb(255 255 255 / 75%);
 
 async function checkExtensionStatus() {
   // Set default value as 200
-  chrome.storage.sync.set({
-    extensionStatusJSON: { status: 200, message: "" },
+  chrome.storage.local.set({
+    extensionStatusJSON: { status: 200, message: "<strong>Google Meet ⇔ Slack is running</strong> <br /> Pro tip: Use Ctrl / ⌘ + V to join meeting, Ctrl / ⌘ + Shift + V to exit meeting" },
   });
 
   // https://stackoverflow.com/a/42518434
   await fetch(
-    "https://yakshag.github.io/gmeet-slack-integration-status/status-prod.json",
+    "https://ejnana.github.io/gmeet-slack-integration-status/status-prod.json",
     { cache: "no-store" }
   )
     .then((response) => response.json())
     .then((result) => {
       // Write status to chrome local storage
-      chrome.storage.sync.set(
-        {
-          extensionStatusJSON: result,
-        },
-        function () {
-          console.log("Extension status fetched and saved");
-        }
-      );
+      chrome.storage.local.set({ extensionStatusJSON: result }, function () {
+        console.log("Extension status fetched and saved")
+      });
     })
     .catch((err) => {
       console.log(err);

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Google Meet ⇔ Slack integration</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="popup.js" type="module"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 2rem 0rem;">
+      <img style="height: 64px; border-radius: 8px; filter: drop-shadow(0px 2px 4px #00000061)" src="icon.png"
+        alt="icon">
+      <div>
+        <h1>Google Meet ⇔ Slack</h1>
+        <p style="margin: 0.25rem;">Real-time Google Meet status on Slack</p>
+      </div>
+    </div>
+
+    <div class="form-container">
+      <label class="input-label">🔑 Slack API key</label>
+      <input id="slack-key" type="text" />
+      <p class="helper-text">Starts with xoxp-</p>
+
+      <div style=" margin-bottom: 3rem;">
+        <a href="https://slack.com/oauth/v2/authorize?client_id=3243307866673.3224053662614&scope=&user_scope=users.profile:read,users.profile:write"
+          target="_blank">
+          <button class="button-secondary">GET SLACK API KEY ↗</button>
+        </a>
+      </div>
+
+
+      <div style=" margin-bottom: 3rem;">
+        <label class="input-label">✏️ Meeting status emoji and text</label>
+        <div style="display: flex;">
+          <div style="width: 25%; margin-right: 1rem;">
+            <div style="position: relative; align-items: center;">
+              <img src="insert_emoticon_white_24dp.svg" id="emoji-picker" alt="emoji-picker">
+              <input id="slack-emoji" type="text" value="📞" />
+            </div>
+          </div>
+          <div style="width: 75%">
+            <input id="slack-status" type="text" value="On a meet call • Reply may be delayed" />
+          </div>
+        </div>
+        <a style="display: block; margin-bottom: 1rem;" class="helper-text"
+          href="https://github.com/yakshaG/google-meet-slack-integration#3-choose-meeting-status-emoji"
+          target="_blank"><strong>How to
+            paste a fun custom slack emoji? ↗</strong>
+        </a>
+      </div>
+
+      <div style="margin-bottom: 1.5rem; display: flex; gap: 2rem;">
+        <div style="display: flex; gap: 0.15rem;">
+          <input id="microphone-toggle" type="checkbox" name="microphone-toggle" />
+          <label class="input-label" style="margin: 0px;">Turn off microphone</label>
+        </div>
+        <div style="display: flex; gap: 0.15rem;">
+          <input id="camera-toggle" type="checkbox" name="camera-toggle" />
+          <label class="input-label" style="margin: 0px;">Turn off camera</label>
+        </div>
+
+      </div>
+
+      <button class="button-primary" id="save-button">SAVE</button>
+    </div>
+
+
+    <div class="button-div" style="margin-bottom: 1rem;">
+      <a href="https://github.com/yakshaG/google-meet-slack-integration#faqs" target="_blank">
+        <button class="button-secondary">HELP ↗</button>
+      </a>
+    </div>
+
+    <a style="display: block; margin-bottom: 1rem; text-align: center;" class="helper-text"
+      href="https://github.com/yakshaG/google-meet-slack-integration/issues" target="_blank"><strong>Report an issue
+        ↗</strong></a>
+
+
+    <div class="button-div">
+      <button class="button-secondary" id="revoke-button" style="color: red; border-color: red;">REVOKE SLACK API
+        KEY</button>
+    </div>
+
+
+
+    <p id="revoke-message" class="helper-text" style="text-align: center;"></p>
+  </div>
+
+  <div id="saved-drawer-bg" style="display: none;">
+    <div id="saved-drawer-sheet">
+      <h1>Settings saved!</h1>
+      <p>Join a new meeting to see changes</p>
+      <a href="https://meet.google.com/" target="_blank"><button class="button-primary" id="close-button">OKAY
+          SWEET!</button></a>
+    </div>
+  </div>
+
+
+</body>
+
+</html>
