@@ -10,10 +10,16 @@ Extension status: 🟢 OPERATIONAL
 
 Join our [slack community](https://join.slack.com/t/gmeet-slack/shared_invite/zt-1baltvk0g-KAOVMiMYnEFbYMWyyIfZwg) for help and updates.
 
+
+![extension-screenshot](/extension_screenshot.png)
+
+
+
 <br><br>
 
 # Demo
 View demo on [YouTube](https://www.youtube.com/watch?v=XtJR7ox_WH4)
+
 ![demo](/demo.gif)
 
 <br><br>
@@ -29,7 +35,7 @@ Once installed, open a new tab and join any meeting link. Now find and open the 
 
 ![extension-screenshot](/extension_screenshot.png)
 
-Chrome extension requires three inputs:
+Chrome extension requires the following inputs:
 ### 1. Slack API key
 Click `GET SLACK API KEY` to install the slack app and generate your Slack API key.
 > Slack API key starts with `xoxp-` 
@@ -49,6 +55,8 @@ This will be the emoji displayed in your slack status, during the meeting. Defau
 
 ![image](https://user-images.githubusercontent.com/26523871/164879068-b9cf8fcf-7d50-4a33-9856-0dc3cd94bd64.png)
 
+### 4. Choose automatic microphone and camera disabling
+You can choose to automatically disable microphone or camera or both, before joining the meeting.
 
 **Click save** for the extension to start working. You should see a green banner which indicates that the extension is working.
 
@@ -58,11 +66,11 @@ This will be the emoji displayed in your slack status, during the meeting. Defau
 # Usage
 Join a meeting to test that your slack status updates automatically. Refresh meeting lobby page, if the extension does not load for the first time.
 
-> **Pro-tip**: You can also use these keyboard shortcuts (even on a Mac)
+> **Pro-tip**: You can also use these keyboard shortcuts
 > 
->  `CTRL+V` to join a meeting
+>  `Ctrl / ⌘ + V` to join a meeting
 > 
-> `CTRL+Q` to quit a meeting
+> `Ctrl / ⌘ + Shift + V` to quit a meeting
 
 
 <br><br>
