@@ -77,7 +77,7 @@ Join a meeting to test that your slack status updates automatically. Refresh mee
 
 
 # Contributors
-[Aditya Gannavarapu](https://github.com/aditya-67) and [Vivek G](https://github.com/yakshaG). Thanks to [Ritwick Dey](https://github.com/ritwickdey) for suggestions.
+[Aditya Gannavarapu](https://github.com/aditya-67) and [Vivek G](https://github.com/vivek-nexus). Thanks to [Ritwick Dey](https://github.com/ritwickdey) for suggestions.
 
 <br><br>
 
@@ -118,6 +118,6 @@ This extension or the slack app do not store any keys or data in any form. All d
 <br><br>
 
 # Change log and Wiki
-Take a look at the project's wiki at https://github.com/yakshaG/google-meet-slack-integration/wiki
+Take a look at the project's wiki at https://github.com/vivek-nexus/google-meet-slack-integration/wiki
 
 
