@@ -1,9 +1,3 @@
-chrome.storage.local.set({ inMeeting: false, attendeeUUID: null }, function () {
-  console.log("-------------NEW MEETING-------------")
-  console.log("inMeeting set to false")
-  console.log("Attendee UUID set to null")
-})
-
 checkExtensionStatus().then(() => {
   // Read the status JSON
   chrome.storage.local.get(["extensionStatusJSON"], function (result) {
@@ -17,6 +11,7 @@ checkExtensionStatus().then(() => {
 
       // disabling camera or microphone
       checkElement(".oTVIqe").then((selector) => {
+        console.log("Mic and camera visible")
         let buttons = document.querySelectorAll(".oTVIqe");
         if (buttons) {
           setTimeout(() => {
@@ -39,6 +34,20 @@ checkExtensionStatus().then(() => {
         chrome.runtime.sendMessage({ message: "Page unloaded" }, function (response) {
           console.log(response);
         });
+      })
+
+      checkElement(".google-material-icons", "call_end").then(() => {
+        console.log("Meeting started, setting Slack status")
+        chrome.runtime.sendMessage({ message: "Set status" }, function (response) {
+          console.log(response);
+        });
+
+        contains(".google-material-icons", "call_end")[0].parentElement.addEventListener("click", () => {
+          console.log("Meeting ended, clearing Slack status")
+          chrome.runtime.sendMessage({ message: "Clear status" }, function (response) {
+            console.log(response);
+          });
+        })
       })
     }
     else {
@@ -68,7 +77,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 function joinKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
-    if ((event.ctrlKey || event.metaKey) && (event.key.toLowerCase() === "v")) {
+    if ((event.ctrlKey || event.metaKey) && !(event.shiftKey) && (event.key.toLowerCase() === "v")) {
       chrome.storage.local.get(["extensionStatusJSON"], function (result) {
         let extensionStatusJSON = result.extensionStatusJSON;
         if (extensionStatusJSON.status == 200) {
@@ -102,12 +111,19 @@ function contains(selector, text) {
   });
 }
 
-const checkElement = async (selector) => {
-  while (document.querySelector(selector) === null) {
-    await new Promise((resolve) => requestAnimationFrame(resolve));
+const checkElement = async (selector, text) => {
+  if (text) {
+    while (!Array.from(document.querySelectorAll(selector)).find(element => element.textContent === text)) {
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+    }
+  }
+  else {
+    while (!document.querySelector(selector)) {
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+    }
   }
   return document.querySelector(selector);
-};
+}
 
 function showNotification(type, extensionStatusJSON) {
   // Banner CSS
