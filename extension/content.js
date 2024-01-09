@@ -78,16 +78,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 function joinKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && !(event.shiftKey) && (event.key.toLowerCase() === "v")) {
-      chrome.storage.local.get(["extensionStatusJSON"], function (result) {
-        let extensionStatusJSON = result.extensionStatusJSON;
-        if (extensionStatusJSON.status == 200) {
-          let askToJoin = contains("div", "Ask to join")
-          let joinNow = contains("div", "Join now")
-          if (askToJoin.length > 0)
-            askToJoin[askToJoin.length - 1].firstChild.click();
-          else joinNow[joinNow.length - 1].firstChild.click();
-        }
-      });
+      let askToJoin = contains("div", "Ask to join")
+      let joinNow = contains("div", "Join now")
+      if (askToJoin.length > 0)
+        askToJoin[askToJoin.length - 1].firstChild.click();
+      else joinNow[joinNow.length - 1].firstChild.click();
     }
   });
 }
@@ -95,11 +90,8 @@ function joinKeyBoardShortcutListener() {
 function exitKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && (event.shiftKey) && (event.key.toLowerCase() === "v")) {
-      chrome.storage.local.get(["extensionStatusJSON"], function (result) {
-        let extensionStatusJSON = result.extensionStatusJSON;
-        if (extensionStatusJSON.status == 200 && contains("i", "call_end")[0])
-          contains("i", "call_end")[0].parentElement.click();
-      });
+      if (contains("i", "call_end")[0])
+        contains("i", "call_end")[0].parentElement.click();
     }
   });
 }

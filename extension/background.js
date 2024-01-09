@@ -1,28 +1,20 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  chrome.storage.local.get(["extensionStatusJSON"], function (result) {
-    let extensionStatusJSON = result.extensionStatusJSON;
-    if (extensionStatusJSON.status == 200) {
-      if (request.message == "New meeting starting") {
-        console.log("-------------NEW MEETING-------------")
-        readPreMeetingSlackStatus()
-      }
-      if (request.message == "Set status") {
-        console.log("Setting slack status")
-        setSlackStatus();
-      }
-      if (request.message == "Clear status") {
-        console.log("Clearing slack status")
-        clearSlackStatus();
-      }
-      if (request.message == "Page unloaded") {
-        console.log("Successfully intercepted page unload")
-        clearSlackStatus();
-      }
-    }
-    else {
-      console.log("Not doing any page load actions as extension status is 400")
-    }
-  })
+  if (request.message == "New meeting starting") {
+    console.log("-------------NEW MEETING-------------")
+    readPreMeetingSlackStatus()
+  }
+  if (request.message == "Set status") {
+    console.log("Setting slack status")
+    setSlackStatus();
+  }
+  if (request.message == "Clear status") {
+    console.log("Clearing slack status")
+    clearSlackStatus();
+  }
+  if (request.message == "Page unloaded") {
+    console.log("Successfully intercepted page unload")
+    clearSlackStatus();
+  }
   return true
 })
 
