@@ -8,7 +8,7 @@ Improve workplace communication by connecting Google Meet with Slack!
 
 Extension status: 🟢 OPERATIONAL
 
-Join our [slack community](https://join.slack.com/t/gmeet-slack/shared_invite/zt-1baltvk0g-KAOVMiMYnEFbYMWyyIfZwg) for help and updates.
+Join our [slack community](https://join.slack.com/t/vivek-nexus/shared_invite/zt-1baltvk0g-KAOVMiMYnEFbYMWyyIfZwg) for help and updates.
 
 
 ![extension-screenshot](/extension_screenshot.png)
