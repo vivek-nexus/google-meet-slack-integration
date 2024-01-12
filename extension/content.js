@@ -10,7 +10,7 @@ checkExtensionStatus().then(() => {
       });
 
       // disabling camera or microphone
-      checkElement(".oTVIqe").then((selector) => {
+      checkElement(".oTVIqe").then(() => {
         console.log("Mic and camera visible")
         let buttons = document.querySelectorAll(".oTVIqe");
         if (buttons) {
@@ -82,7 +82,8 @@ function joinKeyBoardShortcutListener() {
       let joinNow = contains("div", "Join now")
       if (askToJoin.length > 0)
         askToJoin[askToJoin.length - 1].firstChild.click();
-      else joinNow[joinNow.length - 1].firstChild.click();
+      else if (joinNow.length > 0)
+        joinNow[joinNow.length - 1].firstChild.click();
     }
   });
 }
