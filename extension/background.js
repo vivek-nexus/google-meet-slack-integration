@@ -66,7 +66,7 @@ function readPreMeetingSlackStatus() {
 
             let preMeetingSlackStatus = JSON.stringify(preMeetingSlackStatusJSON);
             chrome.storage.local.set({ preMeetingSlackStatus: preMeetingSlackStatus }, function () {
-              console.log("Pre meeting emoji saved")
+              console.log("Pre meeting status saved")
             })
           }
           else {
@@ -84,7 +84,7 @@ function readPreMeetingSlackStatus() {
 
 function setSlackStatus() {
   let emoji = "📞";
-  let text = "On a meet call • Reply may be delayed";
+  let text = "On a meet call • Reply may be delayed (realtime via Chrome extension)";
   chrome.storage.sync.get(["emojiText", "statusText"], function (result) {
     if (result.emojiText) {
       // https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript
@@ -102,7 +102,7 @@ function setSlackStatus() {
       }
     }
     if (result.statusText) {
-      text = result.statusText;
+      text = result.statusText + " (realtime via Chrome extension)";
     }
 
     const raw = JSON.stringify({
@@ -200,17 +200,4 @@ function makeSlackAPICall(raw) {
         .catch((error) => console.log("error", error));
     }
   });
-}
-
-function extractInfoFromString(str) {
-  const regex = /\n[gD]\n@spaces\/[^\/]+\/devices\/([a-fA-F0-9-]+)\b/;
-  const match = str.match(regex);
-
-  if (match) {
-    const eventType = match[0][1];
-    const uuid = match[1];
-    return { eventType, uuid };
-  }
-
-  return null;
 }
