@@ -84,7 +84,7 @@ function readPreMeetingSlackStatus() {
 
 function setSlackStatus() {
   let emoji = "📞";
-  let text = "On a meet call • Reply may be delayed (realtime via Chrome extension)";
+  let text = "On a meet call • Reply may be delayed (realtime via Glack)";
   chrome.storage.sync.get(["emojiText", "statusText"], function (result) {
     if (result.emojiText) {
       // https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript
@@ -102,7 +102,7 @@ function setSlackStatus() {
       }
     }
     if (result.statusText) {
-      text = result.statusText + " (realtime via Chrome extension)";
+      text = result.statusText + " (realtime via Glack)";
     }
 
     const raw = JSON.stringify({

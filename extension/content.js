@@ -184,7 +184,7 @@ const commonCSS = `background: rgb(255 255 255 / 75%);
 async function checkExtensionStatus() {
   // Set default value as 200
   chrome.storage.local.set({
-    extensionStatusJSON: { status: 200, message: "<strong>Google Meet ⇔ Slack is running</strong> <br /> Pro tip: Use Ctrl / ⌘ + V to join meeting, Ctrl / ⌘ + Shift + V to exit meeting" },
+    extensionStatusJSON: { status: 200, message: "<strong>Glack is running</strong> <br /> Pro tip: Use Ctrl / ⌘ + V to join meeting, Ctrl / ⌘ + Shift + V to exit meeting" },
   });
 
   // https://stackoverflow.com/a/42518434
