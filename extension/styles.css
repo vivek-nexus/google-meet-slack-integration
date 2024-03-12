@@ -6,7 +6,7 @@ body {
 }
 
 .container {
-    width: 480px;
+    width: 560px;
     padding: 1.5rem;
     padding-top: 0;
     background: linear-gradient(225deg, #ffbb0049 100%, #e1185b49 100%);
