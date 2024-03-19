@@ -21,10 +21,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 
 function readPreMeetingSlackStatus() {
-  let key;
   chrome.storage.sync.get(["meetSlackKey", "statusText"], function (data) {
     if (data.meetSlackKey) {
-      key = data.meetSlackKey;
+      const key = data.meetSlackKey;
+      const statusText = data.statusText + " (realtime via Glack)"
 
       const myHeaders = new Headers();
       myHeaders.append(
@@ -44,10 +44,10 @@ function readPreMeetingSlackStatus() {
         .then((result) => {
           // Save Pre meeting slack status, if status read was successful
           if (result.ok === true) {
-            console.log(data.statusText + " | " + result.profile.status_emoji + " | " + result.profile.status_text + " | " + result.profile.status_expiration)
+            console.log(statusText + " | " + result.profile.status_emoji + " | " + result.profile.status_text + " | " + result.profile.status_expiration)
 
             let preMeetingSlackStatusJSON;
-            if (data.statusText == result.profile.status_text) {
+            if (statusText == result.profile.status_text) {
               console.log("Oh no! Status from previous meeting is stuck. Time to reset")
               preMeetingSlackStatusJSON = {
                 status_text: "",
