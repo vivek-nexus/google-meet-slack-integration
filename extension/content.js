@@ -30,12 +30,6 @@ checkExtensionStatus().then(() => {
       joinKeyBoardShortcutListener();
       exitKeyBoardShortcutListener();
 
-      window.addEventListener("beforeunload", function () {
-        chrome.runtime.sendMessage({ message: "Page unloaded" }, function (response) {
-          console.log(response);
-        });
-      })
-
       checkElement(".google-material-icons", "call_end").then(() => {
         console.log("Meeting started, setting Slack status")
         chrome.runtime.sendMessage({ message: "Set status" }, function (response) {
@@ -64,12 +58,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         "Oops! Insufficient permissions to update your slack status! \n\n Do you want to regenerate Slack API key now?"
       )
     ) {
-      window
-        .open(
-          "https://slack.com/oauth/v2/authorize?client_id=3243307866673.3224053662614&scope=&user_scope=users.profile:read,users.profile:write",
-          "_blank"
-        )
-        .focus();
+      window.open(
+        "https://slack.com/oauth/v2/authorize?client_id=3243307866673.3224053662614&scope=&user_scope=users.profile:read,users.profile:write",
+        "_blank"
+      ).focus();
     }
     sendResponse({ message: "Alerted the user to regenerate slack API key" });
   }

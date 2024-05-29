@@ -1,23 +1,40 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message == "New meeting starting") {
     console.log("-------------NEW MEETING-------------")
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      var tabId = tabs[0].id
+      chrome.storage.local.set({ meetingTabId: tabId }, function () {
+        console.log("Meeting tab id saved")
+      })
+    })
     readPreMeetingSlackStatus()
   }
   if (request.message == "Set status") {
     console.log("Setting slack status")
-    setSlackStatus();
+    setSlackStatus()
   }
   if (request.message == "Clear status") {
+    // Invalidate tab id since Slack status is cleared, prevents double clearing of Slack status from tab closed event listener
+    chrome.storage.local.set({ meetingTabId: null }, function () {
+      console.log("Meeting tab id cleared")
+    })
     console.log("Clearing slack status")
-    clearSlackStatus();
-  }
-  if (request.message == "Page unloaded") {
-    console.log("Successfully intercepted page unload")
-    clearSlackStatus();
+    clearSlackStatus()
   }
   return true
 })
 
+
+chrome.tabs.onRemoved.addListener(function (tabid) {
+  chrome.storage.local.get(["meetingTabId"], function (data) {
+    console.log(tabid)
+    console.log(data.meetingTabId)
+    if (tabid == data.meetingTabId) {
+      console.log("Successfully intercepted tab close")
+      clearSlackStatus()
+    }
+  })
+})
 
 
 function readPreMeetingSlackStatus() {
