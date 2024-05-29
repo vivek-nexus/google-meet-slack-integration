@@ -1,15 +1,16 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message == "New meeting starting") {
     console.log("-------------NEW MEETING-------------")
+    readPreMeetingSlackStatus()
+  }
+  if (request.message == "Set status") {
+    // Saving current tab id, to clear Slack status when this tab is closed
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       var tabId = tabs[0].id
       chrome.storage.local.set({ meetingTabId: tabId }, function () {
         console.log("Meeting tab id saved")
       })
     })
-    readPreMeetingSlackStatus()
-  }
-  if (request.message == "Set status") {
     console.log("Setting slack status")
     setSlackStatus()
   }
@@ -27,11 +28,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 chrome.tabs.onRemoved.addListener(function (tabid) {
   chrome.storage.local.get(["meetingTabId"], function (data) {
-    console.log(tabid)
-    console.log(data.meetingTabId)
     if (tabid == data.meetingTabId) {
       console.log("Successfully intercepted tab close")
       clearSlackStatus()
+      // Clearing meetingTabId to prevent misfires of onRemoved until next meeting actually starts and status is set
+      chrome.storage.local.set({ meetingTabId: null }, function () {
+        console.log("Meeting tab id cleared for next meeting")
+      })
     }
   })
 })
