@@ -30,18 +30,14 @@ checkExtensionStatus().then(() => {
       joinKeyBoardShortcutListener();
       exitKeyBoardShortcutListener();
 
+      // 1. Meet UI prior to July/Aug 2024
       checkElement(".google-material-icons", "call_end").then(() => {
-        console.log("Meeting started, setting Slack status")
-        chrome.runtime.sendMessage({ message: "Set status" }, function (response) {
-          console.log(response);
-        });
+        meetingRoutines(".google-material-icons", "call_end")
+      })
 
-        contains(".google-material-icons", "call_end")[0].parentElement.addEventListener("click", () => {
-          console.log("Meeting ended, clearing Slack status")
-          chrome.runtime.sendMessage({ message: "Clear status" }, function (response) {
-            console.log(response);
-          });
-        })
+      // 2. Meet UI post July/Aug 2024
+      checkElement(".google-symbols", "call_end").then(() => {
+        meetingRoutines(".google-symbols", "call_end")
       })
     }
     else {
@@ -67,6 +63,21 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   }
 });
 
+function meetingRoutines(selector, text) {
+  console.log("Meeting started, setting Slack status")
+  chrome.runtime.sendMessage({ message: "Set status" }, function (response) {
+    console.log(response);
+  });
+
+  // Event bubbling ensures this works for both cases 1 and 2. The node in case 2 is nested one level deeper than case 1.
+  contains(selector, text)[0].parentElement.parentElement.addEventListener("click", () => {
+    console.log("Meeting ended, clearing Slack status")
+    chrome.runtime.sendMessage({ message: "Clear status" }, function (response) {
+      console.log(response);
+    });
+  })
+}
+
 function joinKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && !(event.shiftKey) && (event.key.toLowerCase() === "v")) {
@@ -84,7 +95,7 @@ function exitKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && (event.shiftKey) && (event.key.toLowerCase() === "v")) {
       if (contains("i", "call_end")[0])
-        contains("i", "call_end")[0].parentElement.click();
+        contains("i", "call_end")[0].click();
     }
   });
 }
