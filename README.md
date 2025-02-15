@@ -26,7 +26,7 @@ View demo on [YouTube](https://www.youtube.com/watch?v=XtJR7ox_WH4)
 
 # Installation
 <a href="https://chromewebstore.google.com/detail/google-meet-%E2%87%94-slack-integ/kddjlbegfaiogihndmglihcgommbjmkc" target="_blank">
-<img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png" />
+<img src="https://developer.chrome.com/static/docs/webstore/branding/image/iNEddTyWiMfLSwFD6qGq.png" />
 </a>
 
 ## Configure chrome extension
