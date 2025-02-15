@@ -9,20 +9,24 @@ checkExtensionStatus().then(() => {
         console.log(response);
       });
 
-      // disabling camera or microphone
-      checkElement(".oTVIqe").then(() => {
-        console.log("Mic and camera visible")
-        let buttons = document.querySelectorAll(".oTVIqe");
-        if (buttons) {
-          setTimeout(() => {
-            chrome.storage.sync.get(["microphoneToggle", "cameraToggle"], function (result) {
-              if (result.microphoneToggle == true)
-                buttons[0].click()
-              if (result.cameraToggle == true)
-                buttons[2].click()
-            })
-          }, 500);
-        }
+      // disabling microphone
+      checkElement('[aria-label="Turn off microphone"]').then(() => {
+        setTimeout(() => {
+          chrome.storage.sync.get("microphoneToggle", function (result) {
+            if (result.microphoneToggle == true)
+              document.querySelector('[aria-label="Turn off microphone"]').click()
+          })
+        }, 500);
+      });
+
+      // disabling camera
+      checkElement('[aria-label="Turn off camera"]').then(() => {
+        setTimeout(() => {
+          chrome.storage.sync.get("cameraToggle", function (result) {
+            if (result.cameraToggle == true)
+              document.querySelector('[aria-label="Turn off camera"]').click()
+          })
+        }, 500);
       });
 
       showNotification(200, extensionStatusJSON);
@@ -94,8 +98,8 @@ function joinKeyBoardShortcutListener() {
 function exitKeyBoardShortcutListener() {
   document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && (event.shiftKey) && (event.key.toLowerCase() === "v")) {
-      if (contains("i", "call_end")[0])
-        contains("i", "call_end")[0].click();
+      if (contains(".google-symbols", "call_end")[0])
+        contains(".google-symbols", "call_end")[0].click();
     }
   });
 }

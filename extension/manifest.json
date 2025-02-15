@@ -1,6 +1,6 @@
 {
   "name": "Google Meet ⇔ Slack integration (Glack)",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "manifest_version": 3,
   "description": "Real-time Google Meet status on Slack, just like Slack huddles.",
   "action": {
