@@ -6,7 +6,7 @@ Improve workplace communication by connecting Google Meet with Slack!
 
 **Google Meet ⇔ Slack automatically (Glack) updates your slack status in real time, when you join and exit meetings, even for unscheduled meetings or overflowing meetings.**
 
-Extension status: 🟢 OPERATIONAL (v2.1.0)
+Extension status: 🟢 OPERATIONAL (v2.1.1)
 
 
 
